@@ -64,3 +64,7 @@ FLIPPER_TOKEN=<token-from-step-2-goes-here> rails server
 Open http://localhost:3000 in your browser.
 
 ![view on featureflipper.com](https://cl.ly/0d400Y081M04/Image%202017-05-29%20at%204.11.46%20PM.public.png)
+
+## Want More?
+
+Check out the [flipper README](https://github.com/jnunemaker/flipper) for links to more documentation and examples.
