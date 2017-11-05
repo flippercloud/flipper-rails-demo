@@ -25,16 +25,20 @@ Create a new file `config/initializers/flipper.rb` with the following content:
 ```ruby
 token = ENV.fetch("FLIPPER_TOKEN")
 
+require "flipper-cloud"
 Flipper.configure do |config|
   config.default do
     Flipper::Cloud.new(token)
   end
 end
+
+require "flipper/middleware/memoizer"
+Rails.configuration.middleware.use Flipper::Middleware::Memoizer, preload_all: true
 ```
 
 ## Step 4
 
-Test that everything works.
+Test that everything works from console:
 
 ```bash
 FLIPPER_TOKEN=<token-goes-here> rails console
@@ -48,5 +52,15 @@ irb(main):007:0> Flipper.enable(:foo)
 irb(main):008:0> Flipper.enabled?(:foo)
 => true
 ```
+
+Or test that it works using this demo application:
+
+```bash
+git clone https://github.com/fewerandfaster/flipper-rails-demo.git
+cd flipper-rails-demo
+FLIPPER_TOKEN=<token-from-step-2-goes-here> rails server
+```
+
+Open http://localhost:3000 in your browser.
 
 ![view on featureflipper.com](https://cl.ly/0d400Y081M04/Image%202017-05-29%20at%204.11.46%20PM.public.png)
