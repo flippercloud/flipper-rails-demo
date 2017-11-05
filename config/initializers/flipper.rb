@@ -6,3 +6,6 @@ Flipper.configure do |config|
     Flipper::Cloud.new(token)
   end
 end
+
+require "flipper/middleware/memoizer"
+Rails.configuration.middleware.use Flipper::Middleware::Memoizer, preload_all: true
