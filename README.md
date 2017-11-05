@@ -14,7 +14,7 @@ And run `bundle` to install. See [this commit](https://github.com/fewerandfaster
 
 ## Step 2
 
-Create an account on featureflipper.com and get the token provided during signup.
+Create an account on [featureflipper.com](https://featureflipper.com) and get the token provided during signup.
 
 ![screenshot of token](https://cl.ly/0B3c0X3S1Z3K/Image%202017-05-29%20at%204.03.58%20PM.public.png)
 
