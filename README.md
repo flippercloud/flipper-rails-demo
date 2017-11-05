@@ -23,7 +23,13 @@ Create an account on featureflipper.com and get the token provided during signup
 Create a new file `config/initializers/flipper.rb` with the following content:
 
 ```ruby
-Rails.application.config.flipper = Flipper::Cloud.new(ENV["FLIPPER_TOKEN"])
+token = ENV.fetch("FLIPPER_TOKEN")
+
+Flipper.configure do |config|
+  config.default do
+    Flipper::Cloud.new(token)
+  end
+end
 ```
 
 ## Step 4
@@ -35,11 +41,11 @@ FLIPPER_TOKEN=<token-goes-here> rails console
 ```
 
 ```ruby
-irb(main):001:0> Rails.application.config.flipper.enabled?("foo")
+irb(main):006:0> Flipper.enabled?(:foo)
 => false
-irb(main):002:0> Rails.application.config.flipper.enable("foo")
+irb(main):007:0> Flipper.enable(:foo)
 => true
-irb(main):003:0> Rails.application.config.flipper.enabled?("foo")
+irb(main):008:0> Flipper.enabled?(:foo)
 => true
 ```
 
