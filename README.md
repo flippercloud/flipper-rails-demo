@@ -4,10 +4,11 @@ Step by step instructions for using [Flipper](https://featureflipper.com) with R
 
 ## Step 1
 
-Add `flipper-cloud` to the `Gemfile`.
+Add `flipper-cloud` and `flipper-active_support_cache_store` to the `Gemfile`.
 
 ```ruby
 gem 'flipper-cloud'
+gem 'flipper-active_support_cache_store'
 ```
 
 And run `bundle` to install. See [this commit](https://github.com/fewerandfaster/flipper-rails-demo/commit/6e743d16c55e0b84cc8dc571acf1a9510b424414).
@@ -23,18 +24,37 @@ Create an account on [featureflipper.com](https://featureflipper.com) and get th
 Create a new file `config/initializers/flipper.rb` with the following content:
 
 ```ruby
-token = ENV.fetch("FLIPPER_TOKEN")
+require "flipper/cloud"
+require "flipper/adapters/active_support_cache_store"
+require "active_support/cache/memory_store"
 
-require "flipper-cloud"
+token = ENV.fetch("FLIPPER_TOKEN")
+memory_cache_ttl = ENV.fetch("FLIPPER_MEMORY_CACHE_TTL", 10).to_f
+read_timeout = ENV.fetch("FLIPPER_READ_TIMEOUT", 5).to_f
+open_timeout = ENV.fetch("FLIPPER_OPEN_TIMEOUT", 5).to_f
+debug = ENV.fetch("FLIPPER_DEBUG", "0").to_i == 1
+
 Flipper.configure do |config|
   config.default do
-    Flipper::Cloud.new(token)
+    Flipper::Cloud.new(token) do |cloud|
+      cloud.instrumenter = ActiveSupport::Notifications
+      cloud.read_timeout = read_timeout
+      cloud.open_timeout = open_timeout
+      cloud.debug_output = STDOUT if debug
+      cloud.adapter do |adapter|
+        cache = ActiveSupport::Cache::MemoryStore.new
+        options = {expires_in: memory_cache_ttl.seconds}
+        Flipper::Adapters::ActiveSupportCacheStore.new(adapter, cache, options)
+      end
+    end
   end
 end
 
 require "flipper/middleware/memoizer"
 Rails.configuration.middleware.use Flipper::Middleware::Memoizer, preload_all: true
 ```
+
+You can certainly strip parts of the above out, but this configuration is typical of a real production environment (strikingly similar to what we use for featureflipper.com itself).
 
 ## Step 4
 

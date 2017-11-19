@@ -64,9 +64,12 @@ GEM
     erubi (1.6.0)
     execjs (2.7.0)
     ffi (1.9.18)
-    flipper (0.11.0.rc1)
-    flipper-cloud (0.11.0.rc1)
-      flipper (~> 0.11.0.rc1)
+    flipper (0.11.0)
+    flipper-active_support_cache_store (0.11.0)
+      activesupport (>= 3.2, < 6)
+      flipper (~> 0.11.0)
+    flipper-cloud (0.11.0)
+      flipper (~> 0.11.0)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
     i18n (0.8.1)
@@ -178,6 +181,7 @@ DEPENDENCIES
   byebug
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
+  flipper-active_support_cache_store
   flipper-cloud
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
