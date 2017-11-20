@@ -3,7 +3,7 @@ require "flipper/adapters/active_support_cache_store"
 require "active_support/cache/memory_store"
 
 token = ENV.fetch("FLIPPER_TOKEN")
-memory_cache_ttl = ENV.fetch("FLIPPER_MEMORY_CACHE_TTL", 10).to_f
+memory_cache_ttl = ENV.fetch("FLIPPER_MEMORY_TTL", 10).to_f
 read_timeout = ENV.fetch("FLIPPER_READ_TIMEOUT", 5).to_f
 open_timeout = ENV.fetch("FLIPPER_OPEN_TIMEOUT", 5).to_f
 debug = ENV.fetch("FLIPPER_DEBUG", "0").to_i == 1
