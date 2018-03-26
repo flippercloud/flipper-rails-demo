@@ -8,8 +8,8 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 
-gem 'flipper-cloud', '0.13.0.beta1'
-gem 'flipper-active_record', '0.13.0.beta1'
+gem 'flipper-cloud', '0.13.0'
+gem 'flipper-active_record', '0.13.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
