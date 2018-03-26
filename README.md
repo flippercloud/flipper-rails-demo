@@ -11,7 +11,9 @@ gem 'flipper-cloud', '~> 0.13.0'
 gem 'flipper-active_record', '~> 0.13.0'
 ```
 
-And run `bundle` to install.
+* Run `bundle` to install.
+* Run `bin/rails g flipper:active_record` to generate migration for ActiveRecord adapter.
+* Run `bin/rails db:migrate` to run migration for ActiveRecord adapter.
 
 ## Step 2
 
