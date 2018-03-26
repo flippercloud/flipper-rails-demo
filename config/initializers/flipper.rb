@@ -1,14 +1,14 @@
 require "flipper/cloud"
 require "flipper/adapters/active_record"
 
-token = ENV.fetch("FLIPPER_TOKEN")
-debug = ENV.fetch("FLIPPER_DEBUG", "0").to_i == 1
-read_timeout = ENV.fetch("FLIPPER_READ_TIMEOUT", 5).to_f
-open_timeout = ENV.fetch("FLIPPER_OPEN_TIMEOUT", 5).to_f
-sync_interval = ENV.fetch("FLIPPER_SYNC_INTERVAL", 10_000).to_i
-
 Flipper.configure do |config|
   config.default do
+    token = ENV.fetch("FLIPPER_TOKEN")
+    debug = ENV.fetch("FLIPPER_DEBUG", "0").to_i == 1
+    read_timeout = ENV.fetch("FLIPPER_READ_TIMEOUT", 5).to_f
+    open_timeout = ENV.fetch("FLIPPER_OPEN_TIMEOUT", 5).to_f
+    sync_interval = ENV.fetch("FLIPPER_SYNC_INTERVAL", 10_000).to_i
+
     Flipper::Cloud.new(token) do |cloud|
       cloud.instrumenter = ActiveSupport::Notifications
       cloud.read_timeout = read_timeout
