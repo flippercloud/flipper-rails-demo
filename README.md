@@ -7,7 +7,8 @@ Step by step instructions for using [Flipper](https://featureflipper.com) with R
 Add `flipper-cloud` to the `Gemfile`.
 
 ```ruby
-gem 'flipper-cloud'
+gem 'flipper-cloud', '~> 0.13.0'
+gem 'flipper-active_record', '~> 0.13.0'
 ```
 
 And run `bundle` to install.
