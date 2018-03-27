@@ -7,7 +7,7 @@ Flipper.configure do |config|
     debug = ENV.fetch("FLIPPER_DEBUG", "0").to_i == 1
     read_timeout = ENV.fetch("FLIPPER_READ_TIMEOUT", 5).to_f
     open_timeout = ENV.fetch("FLIPPER_OPEN_TIMEOUT", 5).to_f
-    sync_interval = ENV.fetch("FLIPPER_SYNC_INTERVAL", 10_000).to_i
+    sync_interval = ENV.fetch("FLIPPER_SYNC_INTERVAL", 10).to_i
 
     Flipper::Cloud.new(token) do |cloud|
       cloud.instrumenter = ActiveSupport::Notifications
