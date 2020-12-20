@@ -1,14 +1,15 @@
 # Flipper Rails Demo
 
-Step by step instructions for using [Flipper](https://featureflipper.com) with Rails.
+Step by step instructions for using [Flipper](https://flippercloud.io) with Rails.
 
 ## Step 1
 
 Add `flipper-cloud` to the `Gemfile`.
 
 ```ruby
-gem 'flipper-cloud', '~> 0.14.0'
-gem 'flipper-active_record', '~> 0.14.0'
+flipper_version = '~> 0.20.0.beta1'
+gem 'flipper-cloud', flipper_version
+gem 'flipper-active_record', flipper_version
 ```
 
 * Run `bundle` to install.
@@ -17,9 +18,7 @@ gem 'flipper-active_record', '~> 0.14.0'
 
 ## Step 2
 
-Create an account on [featureflipper.com](https://featureflipper.com) and get the token provided during signup.
-
-![screenshot of token](https://cl.ly/0B3c0X3S1Z3K/Image%202017-05-29%20at%204.03.58%20PM.public.png)
+Create an account on [flippercloud.io](https://flippercloud.io) and get the token provided during signup.
 
 ## Step 3
 
@@ -31,26 +30,64 @@ require "flipper/adapters/active_record"
 
 Flipper.configure do |config|
   config.default do
-    token = ENV.fetch("FLIPPER_TOKEN")
-
-    Flipper::Cloud.new(token) do |cloud|
+    Flipper::Cloud.new do |cloud|
       cloud.local_adapter = Flipper::Adapters::ActiveRecord.new
     end
   end
 end
 
-require "flipper/middleware/memoizer"
 Rails.configuration.middleware.use Flipper::Middleware::Memoizer, preload_all: true
 ```
 
-You can certainly strip parts of the above out, but this configuration is typical of a real production environment (strikingly similar to what we use for featureflipper.com itself).
-
 ## Step 4
+
+Mount the flipper cloud webhook in your app by adding the following to `config/routes.rb`:
+
+```ruby
+Rails.application.routes.draw do
+  mount Flipper::Cloud.app, at: "_flipper"
+end
+```
+
+We recommend using webhooks for syncing your application data with cloud. When changes happen (e.g. enable a feature), we'll ping your application and tell it to pull the latest information.
+
+When developing locally on your machine, you can skip webhooks and use polling (the default `sync_method`). This avoids the hassle of setting up ngrok or the like to expose your local machine to the internet. Instead, `Flipper::Cloud` will poll every 10 seconds (you can configure this to be less or more using sync_interval).
+
+## Step 5
+
+### Configure cloud using ENV vars (preferred):
+
+```
+# required
+FLIPPER_CLOUD_TOKEN=<your environment token here>
+
+# optional (for production environment)
+FLIPPER_CLOUD_SYNC_METHOD=webhook
+FLIPPER_CLOUD_SYNC_SECRET=<webhook sync secret>
+```
+
+### Or, you can configure cloud using Ruby:
+
+You can tweak the setup in Step 3 to look more like this:
+
+```ruby
+Flipper.configure do |config|
+  config.default do
+    Flipper::Cloud.new("<your environment token here>") do |cloud|
+      cloud.sync_method = Rails.env.production? ? :webhook : :poll
+      cloud.sync_secret = "<webhook sync secret>"
+      cloud.local_adapter = Flipper::Adapters::ActiveRecord.new
+    end
+  end
+end
+```
+
+## Step 6
 
 Test that everything works from console:
 
 ```bash
-FLIPPER_TOKEN=<token-goes-here> rails console
+FLIPPER_CLOUD_TOKEN=<token-goes-here> bin/rails console
 ```
 
 ```ruby
@@ -67,13 +104,13 @@ Or test that it works using this demo application:
 ```bash
 git clone https://github.com/fewerandfaster/flipper-rails-demo.git
 cd flipper-rails-demo
-FLIPPER_TOKEN=<token-from-step-2-goes-here> rails server
+FLIPPER_CLOUD_TOKEN=<token-from-step-2-goes-here> bin/rails server
 ```
 
 Open http://localhost:3000 in your browser.
 
-![view on featureflipper.com](https://cl.ly/0d400Y081M04/Image%202017-05-29%20at%204.11.46%20PM.public.png)
-
 ## More?
 
-Check out the [flipper README](https://github.com/jnunemaker/flipper) for links to more documentation and examples on the [types of enablements](https://github.com/jnunemaker/flipper/blob/master/docs/Gates.md) and how to [instrument](https://github.com/jnunemaker/flipper/blob/master/docs/Instrumentation.md) and [optimize](https://github.com/jnunemaker/flipper/blob/master/docs/Optimization.md) your usage of Flipper.
+Head on over to the [Flipper Cloud documentation](https://www.flippercloud.io/docs).
+
+Or check out the [flipper README](https://github.com/jnunemaker/flipper) for links to more documentation and examples on the [types of enablements](https://github.com/jnunemaker/flipper/blob/master/docs/Gates.md) and how to [instrument](https://github.com/jnunemaker/flipper/blob/master/docs/Instrumentation.md) and [optimize](https://github.com/jnunemaker/flipper/blob/master/docs/Optimization.md) your usage of Flipper.
