@@ -1,6 +1,5 @@
 require "flipper/cloud"
 require "flipper/adapters/active_record"
-require "flipper/middleware/memoizer"
 
 Flipper.configure do |config|
   config.default do
