@@ -64,7 +64,7 @@ GEM
     crass (1.0.6)
     erubi (1.7.0)
     execjs (2.7.0)
-    ffi (1.9.23)
+    ffi (1.15.0)
     flipper (0.21.0)
     flipper-active_record (0.21.0)
       activerecord (>= 5.0, < 7)
