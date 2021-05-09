@@ -8,7 +8,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 
-flipper_version = '~> 0.20.3'
+flipper_version = '~> 0.21.0'
 gem 'flipper-cloud', flipper_version
 gem 'flipper-active_record', flipper_version
 
