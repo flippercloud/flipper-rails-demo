@@ -61,7 +61,7 @@ Open http://localhost:3000 in your browser.
 
 ## Dotenv
 
-This app also ships with dotenv so if you `cp .env.example .env` and tweak the token, you won't need to export the FLIPPER_CLOUD_TOKEN env var anytime you load Rails.
+This app also ships with dotenv so if you `cp .env.example .env` and tweak the token, you won't need to export the `FLIPPER_CLOUD_TOKEN` env var anytime you load Rails.
 
 ## More?
 
