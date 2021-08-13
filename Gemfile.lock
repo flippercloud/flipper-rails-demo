@@ -107,8 +107,11 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.12.3-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.12.3-x86_64-linux)
+      racc (~> 1.4)
     public_suffix (4.0.6)
-    puma (3.12.6)
+    puma (4.3.8)
+      nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-test (1.1.0)
@@ -177,6 +180,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-18
+  x86_64-linux
 
 DEPENDENCIES
   byebug
@@ -185,7 +189,7 @@ DEPENDENCIES
   flipper-active_record (~> 0.22.0)
   flipper-cloud (~> 0.22.0)
   listen (>= 3.0.5, < 3.2)
-  puma (~> 3.12)
+  puma (~> 4.3)
   rails (~> 6.1.0)
   selenium-webdriver
   spring
