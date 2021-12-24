@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.1.0'
+gem 'rails', '~> 7.0.0'
 gem 'sqlite3'
 gem 'puma', '~> 4.0'
 
 flipper_version = '~> 0.22.0'
+flipper_version = {git: 'https://github.com/jnunemaker/flipper'}
 gem 'flipper-cloud', flipper_version
 gem 'flipper-active_record', flipper_version
 
