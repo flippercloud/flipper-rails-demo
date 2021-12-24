@@ -108,12 +108,16 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.6.1)
     minitest (5.15.0)
     nio4r (2.5.8)
+    nokogiri (1.12.5)
+      mini_portile2 (~> 2.6.1)
+      racc (~> 1.4)
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
     public_suffix (4.0.6)
-    puma (4.3.8)
+    puma (4.3.9)
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3)
@@ -186,7 +190,7 @@ DEPENDENCIES
   flipper-active_record!
   flipper-cloud!
   listen (>= 3.0.5, < 3.2)
-  puma (~> 4.0)
+  puma (~> 4.3)
   rails (~> 7.0.0)
   selenium-webdriver
   spring
