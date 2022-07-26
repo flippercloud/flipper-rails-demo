@@ -7,7 +7,7 @@ Step by step instructions for using [Flipper](https://flippercloud.io) with Rail
 Add `flipper-cloud` to the `Gemfile`.
 
 ```ruby
-flipper_version = '~> 0.21.0'
+flipper_version = '~> 0.25.0'
 gem 'flipper-cloud', flipper_version
 gem 'flipper-active_record', flipper_version
 ```
