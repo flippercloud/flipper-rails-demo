@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 7.0.0'
 gem 'sqlite3'
-gem 'puma', '~> 4.0'
+gem 'puma', '~> 4.3'
 
 flipper_version = '~> 0.25.0'
 gem 'flipper-cloud', flipper_version
