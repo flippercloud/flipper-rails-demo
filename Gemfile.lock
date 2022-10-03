@@ -129,6 +129,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.8-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.13.8-x86_64-linux)
+      racc (~> 1.4)
     public_suffix (5.0.0)
     puma (4.3.12)
       nio4r (~> 2.0)
@@ -177,7 +179,8 @@ GEM
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
       spring (>= 1.2, < 3.0)
-    sqlite3 (1.5.0-x86_64-darwin)
+    sqlite3 (1.5.1-x86_64-darwin)
+    sqlite3 (1.5.1-x86_64-linux)
     strscan (3.0.4)
     thor (1.2.1)
     timeout (0.3.0)
@@ -198,6 +201,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   byebug
