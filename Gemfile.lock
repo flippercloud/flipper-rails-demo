@@ -96,7 +96,7 @@ GEM
     flipper-cloud (0.25.2)
       brow (~> 0.4.1)
       flipper (~> 0.25.2)
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
@@ -111,7 +111,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    minitest (5.16.3)
+    minitest (5.17.0)
     net-imap (0.2.3)
       digest
       net-protocol
@@ -128,6 +128,8 @@ GEM
       timeout
     nio4r (2.5.8)
     nokogiri (1.13.8-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
     public_suffix (5.0.0)
     puma (4.3.12)
@@ -178,6 +180,7 @@ GEM
       listen (>= 2.7, < 4.0)
       spring (>= 1.2, < 3.0)
     sqlite3 (1.5.0-x86_64-darwin)
+    sqlite3 (1.5.0-x86_64-linux)
     strscan (3.0.4)
     thor (1.2.1)
     timeout (0.3.0)
@@ -198,6 +201,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   byebug
