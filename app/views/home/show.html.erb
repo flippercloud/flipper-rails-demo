@@ -1,4 +1,29 @@
 <h1>Hello!</h1>
 <p>
-  The foo feature is <%= Flipper.enabled?(:foo) ? "enabled" : "disabled" %>.
+  The <mark><code>foo</code></mark> feature is <mark><%= Flipper.enabled?(:foo) ? "enabled" : "disabled" %></mark>.
 </p>
+
+<hr>
+
+<p>
+  The app knows whether a feature flag is enabled by checking <code>Flipper.enabled?(:foo)</code>, and since feature flags are disabled by default, you get to flip it.
+</p>
+
+<p>
+  You can change this by enabling/disabling the feature from the console:
+</p>
+
+<code><pre>
+bin/rails c
+</pre></code>
+
+<code><pre>
+Flipper.enable(:foo)
+Flipper.disable(:foo)
+</pre></code>
+
+<p>Or you can log in to your Flipper Cloud account and toggle the feature there.</p>
+
+<hr>
+
+<p>Take a look at <code>app/views/home/show.html.erb</code> and <code>test/controllers/home_controller_test.rb</code> to see how it's working.</p>

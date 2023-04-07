@@ -1,5 +1,29 @@
 # Flipper Rails Demo
 
+This demo already has the pre-requisites setup and ready to go. You only need to add the `FLIPPER_CLOUD_TOKEN`.
+
+1. Copy over the sample `.env` file
+
+```bash
+cp .env.example .env
+```
+
+2. Get your `FLIPPER_CLOUD_TOKEN` by going to your project's "Tokens" page. (Create a test project for the demo if you'd_prefer.) You can use the existing token or create a new one and then copy the value into your `.env` file.
+
+Once your `.env` is set up with the `FLIPPER_CLOUD_TOKEN` from your account, you can start up the application:
+
+```bash
+bundle install
+bin/rails db:migrate
+bin/rails server
+```
+
+Then, once the server is running, you can toggle the feature via command-line with the instructions shown on the home page.
+
+* * *
+
+# Adding Flipper to an Existing Rails App
+
 Step by step instructions for using [Flipper](https://flippercloud.io) with Rails.
 
 ## Step 1
