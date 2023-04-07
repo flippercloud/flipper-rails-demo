@@ -8,6 +8,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show without foo enabled" do
+    # Disabled by default
     get root_path
     assert_select "p", text: /disabled/
   end
