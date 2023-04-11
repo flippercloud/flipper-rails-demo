@@ -68,6 +68,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.3)
       public_suffix (>= 2.0.2, < 6.0)
+    bcrypt (3.1.18)
     bindex (0.8.1)
     brow (0.4.1)
     builder (3.2.4)
@@ -204,6 +205,7 @@ PLATFORMS
   x86_64-darwin-21
 
 DEPENDENCIES
+  bcrypt
   byebug
   capybara
   dotenv-rails
