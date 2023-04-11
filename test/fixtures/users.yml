@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+admin:
+  email: admin@example.com
+  password_digest: password
+
+basic:
+  email: basic@example.com
+  password_digest: password
