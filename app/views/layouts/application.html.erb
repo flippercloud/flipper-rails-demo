@@ -3,9 +3,21 @@
   <head>
     <title>Flipper Rails Demo</title>
     <%= csrf_meta_tags %>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_importmap_tags %>
   </head>
   <body>
+    <% if notice %><p><strong><%= notice %></strong></p><hr><% end %>
+    <% if alert %><p><strong><%= alert %></strong></p><hr><% end %>
+
+    <% if current_user -%>
+      <span>Logged in as <%= current_user.email %></span>
+      <%= button_to "Log out", log_out_path, method: :delete %>
+    <% else -%>
+      <%= link_to "Register", new_user_path %> |
+      <%= link_to "Log in", login_path %>
+    <% end -%>
+    <hr>
     <%= yield %>
   </body>
 </html>

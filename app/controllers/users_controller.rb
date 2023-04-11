@@ -7,7 +7,12 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      redirect_to root_path, notice: "You're all set!"
+      # Save the user.id in that user's session cookie
+      session[:user_id] = @user.id.to_s
+
+      # Send them to the home page
+      flash.notice = "Welcome to the Flipper demo!"
+      redirect_to root_path
     else
       render :new
     end

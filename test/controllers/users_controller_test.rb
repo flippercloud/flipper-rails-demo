@@ -6,7 +6,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should redirct to root after registration" do
+  test "should redirect to root after registration" do
     params = {
       user: {
         email: "test@example.com",
