@@ -25,6 +25,6 @@ class SessionsController < ApplicationController
     session.delete(:user_id)
 
     # Send them to the login page
-    redirect_to login_path, notice: "Logged out!"
+    redirect_to root_path, notice: "Logged out!"
   end
 end

@@ -1,4 +1,4 @@
-# Flipper Rails Demo
+y# Flipper Rails Demo
 
 This demo already has the pre-requisites setup and ready to go. You only need to add the `FLIPPER_CLOUD_TOKEN`.
 

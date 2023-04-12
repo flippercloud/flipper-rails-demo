@@ -11,6 +11,10 @@
   --nc-lk-tx: #FFFFFF;
   --nc-ac-1: #79FFE1;
   --nc-ac-tx: #0C4047;
+  --nc-id-0: #fee2e2;
+  --nc-id-1: #dcfce7;
+  --nc-delete: #ef4444;
+  --nc-create: #22c55e;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,6 +29,8 @@
     --nc-lk-tx: #FFFFFF;
     --nc-ac-1: #7928CA;
     --nc-ac-tx: #FFFFFF;
+    --nc-id-0: #ef4444;
+    --nc-id-1: #22c55e;
   }
 }
 
@@ -302,6 +308,24 @@ code pre {
   margin: 0;
 }
 
+del {
+  background-color: var(--nc-id-0);
+  text-decoration-line: none;
+}
+
+ins {
+  background-color: var(--nc-id-1);
+  text-decoration-line: none;
+}
+
+input[value~="Disable"] {
+  background-color: var(--nc-delete);
+}
+
+input[value~="Enable"] {
+  background-color: var(--nc-create);
+}
+
 details {
   /* Make the <details> look more "clickable" */
   padding: .6rem 1rem;
@@ -348,10 +372,14 @@ hr {
 }
 
 fieldset {
-  margin-top: 1rem;
+  margin-top: 2rem;
   padding: 2rem;
   border: 1px solid var(--nc-bg-3);
   border-radius: 4px;
+}
+
+fieldset > form {
+  margin-bottom: 0;
 }
 
 legend {

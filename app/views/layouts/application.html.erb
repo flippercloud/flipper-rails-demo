@@ -6,8 +6,10 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
   </head>
   <body>
-    <% if notice %><p><strong><%= notice %></strong></p><hr><% end %>
-    <% if alert %><p><strong><%= alert %></strong></p><hr><% end %>
+    <% if notice %><p><strong><mark><%= notice.html_safe %></mark></strong></p><hr><% end %>
+    <% if alert %><p><strong><mark><%= alert.html_safe %></mark></strong></p><hr><% end %>
+
+    <%= link_to "Home", root_path %> |
 
     <% if current_user -%>
       <span>Logged in as <%= current_user.email %></span>

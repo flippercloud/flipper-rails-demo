@@ -1,29 +1,84 @@
-<h1>Hello!</h1>
-<p>
-  The <mark><code>foo</code></mark> feature is <mark><%= Flipper.enabled?(:foo) ? "enabled" : "disabled" %></mark>.
-</p>
+<h1>Flipper Rails Demo</h1>
 
-<hr>
+<p><em>Welcome to the Flipper Rails demo application where you can try out Flipper, see the underlying code, and make changes to see how it all works. Think of it as a pre-built playground for learning your way around Flipper's capabilities.</em></p>
 
-<p>
-  The app knows whether a feature flag is enabled by checking <code>Flipper.enabled?(:foo)</code>, and since feature flags are disabled by default, you get to flip it.
-</p>
+<p>You can get a feel for the basics of Flipper right here...</p>
 
-<p>
-  You can change this by enabling/disabling the feature from the console:
-</p>
+<h2 id="basic">Basic Feature Flipping</h2>
 
-<code><pre>
-bin/rails c
-</pre></code>
+<p>You can toggle any feature on/off <strong>for everyone</strong> without re-deploying. (You can think of this as <a href="https://www.flippercloud.io/docs/features#enablement-boolean">boolean feature flipping</a> whre it's either true or false for everyone.)</p>
 
-<code><pre>
-Flipper.enable(:foo)
-Flipper.disable(:foo)
-</pre></code>
+<p>For example, the <code>foo</code> feature can be enabled/or disabled like this:</p>
 
-<p>Or you can log in to your Flipper Cloud account and toggle the feature there.</p>
+<ul>
+  <li><code>Flipper.enable(:foo)</code></li>
+  <li><code>Flipper.disable(:foo)</code></li>
+</ul>
 
-<hr>
+<fieldset>
+  <legend>See How it Works</legend>
 
-<p>Take a look at <code>app/views/home/show.html.erb</code> and <code>test/controllers/home_controller_test.rb</code> to see how it's working.</p>
+  <% if Flipper.enabled?(:foo) %>
+    <p><code>foo</code> is <ins>enabled</ins> for everyone.</p>
+  <% else %>
+    <p><code>foo</code> is <del>disabled</del> for anyone without special authorization.</p>
+  <% end %>
+
+  <hr>
+
+
+  <% if current_user && Flipper.enabled?(:foo) %>
+    <%= button_to "Disable :foo for Everyone", disable_path(feature: :foo), method: :delete %>
+  <% elsif current_user %>
+    <%= button_to "Enable :foo for Everyone", enable_path(feature: :foo), method: :post %>
+  <% else %>
+    <small>You aren't currently authenticated, so you can't toggle or have special access:</small>
+    <%= link_to "Register", new_user_path %> or <%= link_to "Log in", login_path %>
+  <% end %>
+</fieldset>
+
+<h2 id="users">User-based Feature Flipping</h2>
+
+<p>You can toggle a feature on or off for <strong>a single user</strong> without re-deploying. (There are several ways to enable access for users, but for this example, we'll focus on enabling a feature for a specific user rather than a group that includes that user.)</p>
+
+<p>When you enable a feature for a specific user, it will override less-specific states. So when it's disabled for everyone, you can ensure that specific people can still have access.</p>
+
+<p>For example, the <code>foo</code> feature can be enabled/disabled for a specific user. These examples use `current_user`, but it could just as easily be any instance of your `User` model:</p>
+
+<ul>
+  <li><code>Flipper.enable(:foo, current_user)</code></li>
+  <li><code>Flipper.disable(:foo, current_user)</code></li>
+</ul>
+
+<fieldset>
+  <legend>See How it Works</legend>
+
+  <% if Flipper.enabled?(:foo) %>
+    <p><code>foo</code> is <ins>enabled</ins> for everyone.</p>
+  <% else %>
+    <p><code>foo</code> is <del>disabled</del> for anyone without special authorization.</p>
+  <% end %>
+
+  <% if current_user && Flipper.enabled?(:foo)%>
+    <p><code>foo</code> is <em>implicitly</em> <ins>enabled</ins> for you since it's enabled for everyone.</p>
+  <% elsif current_user &&  Flipper.enabled?(:foo, current_user)%>
+    <p><code>foo</code> is <em>explicitly</em> <ins>enabled</ins> for you.</p>
+  <% else %>
+    <p><code>foo</code> is <del>disabled</del> for you since you aren't authenticated. (Flipper can't treat anyone differently without knowing who they are.)</p>
+  <% end %>
+
+
+  <hr>
+
+
+  <% if current_user && Flipper.enabled?(:foo, current_user) %>
+    <%= button_to "Disable :foo for Yourself", disable_path(feature: :foo, user: true), method: :delete %>
+  <% elsif current_user %>
+    <%= button_to "Enable :foo for Yourself", enable_path(feature: :foo, user: true), method: :post %>
+  <% else %>
+    <small>You aren't currently authenticated, so you can't toggle or have special access:</small>
+    <%= link_to "Register", new_user_path %> or <%= link_to "Log in", login_path %>
+  <% end %>
+</fieldset>
+
+<p><strong>Important:</strong> In order to <a href="https://www.flippercloud.io/docs/features#enablement-actor">enable access for individual users, accounts, or any other "Actor"</a> (in Flipper parlance), you'll need to make sure they respond to a <code>flipper_id</code> method that returns a unique identifier. You can implement this method yourself or include the <code>Flipper::Identifier</code> module in your model, and Flipper will use the Class and ID. i.e. <code>User;1</code>.</p>

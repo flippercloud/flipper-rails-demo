@@ -1,9 +1,8 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# the `default_password_digest` comes from our TestPasswordHelper
 
 admin:
   email: admin@example.com
-  password_digest: password
-
+  password_digest: <%= default_password_digest %>
 basic:
   email: basic@example.com
-  password_digest: password
+  password_digest: <%= default_password_digest %>

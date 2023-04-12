@@ -10,14 +10,14 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     user = users(:basic)
     params = {
       email: user.email,
-      password: "password",
+      password: default_password,
     }
-    post log_in_url
+    post log_in_url(params: params)
     assert_redirected_to root_path
   end
 
   test "should get destroy" do
     delete log_out_url
-    assert_redirected_to login_path
+    assert_redirected_to root_path
   end
 end

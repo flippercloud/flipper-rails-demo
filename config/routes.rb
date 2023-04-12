@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  get 'sessions/new'
-  get 'sessions/create'
-  get 'sessions/destroy'
   root 'home#show'
 
   # Simple Registration
@@ -12,4 +9,17 @@ Rails.application.routes.draw do
   get    'login',  to: "sessions#new",     as: :login
   post   'login',  to: "sessions#create",  as: :log_in
   delete 'logout', to: "sessions#destroy", as: :log_out
+
+  # Unprotected feature flipping
+  post   'features/enable/:feature',  to: "features#create",  as: :enable
+  delete 'features/disable/:feature', to: "features#destroy", as: :disable
+
+  # The Flipper UI gem interface.
+  #
+  # IMPORTANT: In production, you'd want to limit access to this, or anybody would be able to
+  #   control your feature toggles.
+  #
+  # More info on Flipper UI Security & Authorization:
+  #   https://www.flippercloud.io/docs/ui#security
+  mount Flipper::UI.app(Flipper) => '/flipper'
 end
