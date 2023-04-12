@@ -9,12 +9,10 @@
     <% if notice %><p><strong><mark><%= notice.html_safe %></mark></strong></p><hr><% end %>
     <% if alert %><p><strong><mark><%= alert.html_safe %></mark></strong></p><hr><% end %>
 
-    <%= link_to "Home", root_path %> |
-
     <% if current_user -%>
-      <span>Logged in as <%= current_user.email %></span>
-      <%= button_to "Log out", log_out_path, method: :delete %>
+      <%= button_to "Log out (#{current_user.email})", log_out_path, method: :delete %>
     <% else -%>
+      <%= link_to "Home", root_path %> |
       <%= link_to "Register", new_user_path %> |
       <%= link_to "Log in", login_path %>
     <% end -%>

@@ -1,12 +1,12 @@
 require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
-  test "should get new" do
+  test "gets new user registration" do
     get new_user_url
     assert_response :success
   end
 
-  test "should redirect to root after registration" do
+  test "redirects to root after registration" do
     params = {
       user: {
         email: "test@example.com",
