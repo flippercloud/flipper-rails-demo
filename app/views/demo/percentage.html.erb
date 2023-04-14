@@ -1,2 +1,73 @@
-<h1>Demo#percentage</h1>
-<p>Find me in app/views/demo/percentage.html.erb</p>
+<h1>Percentage-based Feature Flipping</h1>
+
+<p>We've toggled features for all users, a single user, and a specific group of users, but there's another great way to gradually enable a feature for a larger audience in order to reduce the chance that a bug or performance issue creates widespread problems.</p>
+
+<p>With percentages, we can enable a feature for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-actors">percentage of actors</a> or for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-time">percentage of time</a>. Then as we're increasingly confident there aren't any surprise bugs or performance issues, we can gradually increase the percentage.</p>
+
+<p>Percentage-based toggling is great if you're refactoring a significant portion of code. You can keep the legacy code in place in parallel with the new code that's set to replace it, and you can slowly send more traffic down the new code path until you're confident it's generating the same results as the original.</p>
+
+<p>For this example, we'll see how a percentage-based feature flag affects each of four users.</p>
+
+<fieldset>
+  <legend>Enable a Feature for a Percentage of Actors</legend>
+
+  <%= flash %>
+
+  <p>We've named this feature flag <code>slow_roll</code>. We'll increase our percentage gradually in increments of 25% and see how it four different user accounts, including yours, are affected.</p>
+
+  <hr>
+
+  <% if Flipper.enabled?(:slow_roll, current_user) %>
+    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for you.</p>
+  <% else %>
+    <p>The <code>slow_roll</code> feature is <del>disabled</del> for you.</p>
+  <% end %>
+
+  <% if Flipper.enabled?(:slow_roll, @water_drinker) %>
+    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for the water drinker.</p>
+  <% else %>
+    <p>The <code>slow_roll</code> feature is <del>disabled</del> for the water drinker.</p>
+  <% end %>
+
+  <% if Flipper.enabled?(:slow_roll, @tea_drinker) %>
+    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for the tea drinker.</p>
+  <% else %>
+    <p>The <code>slow_roll</code> feature is <del>disabled</del> for the tea drinker.</p>
+  <% end %>
+
+  <% if Flipper.enabled?(:slow_roll, @coffee_drinker) %>
+    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for the coffee drinker.</p>
+  <% else %>
+    <p>The <code>slow_roll</code> feature is <del>disabled</del> for the coffee drinker.</p>
+  <% end %>
+
+  <hr>
+
+  <p><strong>Currently enabled for <%= @current_percentage %>% of actors</strong>.</p>
+
+  <% if @current_percentage == 100 %>
+    <hr>
+
+    <div class="example">
+      <%= button_to "Start Over", disable_path(feature: :slow_roll, percentage: 0), method: :delete %>
+      <code>Flipper.disable(:slow_roll)</code>
+    </div>
+
+    <hr>
+
+    <p>Nice work! That covers the basics of feature toggling, but we've glossed over some details.</p>
+
+    <p>While you've been toggling features directly in the demo up until now, that's not really ideal. And that's where Flipper Cloud comes in. You've already set up an accounts, so now let's go take a look and see what all of this feature toggling has done behind the scenes.</p>
+    <%= button_to "Visit Your Flipper Cloud Account", 'https://flippercloud.io', method: :get %>
+
+  <% else %>
+    <hr>
+    <div class="example">
+      <%= button_to "Increase by 25%", enable_path(feature: :slow_roll, percentage: @current_percentage + 25), method: :post %>
+      <code>Flipper.enable_percentage_of_actors(:slow_roll, <%= @current_percentage + 25 %>)</code>
+    </div>
+  <% end %>
+
+</fieldset>
+
+<%= page_footer(__FILE__) %>

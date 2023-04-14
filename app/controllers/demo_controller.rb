@@ -11,6 +11,10 @@ class DemoController < ApplicationController
   end
 
   def percentage
+    @water_drinker = User.water.first
+    @tea_drinker = User.tea.first
+    @coffee_drinker = User.coffee.first
+    @current_percentage = session[:percentage]&.to_i || 0
   end
 
   private

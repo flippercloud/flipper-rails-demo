@@ -10,11 +10,11 @@
 
 <p>Behind the scenes, we've registered the coffee drinker group with the following condition in <code>config/initializers/flipper.rb</code>:</p>
 
-<code style="display: block; margin-bottom: 1em;"><pre>
+<pre><code style="display: block; margin-bottom: 1em;">
   Flipper.register(:coffee_drinkers) do |actor, context|
     actor.respond_to?(:coffee?) && actor.coffee?
   end
-</pre></code>
+</code></pre>
 
 <p>You may notice that we're verifying the provided actor responds to the <code>coffee?</code> method because any type of actor can be passed to the <code>enabled?</code> method.</p>
 
@@ -34,7 +34,7 @@
   <% end %>
 
   <% if Flipper.enabled?(:demo_group, @water_drinker) %>
-    <p>The <code>demo_group</code> feature is <ins>enabled</ins> for water.</p>
+    <p>The <code>demo_group</code> feature is <ins>enabled</ins> for water drinkers.</p>
   <% else %>
     <p>The <code>demo_group</code> feature is <del>disabled</del> for water drinkers.</p>
   <% end %>

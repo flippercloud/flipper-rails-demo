@@ -5,7 +5,12 @@ class FeaturesController < ApplicationController
 
   def create
     Rails.logger.info(feature_toggle_details)
-    Flipper.enable(*feature_toggle_details)
+    if percentage.present? && percentage > 0
+      Flipper.enable_percentage_of_actors(*feature_toggle_details)
+      session[:percentage] = percentage
+    else
+      Flipper.enable(*feature_toggle_details)
+    end
 
     flash.notice = "The '#{feature.to_s.titleize}' feature is now enabled!".html_safe
     redirect_back_or_to redirect_target
@@ -13,7 +18,12 @@ class FeaturesController < ApplicationController
 
   def destroy
     Rails.logger.info(feature_toggle_details)
-    Flipper.disable(*feature_toggle_details)
+    if user.blank? && group.blank?
+      Flipper.enable_percentage_of_actors(*feature_toggle_details)
+      session[:percentage] = percentage
+    else
+      Flipper.disable(*feature_toggle_details)
+    end
 
     flash.notice = "The '#{feature.to_s.titleize}' feature is now disabled!".html_safe
     redirect_back_or_to redirect_target
@@ -26,7 +36,7 @@ class FeaturesController < ApplicationController
   end
 
   def feature_toggle_details
-    [feature, user, group].compact
+    [feature, user, group, percentage].compact
   end
 
   def user
@@ -37,13 +47,16 @@ class FeaturesController < ApplicationController
     params[:group]&.to_sym
   end
 
+  def percentage
+    params[:percentage]&.to_i
+  end
 
   def feature
     params.require(:feature).to_sym
   end
 
   def public_features
-    %i[demo demo_basic demo_actor demo_group demo_percentage]
+    %i[demo demo_basic demo_actor demo_group slow_roll]
   end
 
   def verify_public_feature
