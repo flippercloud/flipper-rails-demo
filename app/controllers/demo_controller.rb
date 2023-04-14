@@ -5,6 +5,9 @@ class DemoController < ApplicationController
   end
 
   def group
+    @water_drinker = User.water.first
+    @tea_drinker = User.tea.first
+    @coffee_drinker = User.coffee.first
   end
 
   def percentage

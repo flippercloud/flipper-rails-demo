@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   get 'register',  to: "users#new",    as: :new_user
   post 'register', to: "users#create", as: :users
 
+  # Profile Updating
+  patch 'user', to: 'users#update', as: 'user'
+
   # Simple Login/Logout
   get    'login',  to: "sessions#new",     as: :login
   post   'login',  to: "sessions#create",  as: :log_in

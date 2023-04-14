@@ -26,13 +26,17 @@ class FeaturesController < ApplicationController
   end
 
   def feature_toggle_details
-    [feature, user].compact
+    [feature, user, group].compact
   end
 
   def user
-    Rails.logger.info params.fetch(:user, false)
     params.fetch(:user, false) == 'true' ? Current.user : nil
   end
+
+  def group
+    params[:group]&.to_sym
+  end
+
 
   def feature
     params.require(:feature).to_sym

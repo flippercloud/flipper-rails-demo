@@ -175,8 +175,6 @@ blockquote *:last-child {
 header {
   background: var(--nc-bg-2);
   border-bottom: 1px solid var(--nc-bg-3);
-  padding: 2rem 1.5rem;
-
   /* This sets the right and left margins to cancel out the body's margins. It's width is still the same, but the background stretches across the page's width. */
 
   margin: -2rem calc(0px - (50vw - 50%)) 2rem;
@@ -189,8 +187,7 @@ header {
   margin-left: calc(0px - (50vw - 50%));
   margin-right: calc(0px - (50vw - 50%)); */
 
-  padding-left: calc(50vw - 50%);
-  padding-right: calc(50vw - 50%);
+  padding: 2rem calc(50vw - 50%);
 }
 
 header h1,
@@ -230,7 +227,6 @@ input[type="button"] {
   border-radius: 4px;
   box-sizing: border-box;
   cursor: pointer;
-  color: var(--nc-lk-tx);
 }
 
 a button:hover,
@@ -246,7 +242,6 @@ button[disabled],
 input[type="submit"][disabled],
 input[type="reset"][disabled],
 input[type="button"][disabled] {
-  cursor: default;
   opacity: .5;
 
   /* Set the [X] cursor while hovering a disabled link */
@@ -402,8 +397,7 @@ fieldset > form + code {
 
 legend {
   font-weight: bold;
-  padding: .5rem;
-  padding-bottom: 0;
+  padding: .5rem .5rem 0;
 }
 
 table {
@@ -536,7 +530,7 @@ div.example {
 
 div.example:hover code {
   opacity: 100%;
-  background-color: ;
+  background-color: transparent;
 }
 
 div.example form {

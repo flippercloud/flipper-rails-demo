@@ -18,9 +18,19 @@ class UsersController < ApplicationController
     end
   end
 
+  def update
+    if Current.user.update(user_params)
+      flash.notice = "Your profile has been updated!"
+      redirect_back_or_to root_path
+    else
+      flash.alert = "Your profile could not be updated!"
+      redirect_to root_path
+    end
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.require(:user).permit(:email, :password, :password_confirmation, :beverage)
   end
 end
