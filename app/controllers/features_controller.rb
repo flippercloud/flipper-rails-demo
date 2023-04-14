@@ -7,19 +7,23 @@ class FeaturesController < ApplicationController
     Rails.logger.info(feature_toggle_details)
     Flipper.enable(*feature_toggle_details)
 
-    flash.notice = "Feature `#{feature}` is <mark>enabled</mark>!".html_safe
-    redirect_to root_path
+    flash.notice = "The '#{feature.to_s.titleize}' feature is now enabled!".html_safe
+    redirect_back_or_to redirect_target
   end
 
   def destroy
     Rails.logger.info(feature_toggle_details)
     Flipper.disable(*feature_toggle_details)
 
-    flash.notice = "Feature `#{feature}` is <mark>disabled</mark>!".html_safe
-    redirect_to root_path
+    flash.notice = "The '#{feature.to_s.titleize}' feature is now disabled!".html_safe
+    redirect_back_or_to redirect_target
   end
 
   private
+
+  def redirect_target
+    params[:redirect] || root_path
+  end
 
   def feature_toggle_details
     [feature, user].compact
@@ -35,7 +39,7 @@ class FeaturesController < ApplicationController
   end
 
   def public_features
-    %i[foo bar]
+    %i[demo demo_basic demo_actor demo_group demo_percentage]
   end
 
   def verify_public_feature

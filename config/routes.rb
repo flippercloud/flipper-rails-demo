@@ -14,6 +14,12 @@ Rails.application.routes.draw do
   post   'features/enable/:feature',  to: "features#create",  as: :enable
   delete 'features/disable/:feature', to: "features#destroy", as: :disable
 
+  # The demo pages which use feature toggles to unlock the next step...
+  get 'demo/actor'
+  get 'demo/group'
+  get 'demo/percentage'
+
+
   # The Flipper UI gem interface.
   #
   # IMPORTANT: In production, you'd want to limit access to this, or anybody would be able to
