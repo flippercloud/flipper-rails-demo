@@ -13,7 +13,25 @@ FileUtils.chdir APP_ROOT do
   # This script is idempotent, so that you can run it at any time and get an expectable outcome.
   # Add necessary setup steps to this file.
 
-  puts "== Installing dependencies =="
+  source_env_file = '.env.example'
+  destination_env_file = '.env'
+
+  unless File.exist?(destination_env_file)
+    puts "\n== Preparing .env Placeholder =="
+
+    # Prompt for the token value
+    puts "\nWhat is your Flipper Cloud Token? (Go to the 'Tokens' tab for your project, and select the existing token or create a new one.)"
+    flipper_token = gets
+
+    # Read in the original .env file and update it with the token value
+    text = File.read(source_env_file)
+    updated_env_contents = text.gsub(/<YOUR-TOKEN>/, flipper_token)
+
+    # Write the resulting .env file with the updated contents
+    File.open(destination_env_file, "w") {|file| file.write(updated_env_contents) }
+  end
+
+  puts "\n== Installing dependencies =="
   system! "gem install bundler --conservative"
   system("bundle check") || system!("bundle install")
 
@@ -30,4 +48,8 @@ FileUtils.chdir APP_ROOT do
 
   puts "\n== Restarting application server =="
   system! "bin/rails restart"
+
+  puts "\n== Start the demo"
+  puts "open http://localhost:3000 in a browser, and start the demo"
+
 end
