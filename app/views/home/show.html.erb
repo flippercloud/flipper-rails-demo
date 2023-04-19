@@ -1,11 +1,3 @@
-<p><em>Welcome to the Flipper Rails demo application where you can try out Flipper, see the underlying code, and make changes to see how it all works. Think of it as a pre-built playground for learning your way around Flipper's capabilities.</em></p>
-
-<h1>A Basic Feature Toggle</h1>
-
-<p>You can toggle any feature on/off <strong>for everyone</strong> without re-deploying. You can think of this as <a href="https://www.flippercloud.io/docs/features#enablement-boolean">boolean feature flipping</a> where it's either true or false for everyone. In this example, the Demo is behind a flag named <code>demo</code>. To enable (or disable) it, you make a call to Flipper.</p>
-
-<p>That's the simplest case, and whenever you use those methods, it's all-or-nothing for every user.</p>
-
 <fieldset>
   <legend>Flipper Demo</legend>
 
@@ -13,33 +5,35 @@
 
   <% if current_user && Flipper.enabled?(:demo) %>
     <p>Demo mode is <ins>enabled</ins>! It's that easy. You can toggle it off and back on again if you want&hellip;</p>
-
     <div class="example">
       <%= button_to "Disable Demo", disable_path(feature: :demo), method: :delete %>
       <code>Flipper.disable(:demo)</code>
     </div>
-
-  <% elsif current_user %>
-    <p>Demo mode is <del>disabled</del> since <strong>Flipper features are disabled by default</strong>.</p>
-    <p>In most cases, you wouldn't let folks toggle features for themselves, but it can be handy for letting them opt-in to test out new features ahead of a public release. We'll use it to enable the demo.</p>
-
-    <div class="example">
-      <%= button_to "Enable Demo", enable_path(feature: :demo), method: :post %>
-      <code>Flipper.enable(:demo)</code>
-    </div>
-  <% end %>
-
-
-  <% if current_user && Flipper.enabled?(:demo) %>
     <hr>
     <p>You're ready to take Flipper for a spin!</p>
     <p>Our first example focuses on enabling features for a specific user—you!</p>
     <%= button_to "Start the Demo", demo_actor_path, method: :get %>
-  <% elsif !current_user %>
+
+  <% elsif current_user %>
+
+    <h1>A Basic Feature Toggle</h1>
+    <p>You can toggle any feature on/off <strong>for everyone</strong> without re-deploying. You can think of this as <a href="https://www.flippercloud.io/docs/features#enablement-boolean">boolean feature flipping</a> where it's either true or false for everyone. In this example, the Demo is behind a flag named <code>demo</code>. To enable (or disable) it, you make a call to Flipper.</p>
+    <p>That's the simplest case, and whenever you use those methods, it's all-or-nothing for every user.</p>
     <hr>
-    <p>Before starting the demo, you'll need to register or log in so you have an account that can work with the demo. Since Flipper lets you enable features for specific users, teams, or any other actor or group, the demo only works once you're authenticated.</p>
-    <p>Then the demo will walk you through how it works with real examples and real code.</p>
+    <p>Demo mode is <del>disabled</del> since <strong>Flipper features are disabled by default</strong>.</p>
+    <p>In most cases, you wouldn't let folks toggle features for themselves, but it can be handy for letting them opt-in to test out new features ahead of a public release. We'll use it to enable the demo.</p>
+    <div class="example">
+      <%= button_to "Enable Demo", enable_path(feature: :demo), method: :post %>
+      <code>Flipper.enable(:demo)</code>
+    </div>
+
+  <% elsif !current_user %>
+
+    <p><em>Welcome to the Flipper Rails demo application where you can try out Flipper, see the underlying code, and make changes to see how it all works. Think of it as a pre-built playground for learning your way around Flipper's capabilities.</em></p>
+    <hr>
+    <p>Before starting the demo, you'll need to register or log in so you have an account that can work with the demo. Then the demo will walk you through how it all works with real examples and real code.</p>
     <%= link_to "Register", new_user_path %> or <%= link_to "Log in", login_path %>
+
   <% end %>
 </fieldset>
 

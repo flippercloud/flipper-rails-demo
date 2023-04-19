@@ -1,19 +1,15 @@
 <h1>Percentage-based Feature Flipping</h1>
 
-<p>We've toggled features for all users, a single user, and a specific group of users, but there's another great way to gradually enable a feature for a larger audience in order to reduce the chance that a bug or performance issue creates widespread problems.</p>
+<p>We've toggled features for all users, a single user, and a specific group of users. Now we'll explore percentages where we can enable a feature for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-actors">percentage of actors</a> or for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-time">percentage of time</a>. As we're increasingly confident there aren't any surprise bugs or performance issues, we can gradually increase the percentage.</p>
 
-<p>With percentages, we can enable a feature for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-actors">percentage of actors</a> or for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-time">percentage of time</a>. Then as we're increasingly confident there aren't any surprise bugs or performance issues, we can gradually increase the percentage.</p>
-
-<p>Percentage-based toggling is great if you're refactoring a significant portion of code. You can keep the legacy code in place in parallel with the new code that's set to replace it, and you can slowly send more traffic down the new code path until you're confident it's generating the same results as the original.</p>
-
-<p>For this example, we'll see how a percentage-based feature flag affects each of four users.</p>
+<p>This is great for refactoring a significant portion of code so you can keep the legacy portion in place in parallel with the new code that's set to replace it, and you can slowly send more traffic down the new code path until you're confident it's generating the same results as the original.</p>
 
 <fieldset>
   <legend>Enable a Feature for a Percentage of Actors</legend>
 
   <%= flash %>
 
-  <p>We've named this feature flag <code>slow_roll</code>. We'll increase our percentage gradually in increments of 25% and see how it four different user accounts, including yours, are affected.</p>
+  <p>We've named this feature flag <code>slow_roll</code> since we'll slowly roll it out to more users. We'll increase our percentage gradually in increments of 25% and see how it four different user accounts, including yours, are affected.</p>
 
   <hr>
 
@@ -23,27 +19,33 @@
     <p>The <code>slow_roll</code> feature is <del>disabled</del> for you.</p>
   <% end %>
 
-  <% if Flipper.enabled?(:slow_roll, @water_drinker) %>
-    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for the water drinker.</p>
-  <% else %>
-    <p>The <code>slow_roll</code> feature is <del>disabled</del> for the water drinker.</p>
-  <% end %>
+  <%
+    enabled_water_drinkers = 0
+    enabled_tea_drinkers = 0
+    enabled_coffee_drinkers = 0
 
-  <% if Flipper.enabled?(:slow_roll, @tea_drinker) %>
-    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for the tea drinker.</p>
-  <% else %>
-    <p>The <code>slow_roll</code> feature is <del>disabled</del> for the tea drinker.</p>
-  <% end %>
+    User.all.each do |user|
+      next unless Flipper.enabled?(:slow_roll, user)
 
-  <% if Flipper.enabled?(:slow_roll, @coffee_drinker) %>
-    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for the coffee drinker.</p>
-  <% else %>
-    <p>The <code>slow_roll</code> feature is <del>disabled</del> for the coffee drinker.</p>
-  <% end %>
+      if user.water?
+        enabled_water_drinkers += 1
+      elsif user.tea?
+        enabled_tea_drinkers += 1
+      elsif user.coffee?
+        enabled_coffee_drinkers += 1
+      end
+    end
+  %>
+  <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for <%= pluralize(enabled_water_drinkers, 'water drinker') %>, or <mark>about <%= number_to_percentage((enabled_water_drinkers * 100) / User.water.count, precision: 0) %> of the water drinkers</mark>.</p>
+
+  <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for <%= pluralize(enabled_tea_drinkers, 'tea drinker') %>, or <mark>about <%= number_to_percentage((enabled_tea_drinkers * 100) / User.tea.count, precision: 0) %> of the tea drinkers</mark>.</p>
+
+    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for <%= pluralize(enabled_coffee_drinkers, 'coffee drinker') %>, or <mark>about <%= number_to_percentage((enabled_coffee_drinkers * 100) / User.coffee.count, precision: 0) %> of the coffee drinkers</mark>.</p>
+
 
   <hr>
 
-  <p><strong>Currently enabled for <%= @current_percentage %>% of actors</strong>.</p>
+  <p><strong>Currently enabled for approximately <%= @current_percentage %>% of actors</strong>. This won't ever be an exact match for the percentage of enabled users due to the variables involved. The more total actors in the System, the closer this number will be to a precise percentage of overall users.</p>
 
   <% if @current_percentage == 100 %>
     <hr>

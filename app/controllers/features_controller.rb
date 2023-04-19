@@ -18,7 +18,7 @@ class FeaturesController < ApplicationController
 
   def destroy
     Rails.logger.info(feature_toggle_details)
-    if user.blank? && group.blank?
+    if user.blank? && group.blank? && percentage.present?
       Flipper.enable_percentage_of_actors(*feature_toggle_details)
       session[:percentage] = percentage
     else
@@ -28,6 +28,8 @@ class FeaturesController < ApplicationController
     flash.notice = "The '#{feature.to_s.titleize}' feature is now disabled!".html_safe
     redirect_back_or_to redirect_target
   end
+
+
 
   private
 
@@ -55,12 +57,8 @@ class FeaturesController < ApplicationController
     params.require(:feature).to_sym
   end
 
-  def public_features
-    %i[demo demo_basic demo_actor demo_group slow_roll]
-  end
-
   def verify_public_feature
-    return if public_features.include?(feature)
+    return if Flipper.features.map { |feature| feature.key.to_sym }.include?(feature)
 
     flash.alert = "Sorry, but that's not a valid public feature."
     redirect_to root_path and return

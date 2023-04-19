@@ -6,6 +6,12 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-water_drinker = User.create(email: 'water@example.com', password: 'password', beverage: :water)
-tea_drinker = User.create(email: 'tea@example.com', password: 'password', beverage: :tea)
-coffee_drinker = User.create(email: 'coffee@example.com', password: 'password', beverage: :coffee)
+default_password = BCrypt::Password.create(default_password, cost: 4)
+
+(1..100).each do |number|
+	User.find_or_create_by(email: "water+#{number}@example.com", password_digest: default_password, beverage: :water)
+	User.find_or_create_by(email: "tea+#{number}@example.com", password_digest: default_password, beverage: :tea)
+	User.find_or_create_by(email: "coffee+#{number}@example.com", password_digest: default_password, beverage: :coffee)
+end
+
+Rails.logger.info "Created 100 sample users each for water, tea, and coffee preferences."

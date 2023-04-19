@@ -9,3 +9,9 @@ Flipper.register(:coffee_drinkers) do |actor, context|
   #   relevant method we'll check against
   actor.respond_to?(:coffee?) && actor.coffee?
 end
+
+
+# Whenever the app loads fresh, disable all the features so it starts from
+# a consistent state each time.
+# You wouldn't normally want to do this, but for a demo, it's pretty handy.
+Flipper.features.map(&:key).each { |feature| Flipper.disable(feature) }

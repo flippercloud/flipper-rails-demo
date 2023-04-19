@@ -1,14 +1,8 @@
 <h1>Group-based Feature Flipping</h1>
 
-<p>We've toggled features for all users, and we've toggled features for a single user. Now it's time to see how you could enable a feature for multiple users based on shared attributes or contexts.</p>
+<p>We've toggled features for all users, and we've toggled features for a single user. Now let's <a href="https://www.flippercloud.io/docs/features#enablement-group">enable access for a group of users</a>. For that, we need to register the group and specify the conditions that determine whether a given actor is included in the group.</p>
 
-<p>Like enabling a feature for a specific user, enabling a feature for a group will override less-specific contexts.</p>
-
-<p>In order to <a href="https://www.flippercloud.io/docs/features#enablement-group">enable access for a group of users</a>, we need to register the group and specify the conditions that determine whether a given actor is included in the group.</p>
-
-<p>For this example, we'll use each user's beverage preference to determine whether the feature should be enabled. Since the new feature would only be relevant for coffee drinkers, we'll only enable it for them.</p>
-
-<p>Behind the scenes, we've registered the coffee drinker group with the following condition in <code>config/initializers/flipper.rb</code>:</p>
+<p>We'll use each user's beverage preference to determine whether the feature should be enabled. Since the new feature would only be relevant for coffee drinkers, we'll only enable it for them. Behind the scenes, we've registered the coffee drinker group with the following condition in <code>config/initializers/flipper.rb</code>:</p>
 
 <pre><code style="display: block; margin-bottom: 1em;">
   Flipper.register(:coffee_drinkers) do |actor, context|
@@ -63,7 +57,7 @@
     <% if current_user && Flipper.enabled?(:demo_group, current_user) %>
       <p>The <code>demo_group</code> feature is <ins>enabled</ins> for you since you prefer coffee.</p>
     <% else %>
-      <p>The <code>demo_group</code> feature is <del>disabled</del> for you.</p>
+      <p>The <code>demo_group</code> feature is <del>disabled</del> for you since you don't prefer coffee yet.</p>
 
       <p>Let's update your beverage preference&hellip;</p>
 
