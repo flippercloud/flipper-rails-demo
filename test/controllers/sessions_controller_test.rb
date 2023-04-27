@@ -16,7 +16,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test "should get destroy" do
+  test "should log out via destroy" do
     delete log_out_url
     assert_redirected_to root_path
   end

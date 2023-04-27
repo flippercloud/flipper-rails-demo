@@ -6,3 +6,15 @@ admin:
 basic:
   email: basic@example.com
   password_digest: <%= default_password_digest %>
+tea:
+  email: tea@example.com
+  password_digest: <%= default_password_digest %>
+  beverage: 1
+water:
+  email: water@example.com
+  password_digest: <%= default_password_digest %>
+  beverage: 2
+coffee:
+  email: coffee@example.com
+  password_digest: <%= default_password_digest %>
+  beverage: 3

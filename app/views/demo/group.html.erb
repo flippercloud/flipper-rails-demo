@@ -10,7 +10,7 @@
   end
 </code></pre>
 
-<p>You may notice that we're verifying the provided actor responds to the <code>coffee?</code> method because any type of actor can be passed to the <code>enabled?</code> method.</p>
+<p><strong><mark>Important:</mark></strong> You may notice that we're verifying the provided actor responds to the <code>coffee?</code> method because any type of actor can be passed to the <code>enabled?</code> method, so we'll play it safe instead of assuming all actors will support a `coffee?` method.</p>
 
 <fieldset>
   <legend>Enable a Feature Only for Coffee Drinkers</legend>

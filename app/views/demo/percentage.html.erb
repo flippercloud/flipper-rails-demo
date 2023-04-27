@@ -36,12 +36,20 @@
       end
     end
   %>
-  <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for <%= pluralize(enabled_water_drinkers, 'water drinker') %>, or <mark>about <%= number_to_percentage((enabled_water_drinkers * 100) / User.water.count, precision: 0) %> of the water drinkers</mark>.</p>
+  <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
+    <%= pluralize(enabled_water_drinkers, 'water drinker') %>, or
+    <mark>about <%= number_to_percentage((enabled_water_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %>
+    of the water drinkers</mark>.</p>
 
-  <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for <%= pluralize(enabled_tea_drinkers, 'tea drinker') %>, or <mark>about <%= number_to_percentage((enabled_tea_drinkers * 100) / User.tea.count, precision: 0) %> of the tea drinkers</mark>.</p>
+  <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
+    <%= pluralize(enabled_tea_drinkers, 'tea drinker') %>,
+    or <mark>about <%= number_to_percentage((enabled_tea_drinkers * 100) / (User.tea.any? ? User.tea.count : 0), precision: 0) %>
+    of the tea drinkers</mark>.</p>
 
-    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for <%= pluralize(enabled_coffee_drinkers, 'coffee drinker') %>, or <mark>about <%= number_to_percentage((enabled_coffee_drinkers * 100) / User.coffee.count, precision: 0) %> of the coffee drinkers</mark>.</p>
-
+  <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
+    <%= pluralize(enabled_coffee_drinkers, 'coffee drinker') %>, or
+    <mark>about <%= number_to_percentage((enabled_coffee_drinkers * 100) / (User.coffee.any? ? User.coffee.count : 0), precision: 0) %>
+    of the coffee drinkers</mark>.</p>
 
   <hr>
 

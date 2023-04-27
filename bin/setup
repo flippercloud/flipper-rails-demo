@@ -49,7 +49,14 @@ FileUtils.chdir APP_ROOT do
   puts "\n== Restarting application server =="
   system! "bin/rails restart"
 
-  puts "\n== Start the demo"
+  puts "\n== Running tests =="
+  # Explicitly set test mode since setup is run via dev
+  system! "bin/rails db:environment:set RAILS_ENV=test"
+  system! "bin/rails t"
+  system! "bin/rails db:environment:set RAILS_ENV=development"
+  system! "RAILS_ENV=development bin/rails db:seed:replant"
+
+  puts "\n== Start the demo =="
   puts "open http://localhost:3000 in a browser, and start the demo"
 
 end

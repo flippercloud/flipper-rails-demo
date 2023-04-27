@@ -6,10 +6,12 @@ class FeaturesController < ApplicationController
   def create
     Rails.logger.info(feature_toggle_details)
     if percentage.present? && percentage > 0
-      Flipper.enable_percentage_of_actors(*feature_toggle_details)
+      Flipper.enable_percentage_of_actors(feature, percentage)
       session[:percentage] = percentage
+    elsif group.present?
+      Flipper.enable_group(feature, group)
     else
-      Flipper.enable(*feature_toggle_details)
+      Flipper.enable(feature, user)
     end
 
     flash.notice = "The '#{feature.to_s.titleize}' feature is now enabled!".html_safe
@@ -19,10 +21,12 @@ class FeaturesController < ApplicationController
   def destroy
     Rails.logger.info(feature_toggle_details)
     if user.blank? && group.blank? && percentage.present?
-      Flipper.enable_percentage_of_actors(*feature_toggle_details)
+      Flipper.enable_percentage_of_actors(feature, percentage)
       session[:percentage] = percentage
+    elsif group.present?
+      Flipper.disable_group(feature, group)
     else
-      Flipper.disable(*feature_toggle_details)
+      Flipper.disable(feature, user)
     end
 
     flash.notice = "The '#{feature.to_s.titleize}' feature is now disabled!".html_safe
