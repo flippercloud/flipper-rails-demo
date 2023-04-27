@@ -1,8 +1,6 @@
 <fieldset>
   <legend>Flipper Demo</legend>
 
-  <%= flash %>
-
   <% if current_user && Flipper.enabled?(:demo) %>
     <p>Demo mode is <ins>enabled</ins>! It's that easy. You can toggle it off and back on again if you want&hellip;</p>
     <div class="example">

@@ -4,36 +4,49 @@ class FeaturesController < ApplicationController
   before_action :verify_public_feature
 
   def create
-    Rails.logger.info(feature_toggle_details)
     if percentage.present? && percentage > 0
       Flipper.enable_percentage_of_actors(feature, percentage)
       session[:percentage] = percentage
+      audience = "about #{percentage}% of users"
     elsif group.present?
       Flipper.enable_group(feature, group)
+      audience = group.to_s.humanize.pluralize.titleize
+    elsif user.present?
+      Flipper.enable_actor(feature, user)
+      audience = user.email
     else
-      Flipper.enable(feature, user)
+      Flipper.enable(feature)
     end
 
-    flash.notice = "The '#{feature.to_s.titleize}' feature is now enabled!".html_safe
+    flash.notice = "The <strong>'#{feature.to_s.titleize}'</strong> feature is now <strong>enabled</strong> for #{audience || 'everyone'}!".html_safe
     redirect_back_or_to redirect_target
   end
 
   def destroy
-    Rails.logger.info(feature_toggle_details)
-    if user.blank? && group.blank? && percentage.present?
-      Flipper.enable_percentage_of_actors(feature, percentage)
-      session[:percentage] = percentage
+    if percentage.present?
+      # When disabling percentages of actors, there's no need to pass a percent
+      # value because it's assumed to be 0.
+      Flipper.disable_percentage_of_actors(feature)
+      session[:percentage] = 0
     elsif group.present?
       Flipper.disable_group(feature, group)
+      audience = group.to_s.humanize.pluralize.titleize
+    elsif user.present?
+      # The demo focuses on users here, but in practice, this can be any "actor"
+      # An "Actor" is any model that provides a unique `flipper_id` for each
+      # instance. That could be any ActiveRecord model, any object that responds
+      # to both `class` and `id`, or a model where you define a `flipper_id`
+      # method that always returns a consistent and unique value.
+      Flipper.disable_actor(feature, user)
+      audience = user.email
     else
-      Flipper.disable(feature, user)
+      Flipper.disable(feature)
+      session[:percentage] = 0
     end
 
-    flash.notice = "The '#{feature.to_s.titleize}' feature is now disabled!".html_safe
+    flash.notice = "The <strong>'#{feature.to_s.titleize}'</strong> feature is now <strong>disabled</strong> for #{audience || 'everyone'}.".html_safe
     redirect_back_or_to redirect_target
   end
-
-
 
   private
 
@@ -41,11 +54,8 @@ class FeaturesController < ApplicationController
     params[:redirect] || root_path
   end
 
-  def feature_toggle_details
-    [feature, user, group, percentage].compact
-  end
-
   def user
+    # Only updating a feature for a user when explicitly doing so
     params.fetch(:user, false) == 'true' ? Current.user : nil
   end
 

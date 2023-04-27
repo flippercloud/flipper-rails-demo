@@ -10,12 +10,10 @@
   end
 </code></pre>
 
-<p><strong><mark>Important:</mark></strong> You may notice that we're verifying the provided actor responds to the <code>coffee?</code> method because any type of actor can be passed to the <code>enabled?</code> method, so we'll play it safe instead of assuming all actors will support a `coffee?` method.</p>
+<p><strong><mark>Important:</mark></strong> You may notice that we're verifying that the provided actor (which is any type of object that responds to `flipper_id`) responds to the <code>coffee?</code> method because any type of actor can be passed to the <code>enabled?</code> method, so we'll play it safe instead of assuming all actors will support a `coffee?` method.</p>
 
 <fieldset>
   <legend>Enable a Feature Only for Coffee Drinkers</legend>
-
-  <%= flash %>
 
   <p>We've named this feature flag <code>demo_group</code>. We still pass <code>current_user</code> as the actor, but instead of having enabled the user directly, we'll enable the group and the current user would be enabled implicitly if they're a member of the coffee group.</p>
 
