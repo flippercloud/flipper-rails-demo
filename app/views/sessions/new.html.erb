@@ -1,0 +1,17 @@
+<h1>Log In</h1>
+<%= form_with method: :post, url: log_in_path do |f| %>
+  <fieldset>
+  	<legend>Your Details</legend>
+    <div class="field">
+      <%= f.label :email %>
+      <%= f.text_field :email, autofocus: true %>
+    </div>
+    <div class="field">
+      <%= f.label :password %>
+      <%= f.password_field :password %>
+    </div>
+  </fieldset>
+  <div>
+    <%= f.submit "Log In" %>
+  </div>
+<% end %>

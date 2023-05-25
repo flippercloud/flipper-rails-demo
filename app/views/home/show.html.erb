@@ -1,29 +1,38 @@
-<h1>Hello!</h1>
-<p>
-  The <mark><code>foo</code></mark> feature is <mark><%= Flipper.enabled?(:foo) ? "enabled" : "disabled" %></mark>.
-</p>
+<fieldset>
+  <legend>Flipper Demo</legend>
 
-<hr>
+  <% if current_user && Flipper.enabled?(:demo) %>
+    <p>Demo mode is <ins>enabled</ins>! It's that easy. You can toggle it off and back on again if you want&hellip;</p>
+    <div class="example">
+      <%= button_to "Disable Demo", disable_path(feature: :demo), method: :delete %>
+      <code>Flipper.disable(:demo)</code>
+    </div>
+    <hr>
+    <p>You're ready to take Flipper for a spin!</p>
+    <p>Our first example focuses on enabling features for a specific user—you!</p>
+    <%= button_to "Start the Demo", demo_actor_path, method: :get %>
 
-<p>
-  The app knows whether a feature flag is enabled by checking <code>Flipper.enabled?(:foo)</code>, and since feature flags are disabled by default, you get to flip it.
-</p>
+  <% elsif current_user %>
 
-<p>
-  You can change this by enabling/disabling the feature from the console:
-</p>
+    <h1>A Basic Feature Toggle</h1>
+    <p>You can toggle any feature on/off <strong>for everyone</strong> without re-deploying. You can think of this as <a href="https://www.flippercloud.io/docs/features#enablement-boolean">boolean feature flipping</a> where it's either true or false for everyone. In this example, the Demo is behind a flag named <code>demo</code>. To enable (or disable) it, you make a call to Flipper.</p>
+    <p>That's the simplest case, and whenever you use those methods, it's all-or-nothing for every user.</p>
+    <hr>
+    <p>Demo mode is <del>disabled</del> since <strong>Flipper features are disabled by default</strong>.</p>
+    <p>In most cases, you wouldn't let folks toggle features for themselves, but it can be handy for letting them opt-in to test out new features ahead of a public release. We'll use it to enable the demo.</p>
+    <div class="example">
+      <%= button_to "Enable Demo", enable_path(feature: :demo), method: :post %>
+      <code>Flipper.enable(:demo)</code>
+    </div>
 
-<code><pre>
-bin/rails c
-</pre></code>
+  <% elsif !current_user %>
 
-<code><pre>
-Flipper.enable(:foo)
-Flipper.disable(:foo)
-</pre></code>
+    <p><em>Welcome to the Flipper Rails demo application where you can try out Flipper, see the underlying code, and make changes to see how it all works. Think of it as a pre-built playground for learning your way around Flipper's capabilities.</em></p>
+    <hr>
+    <p>Before starting the demo, you'll need to register or log in so you have an account that can work with the demo. Then the demo will walk you through how it all works with real examples and real code.</p>
+    <%= link_to "Register", new_user_path %> or <%= link_to "Log in", login_path %>
 
-<p>Or you can log in to your Flipper Cloud account and toggle the feature there.</p>
+  <% end %>
+</fieldset>
 
-<hr>
-
-<p>Take a look at <code>app/views/home/show.html.erb</code> and <code>test/controllers/home_controller_test.rb</code> to see how it's working.</p>
+<%= page_footer(__FILE__) %>

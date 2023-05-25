@@ -1,11 +1,24 @@
 # Flipper Rails Demo
 
+This is an example Rails application that serves as a working demo to walk you through the basics of using Flipper. You can run the demo and interact with the
+feature toggles, or you can browser the source code to see the commands for toggling features.
+
+## Automated Setup (Fast and Easy)
+
+Once you've pulled down the repo, you should be able to run `bin/setup`, and the application will bootstrap everything for you.
+
+```bash
+$ bin/setup
+```
+
 This demo already has the pre-requisites setup and ready to go. You only need to add the `FLIPPER_CLOUD_TOKEN`.
+
+## Manual Setup (See how it all works!)
 
 1. Copy over the sample `.env` file
 
 ```bash
-cp .env.example .env
+$ cp .env.example .env
 ```
 
 2. Get your `FLIPPER_CLOUD_TOKEN` by going to your project's "Tokens" page. (Create a test project for the demo if you'd_prefer.) You can use the existing token or create a new one and then copy the value into your `.env` file.
@@ -14,7 +27,7 @@ Once your `.env` is set up with the `FLIPPER_CLOUD_TOKEN` from your account, you
 
 ```bash
 bundle install
-bin/rails db:migrate
+bin/rails db:prepare
 bin/rails server
 ```
 

@@ -1,0 +1,20 @@
+# the `default_password_digest` comes from our TestPasswordHelper
+
+admin:
+  email: admin@example.com
+  password_digest: <%= default_password_digest %>
+basic:
+  email: basic@example.com
+  password_digest: <%= default_password_digest %>
+tea:
+  email: tea@example.com
+  password_digest: <%= default_password_digest %>
+  beverage: 1
+water:
+  email: water@example.com
+  password_digest: <%= default_password_digest %>
+  beverage: 2
+coffee:
+  email: coffee@example.com
+  password_digest: <%= default_password_digest %>
+  beverage: 3
