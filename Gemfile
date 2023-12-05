@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 7.0.4.3'
+gem 'rails'
 gem 'sqlite3'
 gem 'puma'
 gem 'bcrypt'
