@@ -10,6 +10,15 @@ Flipper.register(:coffee_drinkers) do |actor, context|
   actor.respond_to?(:coffee?) && actor.coffee?
 end
 
+if ENV["FLIPPER_SESSION_STORE"]
+  require 'flipper/adapters/session'
+  require 'flipper/middleware/session'
+
+  Rails.application.configure do
+    config.middleware.use Flipper::Middleware::Session
+  end
+end
+
 Rails.application.config.after_initialize do
   # Whenever the app loads fresh, disable all the features so it starts from
   # a consistent state each time.
