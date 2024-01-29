@@ -61,4 +61,11 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Less logging in test for more faster testing
+  #   https://twitter.com/fatkodima/status/1748040811109838979
+  if ENV["RAILS_LOG"].blank?
+    config.logger = Logger.new(nil)
+    config.log_level = :fatal
+  end
 end

@@ -4,6 +4,16 @@
 #     actor.try(:admin?)
 #   end
 
+Flipper.configure do |config|
+  config.default do
+    Flipper::Cloud.new do |cloud|
+      cloud.logging_enabled = false if Rails.env.test?
+      cloud.debug_output = STDOUT if ENV.fetch("FLIPPER_CLOUD_DEBUG", "0") == "1"
+      cloud.local_adapter = config.adapter
+    end
+  end
+end
+
 Flipper.register(:coffee_drinkers) do |actor, context|
   # Since anything can be passed as the actor, make sure it responds to the
   #   relevant method we'll check against
