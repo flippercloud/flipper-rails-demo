@@ -1,3 +1,12 @@
+<% content_for :breadcrumbs do %>
+<ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
+  <li class="breadcrumb-item"><strong class="badge bg-secondary rounded rounded-pill m-0 fs-6">Demo</strong></li>
+  <li class="breadcrumb-item"><a href="/">Basic Flag</a></li>
+  <li class="breadcrumb-item"><a href="/demo/actors">Flags for Actors</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Flags for Groups</li>
+</ol>
+<% end %>
+
 <h1>Group-based Feature Flipping</h1>
 
 <p>We've toggled features for all users, and we've toggled features for a single user. Now let's <a href="https://www.flippercloud.io/docs/features#enablement-group">enable access for a group of users</a>. For that, we need to register the group and specify the conditions that determine whether a given actor is included in the group.</p>
@@ -79,4 +88,6 @@
 
 </fieldset>
 
-<%= page_footer(__FILE__) %>
+<% content_for :footer do %>
+  <%= page_footer(__FILE__) %>
+<% end %>

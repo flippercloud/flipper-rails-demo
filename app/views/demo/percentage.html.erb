@@ -89,4 +89,6 @@
 
 </fieldset>
 
-<%= page_footer(__FILE__) %>
+<% content_for :footer do %>
+  <%= page_footer(__FILE__) %>
+<% end %>

@@ -1,1 +1,5 @@
-<% if notice || alert%><mark><%= (notice || alert).html_safe %></mark><% end %>
+<% if notice || alert -%>
+<div class="alert alert-<%= notice.present? ? 'success' : 'danger' %>" role="alert">
+  <%= (notice || alert).html_safe %>
+</div>
+<% end -%>
