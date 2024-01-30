@@ -9,46 +9,46 @@
     <link rel="stylesheet" href="/styles.css">
     <% if Rails.env.production? %>
       <script defer data-domain="demo.flippercloud.io" src="https://plausible.io/js/script.js"></script>
-    <% end %>    
+    <% end %>
   </head>
   <body>
     <div class="container">
       <div class="row">
-        <div class="col-12 col-md-7 mx-auto">
-          <%= flash %>
-
-          <header class="d-flex flex-wrap align-content-center align-items-center justify-content-center justify-content-md-between pt-3 pb-0 mb-0 gap-3">
-            <div class="col-md-4 mb-0">
-              <%= link_to root_path, class: 'icon-link text-decoration-none fw-bold' do %>
-                <%= icon 'cloud-fill' %> Flipper Playground
-              <% end %>
-            </div>
-
-            <nav class="d-flex align-items-center align-content-center justify-content-end gap-2">
-              <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="<%= demo_start_path %>" class="nav-link px-2">Demo</a></li>
-                <!-- Coming soon! <li><a href="/examples" class="nav-link px-2">Examples</a></li> -->
+        <div class="col-12 col-lg-7 mx-auto">
+          <header class="bg-body-tertiary rounded-3 border p-3 mt-3 mb-4 rounded-4">
+            <nav class="mb-2">
+              <ul class="nav m-0 p-0 d-flex align-items-center align-content-center justify-content-between">
+                <li>
+                  <%= link_to root_path, class: 'icon-link text-decoration-none fw-bold flex-grow-2' do %>
+                    <%= icon 'cloud-fill' %> Flipper Playground
+                  <% end %>
+                </li>
+                <li><a href="<%= demo_start_path %>" class="nav-link py-0 px-2 m-0">Demo</a></li>
+                <!-- Coming soon! <li><a href="/examples" class="nav-link py-0 px-2 m-0">Examples</a></li> -->
               </ul>
             </nav>
+
+            <% if content_for?(:breadcrumbs) %>
+              <nav class="col-12 border-top pt-3 mt-0 pb-0 mb-0" aria-label="breadcrumb" style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);">
+                <%= yield :breadcrumbs %>
+              </nav>
+            <% end %>
+
+            <%= flash %>
+
           </header>
         </div>
       </div>
 
 
-      <% if content_for?(:breadcrumbs) %>
-        <div class="row">
-          <nav class="col col-12 col-md-7 mx-auto mb-2 text-secondary" aria-label="breadcrumb" style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);">
-            <%= yield :breadcrumbs %>
-          </nav>
-        </div>
-      <% end %>
+
       <div class="row mb-4">
-        <main class="col col-12 col-md-7 mx-auto">
+        <main class="col col-12 col-lg-7 mx-auto">
           <%= yield %>
         </main>
       </div>
       <div class="row">
-        <aside class="col col-12 col-md-7 mx-auto">
+        <aside class="col col-12 col-lg-7 mx-auto">
           <%= yield :aside %>
         </aside>
       </div>
@@ -56,7 +56,7 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-12 col-md-7 mx-auto">
+        <div class="col-12 col-lg-7 mx-auto">
           <%= yield :footer %>
         </div>
       </div>
