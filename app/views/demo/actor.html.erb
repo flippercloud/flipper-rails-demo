@@ -50,7 +50,7 @@
     <% elsif current_user && Flipper.enabled?(:demo_actor, current_user) %>
       <%= toggle(
         label: 'Enable for Everyone',
-        form_target: enable_path(feature: :demo_actor, user: true),
+        form_target: enable_path(feature: :demo_actor, user: false),
         form_method: :post,
         code: 'Flipper.enable(:demo_actor)'
         ) %>

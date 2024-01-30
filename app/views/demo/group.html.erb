@@ -14,7 +14,7 @@
 
   <%= form_with model: current_user, method: :patch, url: user_path do |f| %>
     <%= f.text_field :beverage, value: 'coffee', hidden: true %>
-    <%= f.submit "I Prefer Coffee!", class: 'btn btn-primary w-100' %>
+    <%= f.submit "I Prefer Coffee!", class: 'btn btn-primary w-100 rounded rounded-pill' %>
   <% end %>
 <% elsif Flipper.enabled?(:demo_group, current_user) %>
   <h1>Welcome to the coffee drinker group!</h1>

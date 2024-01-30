@@ -63,19 +63,22 @@
       <p>The <code>slow_roll</code> feature is <del>disabled</del> for you.</p>
     <% end %>
 
-    <hr>
+    <% if @current_percentage > 0 %>
+      <hr>
 
-    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
-      <%= pluralize(enabled_water_drinkers, 'water drinker') %>
-      <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_water_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
+      <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
+        <%= pluralize(enabled_water_drinkers, 'water drinker') %>
+        <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_water_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
 
-    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
-      <%= pluralize(enabled_tea_drinkers, 'tea drinker') %>
-      <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_tea_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
+      <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
+        <%= pluralize(enabled_tea_drinkers, 'tea drinker') %>
+        <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_tea_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
 
-    <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
-      <%= pluralize(enabled_coffee_drinkers, 'coffee drinker') %>
-      <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_coffee_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
+      <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
+        <%= pluralize(enabled_coffee_drinkers, 'coffee drinker') %>
+        <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_coffee_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
+    <% end %>
+
 
     <% if @current_percentage < 100 %>
       <%= toggle(

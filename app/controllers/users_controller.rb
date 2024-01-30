@@ -20,6 +20,7 @@ class UsersController < ApplicationController
 
   def update
     if Current.user.update(user_params)
+      sleep 1
       flash.notice = "Your profile has been updated!"
       redirect_back_or_to root_path
     else
