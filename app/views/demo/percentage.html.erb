@@ -1,6 +1,6 @@
 <% content_for :breadcrumbs do %>
 <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 border">
-  <li class="breadcrumb-item"><strong class="badge bg-info rounded rounded-pill m-0 fs-6">Demo</strong></li>
+  <li class="breadcrumb-item"><strong class="badge bg-secondary rounded rounded-pill m-0 fs-6">Demo</strong></li>
   <li class="breadcrumb-item"><a href="<%= demo_start_path %>">Basic Flags</a></li>
   <li class="breadcrumb-item"><a href="<%= demo_actor_path %>">Flags & Actors</a></li>
   <li class="breadcrumb-item"><a href="<%= demo_group_path %>">Flags & Groups</a></li>
@@ -41,8 +41,6 @@
 <% elsif @current_percentage >= 100 %>
   <h1>Finished!</h1>
   <p>You've covered the basics of feature toggling, but we've glossed over some details. While you've been toggling features directly in the demo up until now, that's not really ideal. And that's where <a href="https://www.flippercloud.io/dashboard">Flipper Cloud</a> comes in.</p>
-
-  <p>You've already set up an account, so now let's go take a look and see what all of this feature toggling has done behind the scenes.</p>
 
   <div class="d-flex gap-3">
     <%= button_to "Restart the Demo", demo_reset_path, method: :post, class: 'btn btn-primary btn-lg rounded rounded-pill' %>
