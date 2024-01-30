@@ -10,10 +10,13 @@ Flipper.register(:coffee_drinkers) do |actor, context|
   actor.respond_to?(:coffee?) && actor.coffee?
 end
 
-# Don't worry about the features if the table doesn't exist yet
-if ActiveRecord::Base.connection.data_source_exists?('flipper_features')
+Rails.application.config.after_initialize do
   # Whenever the app loads fresh, disable all the features so it starts from
   # a consistent state each time.
   # You wouldn't normally want to do this, but for a demo, it's pretty handy.
-  Flipper.features.map(&:key).each { |feature| Flipper.disable(feature) }
+  begin
+    Flipper.features.each(&:disable)
+  rescue
+    # That's fine if the DB hasn't been created yet
+  end
 end
