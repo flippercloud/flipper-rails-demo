@@ -4,6 +4,9 @@
     <title>Flipper Rails Demo</title>
     <%= csrf_meta_tags %>
     <link rel="stylesheet" type="text/css" href="/styles.css">
+    <% if Rails.env.production? %>
+      <script defer data-domain="demo.flippercloud.io" src="https://plausible.io/js/script.js"></script>
+    <% end %>
   </head>
   <body>
     <header>
