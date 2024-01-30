@@ -1,6 +1,4 @@
 class FeaturesController < ApplicationController
-  include SessionsHelper
-
   before_action :verify_public_feature
 
   def create
@@ -13,7 +11,7 @@ class FeaturesController < ApplicationController
       audience = group.to_s.humanize.pluralize.titleize
     elsif user.present?
       Flipper.enable_actor(feature, user)
-      audience = user.email
+      audience = user.flipper_id
     else
       Flipper.enable(feature)
     end
@@ -38,7 +36,7 @@ class FeaturesController < ApplicationController
       # to both `class` and `id`, or a model where you define a `flipper_id`
       # method that always returns a consistent and unique value.
       Flipper.disable_actor(feature, user)
-      audience = user.email
+      audience = user.flipper_id
     else
       Flipper.disable(feature)
       session[:percentage] = 0
@@ -56,7 +54,7 @@ class FeaturesController < ApplicationController
 
   def user
     # Only updating a feature for a user when explicitly doing so
-    params.fetch(:user, false) == 'true' ? Current.user : nil
+    params.fetch(:user, false) == 'true' ? current_user : nil
   end
 
   def group

@@ -21,17 +21,17 @@
 
   <hr>
 
-  <% if current_user && Flipper.enabled?(:demo_actor) %>
+  <% if Flipper.enabled?(:demo_actor) %>
     <p>The <code>demo_actor</code> feature is <em>implicitly</em> <ins>enabled</ins> for you since it's enabled for everyone.</p>
-  <% elsif current_user && Flipper.enabled?(:demo_actor, current_user) %>
+  <% elsif Flipper.enabled?(:demo_actor, current_user) %>
     <p>The <code>demo_actor</code> feature is <em>explicitly</em> <ins>enabled</ins> for you.</p>
-  <% elsif current_user && !Flipper.enabled?(:demo_actor, current_user) %>
+  <% elsif !Flipper.enabled?(:demo_actor, current_user) %>
     <p>The <code>demo_actor</code> feature is <em>implicitly</em> <del>disabled</del> for you as well.</p>
   <% end %>
 
   <hr>
 
-  <% if current_user && Flipper.enabled?(:demo_actor, current_user) %>
+  <% if Flipper.enabled?(:demo_actor, current_user) %>
     <div class="example">
       <%= button_to "Disable for Just You", disable_path(feature: :demo_actor, user: true), method: :delete %>
       <code>Flipper.disable(:demo_actor, current_user)</code>
@@ -41,7 +41,7 @@
     <p>Nice work! Next we'll look at how you can enable features for groups of people.</p>
     <%= button_to "Learn How to Toggle Features for Groups", demo_group_path, method: :get %>
 
-  <% elsif current_user %>
+  <% else %>
     <div class="example">
       <%= button_to "Enable for Just You", enable_path(feature: :demo_actor, user: true), method: :post %>
       <code>Flipper.enable(:demo_actor, current_user)</code>

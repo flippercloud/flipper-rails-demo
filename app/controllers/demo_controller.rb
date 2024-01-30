@@ -21,7 +21,7 @@ class DemoController < ApplicationController
   end
 
   def ensure_enabled
-    return if Flipper.enabled?(required_feature, Current.user)
+    return if Flipper.enabled?(required_feature, current_user)
 
     flash.alert = "Sorry, but that feature is not enabled yet."
     redirect_to root_path and return

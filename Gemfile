@@ -4,6 +4,7 @@ gem 'rails'
 gem 'sqlite3'
 gem 'puma'
 gem 'bcrypt'
+gem 'faker'
 
 flipper_version = '~> 1.2.2' # Latest as of 2023-04-07
 gem 'flipper-cloud', flipper_version
