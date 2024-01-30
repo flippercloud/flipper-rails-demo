@@ -12,7 +12,7 @@
   <h1>One More Step</h1>
   <p>The <code>demo_group</code> feature is <del>disabled</del> for you since you don't prefer coffee. Let's update your beverage preference so you'll be included in the coffee drinkers group and get access&hellip;</p>
 
-  <%= form_with model: current_user, method: :patch, url: user_path do |f| %>
+  <%= form_with model: current_user, method: :patch, url: profile_path do |f| %>
     <%= f.text_field :beverage, value: 'coffee', hidden: true %>
     <%= f.submit "I Prefer Coffee!", class: 'btn btn-primary w-100 rounded rounded-pill' %>
   <% end %>

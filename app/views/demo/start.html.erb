@@ -28,7 +28,7 @@
         form_method: :delete,
         code: 'Flipper.disable(:demo)'
         ) %>
-    <% elsif current_user %>
+    <% else %>
       <p>The <code>:demo</code> flag is <del>disabled</del>. <span class="text-secondary">(Flipper features are disabled by default.)</span></p>
       <%= toggle(
         label: 'Enable the Demo Feature Flag',
@@ -36,9 +36,6 @@
         form_method: :post,
         code: 'Flipper.enable(:demo)'
         ) %>
-    <% elsif !current_user %>
-      <p>Before starting the demo, you'll need to create an account for the demo application or log in so you have an account that can work with the demo. Then the demo will walk you through how it all works with real examples and real code.</p>
-      <%= link_to "Register", new_user_path, class: 'btn btn-sm btn-primary' %> or <%= link_to "Log in", login_path, class: 'btn btn-sm btn-outline-primary' %>
     <% end %>
   <% end %>
 <% end %>

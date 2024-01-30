@@ -1,6 +1,6 @@
 class DemoController < ApplicationController
   def reset
-    Current.user.update(beverage: 0) if Current.user.present?
+    set_current_user({beverage: 0})
     session[:percentage] = 0
     Flipper.disable_percentage_of_actors(:slow_roll)
     Flipper.disable_percentage_of_time(:slow_roll)
