@@ -1,21 +1,24 @@
 <% content_for :breadcrumbs do %>
 <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
-  <li class="breadcrumb-item"><strong class="badge bg-secondary rounded rounded-pill m-0 fs-6">Demo</strong></li>
-  <li class="breadcrumb-item"><a href="/">Basic Flag</a></li>
+  <li class="breadcrumb-item"><strong class="badge bg-info rounded rounded-pill m-0 fs-6">Demo</strong></li>
+  <li class="breadcrumb-item"><a href="/">Toggle a Basic Flag</a></li>
   <li class="breadcrumb-item active" aria-current="page">Flag for an Actor</li>
 </ol>
 <% end %>
 
 <h1>User-based Feature Flipping</h1>
 
-<p>You can also toggle a feature on or off for <strong>a specific single user</strong> without re-deploying. There are several ways to enable access for users, but for this example, we'll focus on enabling a feature for a specific user rather than a group that includes that user. If you want to enable only select users, you'll generally want to do so by enabling groups that contain the users rather than enabling individual users directly, but we'll get to that shortly.</p>
+<p>You can also toggle a feature on or off for <strong>a specific user</strong> without re-deploying. There are several ways to enable access for users, but for this example, we'll focus on enabling a feature for a specific user rather than a group that includes that user.</p>
 
 <p>Previously, we enabled the demo for all users. While that's the simplest case and very handy when a feature is completely ready, you'll occasionally want to enable a feature for a single individual like yourself or a teammate. So let's see how that works.</p>
 
-<p><strong><mark>Important:</mark></strong> In order to <a href="https://www.flippercloud.io/docs/features#enablement-actor">enable access for individual users, accounts, or any other "Actor"</a> the model must respond to a <code>flipper_id</code> method that returns a unique identifier. You can implement this method yourself or include the <code>Flipper::Identifier</code> module in your model, and Flipper will use the Class and ID. i.e. <code>User;1</code>.</p>
+<p><strong><mark>Important:</mark></strong> In order to <a href="https://www.flippercloud.io/docs/features#enablement-actor">enable access for individual users, accounts, or any other "Actor"</a> the model must respond to a <code>flipper_id</code> method that returns a unique identifier. You can implement this method yourself or include the <code>Flipper::Identifier</code> module in your model, and Flipper will use the Class and ID. i.e. <code>User;1</code>. If you want to enable more than a handful of individual users, you'll generally want to do so by enabling groups that contain the users rather than enabling individual users directly, but we'll get to that shortly.</p>
 
-<p>That's all for enabling features for individual actors. Next we'll look at how you can enable features for groups of actors.</p>
-<%= button_to "Learn How to Toggle Features for Groups", demo_group_path, method: :get, class: 'btn btn-lg btn-primary' %>
+<% if Flipper.enabled?(:demo_actor, current_user) %>
+  <hr>
+  <p>That's all for enabling features for individual actors. Next we'll look at how you can enable features for groups of actors.</p>
+  <%= button_to "Learn How to Toggle Features for Groups", demo_group_path, method: :get, class: 'btn btn-lg btn-primary' %>
+<% end %>
 
 
 <% content_for :aside do %>
@@ -42,12 +45,19 @@
 
     <hr>
 
-    <% if current_user && Flipper.enabled?(:demo_actor, current_user) %>
+    <% if current_user && Flipper.enabled?(:demo_actor) %>
       <%= toggle(
-        label: 'Disable for Just You',
-        form_target: disable_path(feature: :demo_actor, user: true),
+        label: 'Disable for Everyone',
+        form_target: disable_path(feature: :demo_actor, user: false),
         form_method: :delete,
-        code: 'Flipper.disable(:demo_actor, current_user)'
+        code: 'Flipper.disable(:demo_actor)'
+        ) %>
+    <% elsif current_user && Flipper.enabled?(:demo_actor, current_user) %>
+      <%= toggle(
+        label: 'Enable for Everyone',
+        form_target: enable_path(feature: :demo_actor, user: true),
+        form_method: :post,
+        code: 'Flipper.enable(:demo_actor)'
         ) %>
     <% elsif current_user %>
       <%= toggle(

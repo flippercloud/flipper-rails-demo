@@ -1,8 +1,8 @@
 <% content_for :breadcrumbs do %>
 <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
-  <li class="breadcrumb-item"><strong class="badge bg-secondary rounded rounded-pill m-0 fs-6">Demo</strong></li>
-  <li class="breadcrumb-item"><a href="/">Basic Flag</a></li>
-  <li class="breadcrumb-item"><a href="/demo/actors">Flags for Actors</a></li>
+  <li class="breadcrumb-item"><strong class="badge bg-info rounded rounded-pill m-0 fs-6">Demo</strong></li>
+  <li class="breadcrumb-item"><a href="<%= demo_start_path %>">Toggle a Basic Flag</a></li>
+  <li class="breadcrumb-item"><a href="<%= demo_actor_path %>">Flags for Actors</a></li>
   <li class="breadcrumb-item active" aria-current="page">Flags for Groups</li>
 </ol>
 <% end %>
@@ -21,72 +21,78 @@
 
 <p><strong><mark>Important:</mark></strong> You may notice that we're verifying that the provided actor (which is any type of object that responds to <code>flipper_id</code>) responds to the <code>coffee?</code> method because any type of actor can be passed to the <code>enabled?</code> method, so we'll play it safe instead of assuming all actors will support a <code>coffee?</code> method.</p>
 
-<fieldset>
-  <legend>Enable a Feature Only for Coffee Drinkers</legend>
 
-  <p>We've named this feature flag <code>demo_group</code>. We still pass <code>current_user</code> as the actor, but instead of having enabled the user directly, we'll enable the group and the current user would be enabled implicitly if they're a member of the coffee group.</p>
-
+<% if Flipper.enabled?(:demo_group, current_user) %>
   <hr>
-
-  <% if Flipper.enabled?(:demo_group) %>
-    <p>The <code>demo_group</code> feature is <ins>enabled</ins> for everyone.</p>
-  <% else %>
-    <p>The <code>demo_group</code> feature is <del>disabled</del> for anyone that doesn't have special authorization.</p>
-  <% end %>
-
-  <% if Flipper.enabled?(:demo_group, @water_drinker) %>
-    <p>The <code>demo_group</code> feature is <ins>enabled</ins> for water drinkers.</p>
-  <% else %>
-    <p>The <code>demo_group</code> feature is <del>disabled</del> for water drinkers.</p>
-  <% end %>
+  <p>Nice work! Next we'll look at how you can enable features for a percentage of users.</p>
+  <%= button_to "Learn How to Toggle Features for a Percentage of Users", demo_percentage_path, method: :get, class: 'btn btn-lg btn-primary' %>
+<% end %>
 
 
-  <% if Flipper.enabled?(:demo_group, @tea_drinker) %>
-    <p>The <code>demo_group</code> feature is <ins>enabled</ins> for tea drinkers.</p>
-  <% else %>
-    <p>The <code>demo_group</code> feature is <del>disabled</del> for tea drinkers.</p>
-  <% end %>
-
-  <% if Flipper.enabled?(:demo_group, @coffee_drinker) %>
-    <p>The <code>demo_group</code> feature is <ins>enabled</ins> for coffee drinkers.</p>
-  <% else %>
-    <p>The <code>demo_group</code> feature is <del>disabled</del> for coffee drinkers.</p>
-  <% end %>
-
-  <% if Flipper.enabled?(:demo_group, @coffee_drinker) %>
-    <div class="example">
-      <%= button_to "Disable for Coffee Drinkers", disable_path(feature: :demo_group, group: :coffee_drinkers), method: :delete %>
-      <code>Flipper.disable_group(:demo_group, :coffee_drinkers)</code>
-    </div>
+<% content_for :aside do %>
+  <%= controls('Control Flags for a Group of Actors') do %>
+    <p>We've named this feature flag <code>demo_group</code>. We still pass <code>current_user</code> as the actor, but instead of having enabled the user directly, we'll enable the group and the current user would be enabled implicitly if they're a member of the coffee group.</p>
 
     <hr>
 
-    <% if current_user && Flipper.enabled?(:demo_group, current_user) %>
-      <p>The <code>demo_group</code> feature is <ins>enabled</ins> for you since you prefer coffee.</p>
+    <% if Flipper.enabled?(:demo_group) %>
+      <p>The <code>demo_group</code> feature is <ins>enabled</ins> for everyone.</p>
     <% else %>
-      <p>The <code>demo_group</code> feature is <del>disabled</del> for you since you don't prefer coffee yet.</p>
-
-      <p>Let's update your beverage preference&hellip;</p>
-
-      <%= form_with model: current_user, method: :patch, url: user_path do |f| %>
-        <%= f.text_field :beverage, value: 'coffee', hidden: true %>
-        <%= f.submit "I Prefer Coffee!" %>
-      <% end %>
+      <p>The <code>demo_group</code> feature is <del>disabled</del> for anyone that doesn't have special authorization.</p>
     <% end %>
 
     <hr>
 
-    <p>Nice work! Next we'll look at how you can enable features for a percentage of users.</p>
-    <%= button_to "Learn How to Toggle Features for a Percentage of Users", demo_percentage_path, method: :get %>
+    <% if Flipper.enabled?(:demo_group, @water_drinker) %>
+      <p>The <code>demo_group</code> feature is <ins>enabled</ins> for water drinkers.</p>
+    <% else %>
+      <p>The <code>demo_group</code> feature is <del>disabled</del> for water drinkers.</p>
+    <% end %>
 
-  <% else %>
-    <div class="example">
-      <%= button_to "Enable for Coffee Drinkers", enable_path(feature: :demo_group, group: :coffee_drinkers), method: :post %>
-      <code>Flipper.enable_group(:demo_group, :coffee_drinkers)</code>
-    </div>
+
+    <% if Flipper.enabled?(:demo_group, @tea_drinker) %>
+      <p>The <code>demo_group</code> feature is <ins>enabled</ins> for tea drinkers.</p>
+    <% else %>
+      <p>The <code>demo_group</code> feature is <del>disabled</del> for tea drinkers.</p>
+    <% end %>
+
+    <% if Flipper.enabled?(:demo_group, @coffee_drinker) %>
+      <p>The <code>demo_group</code> feature is <ins>enabled</ins> for coffee drinkers.</p>
+    <% else %>
+      <p>The <code>demo_group</code> feature is <del>disabled</del> for coffee drinkers.</p>
+    <% end %>
+
+    <% if Flipper.enabled?(:demo_group, @coffee_drinker) %>
+      <%= toggle(
+        label: 'Disable for Coffee Drinkers',
+        form_target: disable_path(feature: :demo_group, group: :coffee_drinkers),
+        form_method: :delete,
+        code: 'Flipper.disable_group(:demo_group, :coffee_drinkers)'
+        ) %>
+
+      <hr>
+
+      <% if current_user && Flipper.enabled?(:demo_group, current_user) %>
+        <p class="my-0">The <code>demo_group</code> feature is <ins>enabled</ins> for you since you prefer coffee.</p>
+      <% else %>
+        <p>The <code>demo_group</code> feature is <del>disabled</del> for you since you don't prefer coffee. Let's update your beverage preference&hellip;</p>
+
+        <%= form_with model: current_user, method: :patch, url: user_path do |f| %>
+          <%= f.text_field :beverage, value: 'coffee', hidden: true %>
+          <%= f.submit "I Prefer Coffee!", class: 'btn btn-primary w-100' %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <hr>
+      <%= toggle(
+        label: 'Enable for Coffee Drinkers',
+        form_target: enable_path(feature: :demo_group, group: :coffee_drinkers),
+        form_method: :post,
+        code: 'Flipper.enable_group(:demo_group, :coffee_drinkers)'
+        ) %>
+    <% end %>
   <% end %>
-
-</fieldset>
+<% end %>
 
 <% content_for :footer do %>
   <%= page_footer(__FILE__) %>

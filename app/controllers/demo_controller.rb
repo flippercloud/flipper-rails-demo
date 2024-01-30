@@ -1,6 +1,20 @@
 class DemoController < ApplicationController
   # before_action :ensure_enabled
 
+  def reset
+    Current.user.update(beverage: nil) if Current.user.present?
+    Flipper.disable_percentage_of_actors(:slow_roll)
+    %i[demo demo_actor demo_group slow_roll].each do |feature|
+      Flipper.disable(feature)
+    end
+
+    flash[:notice] = "The demo is reset and ready to go through again."
+    redirect_to demo_start_path
+  end
+
+  def start
+  end
+
   def actor
   end
 

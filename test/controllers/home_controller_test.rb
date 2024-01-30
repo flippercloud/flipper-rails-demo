@@ -3,22 +3,10 @@ require "test_helper"
 class HomeControllerTest < ActionDispatch::IntegrationTest
   test "shows welcome without authentication" do
     get root_path
-    assert_select "p", text: /Welcome to the Flipper Rails demo application/
+    assert_select "p", text: /This is a minimal Rails app/
   end
 
-  test "show disabled by default" do
-    user = users(:basic)
-    params = {
-      email: user.email,
-      password: default_password,
-    }
-    post log_in_url(params: params)
-
-    get root_path
-    assert_select "del", text: /disabled/
-  end
-
-  test "show after enabling demo" do
+  test "shows welcome with authentication" do
     Flipper.enable(:demo)
 
     user = users(:basic)
@@ -29,6 +17,6 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     post log_in_url(params: params)
 
     get root_path
-    assert_select "ins", text: /enabled/
+    assert_select "h1", text: /Welcome/
   end
 end

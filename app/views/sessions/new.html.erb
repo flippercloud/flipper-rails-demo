@@ -1,17 +1,19 @@
-<h1>Log In</h1>
-<%= form_with method: :post, url: log_in_path do |f| %>
-  <fieldset>
-  	<legend>Your Details</legend>
-    <div class="field">
-      <%= f.label :email %>
-      <%= f.text_field :email, autofocus: true %>
-    </div>
-    <div class="field">
-      <%= f.label :password %>
-      <%= f.password_field :password %>
-    </div>
-  </fieldset>
-  <div>
-    <%= f.submit "Log In" %>
+<div class="row">
+  <div class="col-12 col-md-5 offset-md-8 my-5">
+    <%= form_with method: :post, url: log_in_path do |f| %>
+      <fieldset>
+        <div class="field my-3">
+          <%= f.label :email %>
+          <%= f.text_field :email, class: 'form-control', autofocus: true %>
+        </div>
+        <div class="field my-3">
+          <%= f.label :password %>
+          <%= f.password_field :password, class: 'form-control' %>
+        </div>
+      </fieldset>
+      <div class="my-3">
+        <%= f.submit "Log In", class: 'btn btn-primary w-100' %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>

@@ -1,8 +1,8 @@
 <footer class="d-flex justify-content-center border-top my-5">
   <div class="d-inline-block card my-5 text-center">
-    <div class="card-header fw-bold">Curious how this page works?</div>
+    <div class="card-header fw-bold">View the code powering this page&hellip;</div>
     <div class="card-body">
-      <a class="link-offset-2 link-underline link-underline-opacity-25 icon-link" href="https://github.com/flippercloud/flipper-rails-demo/tree/main/app/views<%= locals[:file].gsub(Rails.root.to_s, '') %>">
+      <a target="_blank" rel="noreferrer" class="link-offset-2 link-underline link-underline-opacity-25 icon-link" href="https://github.com/flippercloud/flipper-rails-demo/tree/main/app/views<%= locals[:file].gsub(Rails.root.to_s, '') %>">
         <%= icon 'github' %>
         <code><%= locals[:file].gsub(Rails.root.to_s, '') %></code>
       </a>

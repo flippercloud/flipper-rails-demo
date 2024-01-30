@@ -10,17 +10,17 @@
   </head>
   <body>
     <div class="container container">
-      <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <div class="col-md-3 mb-2 mb-md-0">
+      <header class="d-flex flex-wrap align-content-center align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom gap-3">
+        <div class="col-md-3 mb-0">
           <%= link_to root_path, class: 'icon-link text-decoration-none fw-bold' do %>
-            <%= icon 'cloud-fill' %> Flipper Cloud Demo
+            <%= icon 'cloud-fill' %> Flipper Playground
           <% end %>
         </div>
 
         <% if current_user %>
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2">Demo</a></li>
-          <li><a href="#" class="nav-link px-2">Examples</a></li>
+          <li><a href="/demo/start" class="nav-link px-2">Demo</a></li>
+          <!-- Coming soon! <li><a href="/examples" class="nav-link px-2">Examples</a></li> -->
         </ul>
         <% end %>
 
