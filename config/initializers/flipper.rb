@@ -9,23 +9,3 @@ Flipper.register(:coffee_drinkers) do |actor, context|
   #   relevant method we'll check against
   actor.respond_to?(:coffee?) && actor.coffee?
 end
-
-if ENV["FLIPPER_SESSION_STORE"]
-  require 'flipper/adapters/session'
-  require 'flipper/middleware/session'
-
-  Rails.application.configure do
-    config.middleware.use Flipper::Middleware::Session
-  end
-end
-
-Rails.application.config.after_initialize do
-  # Whenever the app loads fresh, disable all the features so it starts from
-  # a consistent state each time.
-  # You wouldn't normally want to do this, but for a demo, it's pretty handy.
-  begin
-    Flipper.features.each(&:disable)
-  rescue
-    # That's fine if the DB hasn't been created yet
-  end
-end
