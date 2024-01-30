@@ -52,14 +52,14 @@
 
     <hr>
 
-    <% if current_user && Flipper.enabled?(:demo_group, current_user) %>
+    <% if Flipper.enabled?(:demo_group, current_user) %>
       <p>The <code>demo_group</code> feature is <ins>enabled</ins> for you since you prefer coffee.</p>
     <% else %>
       <p>The <code>demo_group</code> feature is <del>disabled</del> for you since you don't prefer coffee yet.</p>
 
       <p>Let's update your beverage preference&hellip;</p>
 
-      <%= form_with model: current_user, method: :patch, url: user_path do |f| %>
+      <%= form_with model: current_user, method: :patch, url: profile_path do |f| %>
         <%= f.text_field :beverage, value: 'coffee', hidden: true %>
         <%= f.submit "I Prefer Coffee!" %>
       <% end %>

@@ -4,24 +4,15 @@
     <title>Flipper Rails Demo</title>
     <%= csrf_meta_tags %>
     <link rel="stylesheet" type="text/css" href="/styles.css">
+    <% if Rails.env.production? %>
+      <script defer data-domain="demo.flippercloud.io" src="https://plausible.io/js/script.js"></script>
+    <% end %>
   </head>
   <body>
     <header>
       <nav>
         <strong><%= link_to "Home", root_path %></strong>
       </nav>
-
-      <% if current_user %>
-        <nav>
-          <i><%= current_user.email %></i>
-          <%= button_to "Log Out", log_out_path, method: :delete %>
-        </nav>
-      <% else %>
-        <nav>
-          <%= link_to "Register", new_user_path %>
-          <%= link_to "Log In", login_path %>
-        </nav>
-      <% end %>
     </header>
 
     <%= flash %>

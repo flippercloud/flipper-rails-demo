@@ -1,20 +1,13 @@
-# the `default_password_digest` comes from our TestPasswordHelper
-
 admin:
-  email: admin@example.com
-  password_digest: <%= default_password_digest %>
+  name: <%= Faker::Name.name %>
 basic:
-  email: basic@example.com
-  password_digest: <%= default_password_digest %>
+  name: <%= Faker::Name.name %>
 tea:
-  email: tea@example.com
-  password_digest: <%= default_password_digest %>
+  name: <%= Faker::Name.name %>
   beverage: 1
 water:
-  email: water@example.com
-  password_digest: <%= default_password_digest %>
+  name: <%= Faker::Name.name %>
   beverage: 2
 coffee:
-  email: coffee@example.com
-  password_digest: <%= default_password_digest %>
+  name: <%= Faker::Name.name %>
   beverage: 3
