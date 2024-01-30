@@ -2,7 +2,12 @@ require "test_helper"
 
 class DemoControllerTest < ActionDispatch::IntegrationTest
   test "resets demo" do
+    Flipper.enable(:demo)
+    Flipper.enable_percentage_of_actors(:slow_roll, 25)
     post demo_reset_url
+
+    assert_not Flipper.enabled?(:demo)
+    assert_not Flipper.enabled?(:slow_roll)
     assert_redirected_to demo_start_url
   end
 

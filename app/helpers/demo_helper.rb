@@ -13,4 +13,8 @@ module DemoHelper
             end
     render 'shared/toggle', label: label, style: style, form_target: form_target, form_method: form_method, code: code
   end
+
+  def next_button(label, target)
+    render 'shared/next_button', label: label, target: target
+  end
 end

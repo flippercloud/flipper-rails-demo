@@ -1,25 +1,46 @@
 <% content_for :breadcrumbs do %>
-<ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
+<ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 border">
   <li class="breadcrumb-item"><strong class="badge bg-info rounded rounded-pill m-0 fs-6">Demo</strong></li>
-  <li class="breadcrumb-item"><a href="<%= demo_start_path %>">Toggle a Basic Flag</a></li>
-  <li class="breadcrumb-item"><a href="<%= demo_actor_path %>">Flags for Actors</a></li>
-  <li class="breadcrumb-item"><a href="<%= demo_group_path %>">Flags for Groups</a></li>
-  <li class="breadcrumb-item active" aria-current="page">Percentage Flags</li>
+  <li class="breadcrumb-item"><a href="<%= demo_start_path %>">Basic Flags</a></li>
+  <li class="breadcrumb-item"><a href="<%= demo_actor_path %>">Flags & Actors</a></li>
+  <li class="breadcrumb-item"><a href="<%= demo_group_path %>">Flags & Groups</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Flags & Percentages</li>
 </ol>
 <% end %>
 
-<h1>Percentage-based Feature Flipping</h1>
+<%
+  enabled_water_drinkers = 0
+  enabled_tea_drinkers = 0
+  enabled_coffee_drinkers = 0
 
-<p>We've toggled features for all users, a single user, and a specific group of users. Now we'll explore percentages where we can enable a feature for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-actors">percentage of actors</a> or for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-time">percentage of time</a>. As we're increasingly confident there aren't any surprise bugs or performance issues, we can gradually increase the percentage.</p>
+  User.all.each do |user|
+    next unless Flipper.enabled?(:slow_roll, user)
 
-<p>This is great for refactoring a significant portion of code so you can keep the legacy portion in place in parallel with the new code that's set to replace it, and you can slowly send more traffic down the new code path until you're confident it's generating the same results as the original.</p>
+    if user.water?
+      enabled_water_drinkers += 1
+    elsif user.tea?
+      enabled_tea_drinkers += 1
+    elsif user.coffee?
+      enabled_coffee_drinkers += 1
+    end
+  end
+%>
 
-<% if @current_percentage == 100 %>
-  <hr>
+<% if @current_percentage.zero? %>
+  <h1>Percentage-based Feature Flipping</h1>
+  <p>Let's explore toggling by using percentages where we can enable a feature for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-actors">percentage of actors</a> or for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-time">percentage of time</a>. As we're increasingly confident there aren't any surprise bugs or performance issues, we can gradually increase the percentage.</p>
 
-  <p>Nice work! That covers the basics of feature toggling, but we've glossed over some details.</p>
+  <p>We've named this feature flag <code>slow_roll</code> since we'll slowly roll it out to more users. We'll increase our percentage gradually in increments of 25% and see how it four different user accounts, including yours, are affected.</p>
 
-  <p>While you've been toggling features directly in the demo up until now, that's not really ideal. And that's where <a href="https://flippercloud.io">Flipper Cloud</a> comes in.</p>
+  <p>This is great for refactoring a significant portion of code so you can keep the legacy portion in place in parallel with the new code that's set to replace it, and you can slowly send more traffic down the new code path until you're confident it's generating the same results as the original.</p>
+
+<% elsif @current_percentage.positive? && @current_percentage < 100 %>
+  <h1>Time for another increase!</h1>
+  <p><strong>Currently enabled for approximately <%= @current_percentage %>% of actors</strong>. This won't ever be an exact match for the percentage of enabled users due to the variables involved. The more total actors in the system, the closer this number will be to a precise percentage of overall users.</p>
+
+<% elsif @current_percentage >= 100 %>
+  <h1>Finished!</h1>
+  <p>You've covered the basics of feature toggling, but we've glossed over some details. While you've been toggling features directly in the demo up until now, that's not really ideal. And that's where <a href="https://www.flippercloud.io/dashboard">Flipper Cloud</a> comes in.</p>
 
   <p>You've already set up an account, so now let's go take a look and see what all of this feature toggling has done behind the scenes.</p>
 
@@ -31,10 +52,6 @@
 
 <% content_for :aside do %>
   <%= controls('Control Flags for a Percentage of Actors') do %>
-
-    <p>We've named this feature flag <code>slow_roll</code> since we'll slowly roll it out to more users. We'll increase our percentage gradually in increments of 25% and see how it four different user accounts, including yours, are affected.</p>
-
-    <hr>
 
     <% if Flipper.enabled?(:slow_roll) %>
       <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for everyone.</p>
@@ -50,41 +67,19 @@
 
     <hr>
 
-    <%
-      enabled_water_drinkers = 0
-      enabled_tea_drinkers = 0
-      enabled_coffee_drinkers = 0
-
-      User.all.each do |user|
-        next unless Flipper.enabled?(:slow_roll, user)
-
-        if user.water?
-          enabled_water_drinkers += 1
-        elsif user.tea?
-          enabled_tea_drinkers += 1
-        elsif user.coffee?
-          enabled_coffee_drinkers += 1
-        end
-      end
-    %>
-
-    <p><strong>Currently enabled for approximately <%= @current_percentage %>% of actors</strong>. This won't ever be an exact match for the percentage of enabled users due to the variables involved. The more total actors in the System, the closer this number will be to a precise percentage of overall users.</p>
-
     <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
       <%= pluralize(enabled_water_drinkers, 'water drinker') %>
-      <small class="badge text-bg-light border rounded-pill">(~<%= number_to_percentage((enabled_water_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %>)</small></p>
+      <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_water_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
 
     <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
       <%= pluralize(enabled_tea_drinkers, 'tea drinker') %>
-      <small class="badge text-bg-light border rounded-pill">(~<%= number_to_percentage((enabled_tea_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %>)</small></p>
+      <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_tea_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
 
     <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
       <%= pluralize(enabled_coffee_drinkers, 'coffee drinker') %>
-      <small class="badge text-bg-light border rounded-pill">(~<%= number_to_percentage((enabled_coffee_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %>)</small></p>
+      <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_coffee_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
 
     <% if @current_percentage < 100 %>
-      <hr>
-
       <%= toggle(
         label: 'Increase by 25%',
         form_target: enable_path(feature: :slow_roll, percentage: @current_percentage + 25),
@@ -94,8 +89,7 @@
     <% end %>
 
     <% if @current_percentage > 0 %>
-      <hr>
-
+      <% if @current_percentage < 100 %><hr><% end %>
       <%= toggle(
         label: 'Disable (Back to 0%)',
         form_target: disable_path(feature: :slow_roll, percentage: 0),

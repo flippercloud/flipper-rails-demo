@@ -1,39 +1,36 @@
 <% content_for :breadcrumbs do %>
-<ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
+<ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 border">
   <li class="breadcrumb-item"><strong class="badge bg-info rounded rounded-pill m-0 fs-6">Demo</strong></li>
-  <li class="breadcrumb-item"><a href="/">Toggle a Basic Flag</a></li>
-  <li class="breadcrumb-item active" aria-current="page">Flag for an Actor</li>
+  <li class="breadcrumb-item"><a href="<%= demo_start_path %>">Basic Flags</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Flags & Actors</li>
 </ol>
 <% end %>
 
-<h1>User-based Feature Flipping</h1>
+<% if !Flipper.enabled?(:demo_actor, current_user) %>
+  <h1>User-based Feature Flipping</h1>
+  <p>You can also toggle a feature on or off for <strong>a specific user</strong>. You can enable access for users several ways, but for this example, we'll focus on enabling a feature for a specific user rather than a group that includes that user.</p>
 
-<p>You can also toggle a feature on or off for <strong>a specific user</strong> without re-deploying. There are several ways to enable access for users, but for this example, we'll focus on enabling a feature for a specific user rather than a group that includes that user.</p>
+  <p>Previously, we enabled the demo for all users. While that's the simplest case and very handy when a feature is completely ready, you'll occasionally want to enable a feature for a single individual like yourself or a teammate. So let's see how that works.</p>
 
-<p>Previously, we enabled the demo for all users. While that's the simplest case and very handy when a feature is completely ready, you'll occasionally want to enable a feature for a single individual like yourself or a teammate. So let's see how that works.</p>
+  <p>We've named this feature flag <code>demo_actor</code> because it only enables the feature for a single user. In this case, we'll use <code>current_user</code>, but in practice, you could use any instance of a User, Organization, Team, or any "actor" from your system as long as the instance responds to <code>flipper_id</code>.</p>
 
-<p><strong><mark>Important:</mark></strong> In order to <a href="https://www.flippercloud.io/docs/features#enablement-actor">enable access for individual users, accounts, or any other "Actor"</a> the model must respond to a <code>flipper_id</code> method that returns a unique identifier. You can implement this method yourself or include the <code>Flipper::Identifier</code> module in your model, and Flipper will use the Class and ID. i.e. <code>User;1</code>. If you want to enable more than a handful of individual users, you'll generally want to do so by enabling groups that contain the users rather than enabling individual users directly, but we'll get to that shortly.</p>
-
-<% if Flipper.enabled?(:demo_actor, current_user) %>
-  <hr>
-  <p>That's all for enabling features for individual actors. Next we'll look at how you can enable features for groups of actors.</p>
-  <%= button_to "Learn How to Toggle Features for Groups", demo_group_path, method: :get, class: 'btn btn-lg btn-primary' %>
+  <p><strong><mark>Important:</mark></strong> In order to <a href="https://www.flippercloud.io/docs/features#enablement-actor">enable access for individual users, accounts, or any other actor</a> the model must respond to a <code>flipper_id</code> method that returns a unique identifier. You can implement this method yourself or include the <code>Flipper::Identifier</code> module in your model, and Flipper will use the Class and ID. i.e. <code>User;1</code>. If you want to enable more than a handful of individual users, you'll generally want to do so by enabling groups that contain the users rather than enabling individual users directly, but we'll get to that shortly.</p>
 <% end %>
 
+<% if Flipper.enabled?(:demo_actor, current_user) %>
+  <h1>That's It for Actors</h1>
+  <p>That's all for enabling features for individual actors. Next we'll look at how you can enable features for groups of actors by registering groups and specifying the conditions that indicate an actor is in that group.</p>
+
+  <%= next_button "Learn How to Toggle Features for Groups", demo_group_path %>
+<% end %>
 
 <% content_for :aside do %>
   <%= controls('Control Flags for Individual Actors') do %>
-    <p>We've named this feature flag <code>demo_actor</code> because it only enables the feature for a single user. In this case, we'll use <code>current_user</code>, but in practice, you could use any instance of a User, Organization, Team, or any "actor" from your system as long as the instance responds to <code>flipper_id</code>.</p>
-
-    <hr>
-
     <% if Flipper.enabled?(:demo_actor) %>
       <p>The <code>demo_actor</code> feature is <ins>enabled</ins> for everyone.</p>
     <% else %>
       <p>The <code>demo_actor</code> feature is <del>disabled</del> for anyone that doesn't have special authorization.</p>
     <% end %>
-
-    <hr>
 
     <% if current_user && Flipper.enabled?(:demo_actor) %>
       <p>The <code>demo_actor</code> feature is <em>implicitly</em> <ins>enabled</ins> for you since it's enabled for everyone.</p>
@@ -42,8 +39,6 @@
     <% elsif current_user && !Flipper.enabled?(:demo_actor, current_user) %>
       <p>The <code>demo_actor</code> feature is <em>implicitly</em> <del>disabled</del> for you as well.</p>
     <% end %>
-
-    <hr>
 
     <% if current_user && Flipper.enabled?(:demo_actor) %>
       <%= toggle(

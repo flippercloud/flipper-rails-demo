@@ -1,40 +1,27 @@
 <% content_for :breadcrumbs do %>
-<ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
+<ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 border">
   <li class="breadcrumb-item"><strong class="badge bg-secondary rounded rounded-pill m-0 fs-6">Demo</strong></li>
-  <li class="breadcrumb-item active" aria-current="page">Toggle a Basic Flag</li>
+  <li class="breadcrumb-item active" aria-current="page">Basic Flags</li>
 </ol>
 <% end %>
 
-<% if current_user && Flipper.enabled?(:demo) %>
-
-  <h1>Nice flag toggling!</h1>
-
-  <p>You're ready to take Flipper for a spin and enable features on a more specific basis now!</p>
-
-  <hr>
-
-  <p>Our first example focuses on enabling features for a specific user—you!</p>
-
-  <%= button_to "Learn How to Toggle Features for Individual actors", demo_actor_path, method: :get, class: 'btn btn-lg btn-primary' %>
-
+<% if !Flipper.enabled?(:demo) %>
+  <h1>Fully Enable a Feature Flag</h1>
+  <p><mark>You can toggle any feature without re-deploying, and all reads of feature flag values are always performed entirely local to your application to avoid roundtrip network requests.</mark> You can think of this as <a href="https://www.flippercloud.io/docs/features#enablement-boolean">boolean feature flipping</a> where it's either true or false for everyone.</p>
+  <p>In this example, the Demo is behind a flag named <code>demo</code>. To enable (or disable) it, you can use the Flipper API, Flipper UI, or Flipper Cloud. In most cases, you wouldn't let folks toggle features for themselves like this, but it can be handy for letting them opt-in to test out new features ahead of a public release.</p>
 <% else %>
+  <h1>Nice flag toggling!</h1>
+  <p>The <code>:demo</code> flag is enabled, and you're ready to take Flipper for a spin and enable features on a more specific basis now! Our first example focuses on enabling features for a specific user—you!</p>
 
-  <h1>Enable the Demo Feature Flag</h1>
-  <p>You can toggle any feature on/off <strong>for everyone</strong> without re-deploying. You can think of this as <a href="https://www.flippercloud.io/docs/features#enablement-boolean">boolean feature flipping</a> where it's either true or false for everyone. That's the simplest case, and whenever you use those methods, it's all-or-nothing for every user.</p>
-
-  <p>In this example, the Demo is behind a flag named <code>demo</code>. To enable (or disable) it, you make a call to Flipper. <mark>All reads of feature flag values are always performed entirely local to your application to avoid roundtrip network requests.</mark></p>
-
-  <p>Throughout the demo, you'll use the &ldquo;Flipper Controls&rdquo; to toggle the relevant flags and then see the primary content updated here to reflect the updated state of the feature flag.</p>
-
+  <%= next_button 'Learn How to Toggle Features for Individual Actors', demo_actor_path %>
 <% end %>
 
 
 
 <% content_for :aside do %>
-  <%= controls('About the Demo') do %>
+  <%= controls('Toggling an Individual Flag for Everyone') do %>
     <% if current_user && Flipper.enabled?(:demo) %>
-      <p>Demo mode is <ins>enabled</ins>! It's that easy. You can toggle it off and back on again if you want&hellip;</p>
-      <hr>
+      <p>The <code>:demo</code> flag is <ins>enabled</ins>! You can toggle it off and back on again if you want&hellip;</p>
       <%= toggle(
         label: 'Disable the Demo Feature Flag',
         form_target: disable_path(feature: :demo),
@@ -42,15 +29,7 @@
         code: 'Flipper.disable(:demo)'
         ) %>
     <% elsif current_user %>
-      <p>In most cases, you wouldn't let folks toggle features for themselves, but it can be handy for letting them opt-in to test out new features ahead of a public release.</p>
-      <p>We'll use it here to enable the demo for everyone.</p>
-
-      <hr>
-
-      <p>Demo mode is <del>disabled</del> since <strong>Flipper features are disabled by default</strong>.</p>
-
-      <hr>
-
+      <p>The <code>:demo</code> flag is <del>disabled</del>. <span class="text-secondary">(Flipper features are disabled by default.)</span></p>
       <%= toggle(
         label: 'Enable the Demo Feature Flag',
         form_target: enable_path(feature: :demo),
@@ -59,7 +38,6 @@
         ) %>
     <% elsif !current_user %>
       <p>Before starting the demo, you'll need to create an account for the demo application or log in so you have an account that can work with the demo. Then the demo will walk you through how it all works with real examples and real code.</p>
-      <hr>
       <%= link_to "Register", new_user_path, class: 'btn btn-sm btn-primary' %> or <%= link_to "Log in", login_path, class: 'btn btn-sm btn-outline-primary' %>
     <% end %>
   <% end %>
