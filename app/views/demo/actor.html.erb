@@ -14,7 +14,7 @@
 
   <p>We've named this feature flag <code>demo_actor</code> because it only enables the feature for a single user. In this case, we'll use <code>current_user</code>, but in practice, you could use any instance of a User, Organization, Team, or any "actor" from your system as long as the instance responds to <code>flipper_id</code>.</p>
 
-  <p><strong><mark>Important:</mark></strong> In order to <a href="https://www.flippercloud.io/docs/features#enablement-actor">enable access for individual users, accounts, or any other actor</a> the model must respond to a <code>flipper_id</code> method that returns a unique identifier. You can implement this method yourself or include the <code>Flipper::Identifier</code> module in your model, and Flipper will use the Class and ID. i.e. <code>User;1</code>. If you want to enable more than a handful of individual users, you'll generally want to do so by enabling groups that contain the users rather than enabling individual users directly, but we'll get to that shortly.</p>
+  <p><strong><mark>Important:</mark></strong> In order to <a href="https://www.flippercloud.io/docs/features#enablement-actor">enable access for individual users, accounts, or any other actor</a> the model must respond to a <code>flipper_id</code> method that returns a unique identifier.</p>
 <% end %>
 
 <% if Flipper.enabled?(:demo_actor, current_user) %>
