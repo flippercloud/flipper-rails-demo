@@ -1,6 +1,5 @@
 class FeaturesController < ApplicationController
-  include SessionsHelper
-
+  PUBLIC_FEATURES = %w[demo demo_actor demo_group slow_roll].freeze
   before_action :verify_public_feature
 
   def create
@@ -13,7 +12,7 @@ class FeaturesController < ApplicationController
       audience = group.to_s.humanize.pluralize.titleize
     elsif user.present?
       Flipper.enable_actor(feature, user)
-      audience = user.email
+      audience = user.flipper_id
     else
       Flipper.enable(feature)
     end
@@ -38,7 +37,7 @@ class FeaturesController < ApplicationController
       # to both `class` and `id`, or a model where you define a `flipper_id`
       # method that always returns a consistent and unique value.
       Flipper.disable_actor(feature, user)
-      audience = user.email
+      audience = user.flipper_id
     else
       Flipper.disable(feature)
       session[:percentage] = 0
@@ -68,11 +67,11 @@ class FeaturesController < ApplicationController
   end
 
   def feature
-    params.require(:feature).to_sym
+    params.require(:feature)
   end
 
   def verify_public_feature
-    return if Flipper.features.map { |feature| feature.key.to_sym }.include?(feature)
+    return if PUBLIC_FEATURES.include?(feature)
 
     flash.alert = "Sorry, but that's not a valid public feature."
     redirect_to root_path and return

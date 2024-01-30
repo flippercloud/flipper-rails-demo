@@ -1,6 +1,5 @@
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
-require "support/test_password_helper"
 
 # Override Flipper Cloud configuration for tests
 # Read more about testing with Flipper Cloud:
@@ -10,9 +9,6 @@ Flipper.configure do |config|
 end
 
 class ActiveSupport::TestCase
-  include TestPasswordHelper
-  ActiveRecord::FixtureSet.context_class.send :include, TestPasswordHelper
-
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 

@@ -4,6 +4,7 @@ gem 'rails'
 gem 'sqlite3'
 gem 'puma'
 gem 'bcrypt'
+gem 'faker'
 gem 'sprockets-rails'
 
 flipper_version = '~> 1.2.2'
