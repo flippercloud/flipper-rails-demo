@@ -1,4 +1,7 @@
-<footer>
-  <span>Curious how this works? Take a look:</span>
-  <code><%= locals[:file].gsub(Rails.root.to_s, '') %></code>
+<footer class="d-flex justify-content-center border-top gap-3 my-5 py-4">
+  <span class="fw-bold">View Source</span>
+  <a target="_blank" rel="noreferrer" class="link-offset-2 link-underline link-underline-opacity-25 icon-link" href="https://github.com/flippercloud/flipper-rails-demo/tree/main/app/views<%= locals[:file].gsub(Rails.root.to_s, '') %>">
+    <%= icon 'github' %>
+    <code><%= locals[:file].gsub(Rails.root.to_s, '') %></code>
+  </a>
 </footer>

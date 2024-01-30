@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   delete 'features/disable/:feature', to: "features#destroy", as: :disable
 
   # The demo pages which use feature toggles to unlock the next step...
+  post 'demo/reset'
+  get 'demo/start'
   get 'demo/actor'
   get 'demo/group'
   get 'demo/percentage'

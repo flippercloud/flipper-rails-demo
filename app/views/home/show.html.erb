@@ -1,28 +1,26 @@
-<fieldset>
-  <legend>Flipper Demo</legend>
 
-  <% if Flipper.enabled?(:demo) %>
-    <p>Demo mode is <ins>enabled</ins>! It's that easy. You can toggle it off and back on again if you want&hellip;</p>
-    <div class="example">
-      <%= button_to "Disable Demo", disable_path(feature: :demo), method: :delete %>
-      <code>Flipper.disable(:demo)</code>
-    </div>
-    <hr>
-    <p>You're ready to take Flipper for a spin!</p>
-    <p>Our first example focuses on enabling features for a specific user—you!</p>
-    <%= button_to "Start the Demo", demo_actor_path, method: :get %>
-  <% else %>
-    <h1>A Basic Feature Toggle</h1>
-    <p>You can toggle any feature on/off <strong>for everyone</strong> without re-deploying. You can think of this as <a href="https://www.flippercloud.io/docs/features#enablement-boolean">boolean feature flipping</a> where it's either true or false for everyone. In this example, the Demo is behind a flag named <code>demo</code>. To enable (or disable) it, you make a call to Flipper.</p>
-    <p>That's the simplest case, and whenever you use those methods, it's all-or-nothing for every user.</p>
-    <hr>
-    <p>Demo mode is <del>disabled</del> since <strong>Flipper features are disabled by default</strong>.</p>
-    <p>In most cases, you wouldn't let folks toggle features for themselves, but it can be handy for letting them opt-in to test out new features ahead of a public release. We'll use it to enable the demo.</p>
-    <div class="example">
-      <%= button_to "Enable Demo", enable_path(feature: :demo), method: :post %>
-      <code>Flipper.enable(:demo)</code>
-    </div>
+<h1 class="display-1">Welcome!</h1>
+<p class="lead">
+  This is a minimal Rails app that you can browse and interact with to see how Flipper works—a kind of virtual playground.
+</p>
+
+<p>If there's something you like, <mark>the footer of every page provides a link to the source code so you can take a look at how we did it</mark> and even use it in your own Rails app! If there's something you don't like, you can tinker with it and change it to figure out how it works or how you could use it.</p>
+
+<% if current_user.present? %>
+  <div class="d-flex gap-3 my-2">
+    <%= next_button "Start the Demo", demo_start_path %>
+    <%#= link_to "Browse Examples", '#', class: "btn btn-lg btn-primary" %>
+  </div>
+<% end %>
+
+<% content_for :aside do %>
+  <%= controls('About the Demo') do %>
+    <p class="my-0">Once you walk through the demo or browse the examples, this area will display information and controls for some Flipper controls. Normally, you'd use Flipper Cloud to control feature flags, but for demonstration purposes, we've brought those controls right here.</p>
   <% end %>
-</fieldset>
+<% end %>
 
-<%= page_footer(__FILE__) %>
+
+
+<% content_for :footer do %>
+  <%= page_footer(__FILE__) %>
+<% end %>

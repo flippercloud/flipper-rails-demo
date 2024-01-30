@@ -1,0 +1,46 @@
+<% content_for :breadcrumbs do %>
+<ol class="breadcrumb breadcrumb-chevron mb-0">
+  <li class="breadcrumb-item"><strong class="badge bg-secondary rounded rounded-pill m-0 fs-6">Demo</strong></li>
+  <li class="breadcrumb-item active" aria-current="page">Basic Flags</li>
+</ol>
+<% end %>
+
+<% if !Flipper.enabled?(:demo) %>
+  <h1>Fully Enable a Feature Flag</h1>
+  <p><mark>You can toggle any feature without re-deploying, and all reads of feature flag values are always performed entirely local to your application to avoid roundtrip network requests.</mark> You can think of this as <a href="https://www.flippercloud.io/docs/features#enablement-boolean">boolean feature flipping</a> where it's either true or false for everyone.</p>
+  <p>In this example, the Demo is behind a flag named <code>demo</code>. To enable (or disable) it, you can use the Flipper API, Flipper UI, or Flipper Cloud. In most cases, you wouldn't let folks toggle features for themselves like this, but it can be handy for letting them opt-in to test out new features ahead of a public release.</p>
+<% else %>
+  <h1>Nice flag toggling!</h1>
+  <p>The <code>:demo</code> flag is enabled, and you're ready to take Flipper for a spin and enable features on a more specific basis now! Our first example focuses on enabling features for a specific user—you!</p>
+
+  <%= next_button 'Learn How to Toggle Features for Individual Actors', demo_actor_path %>
+<% end %>
+
+
+
+<% content_for :aside do %>
+  <%= controls('Toggling an Individual Flag for Everyone') do %>
+    <% if current_user && Flipper.enabled?(:demo) %>
+      <p>The <code>:demo</code> flag is <ins>enabled</ins>! You can toggle it off and back on again if you want&hellip;</p>
+      <%= toggle(
+        label: 'Disable the Demo Feature Flag',
+        form_target: disable_path(feature: :demo),
+        form_method: :delete,
+        code: 'Flipper.disable(:demo)'
+        ) %>
+    <% else %>
+      <p>The <code>:demo</code> flag is <del>disabled</del>. <span class="text-secondary">(Flipper features are disabled by default.)</span></p>
+      <%= toggle(
+        label: 'Enable the Demo Feature Flag',
+        form_target: enable_path(feature: :demo),
+        form_method: :post,
+        code: 'Flipper.enable(:demo)'
+        ) %>
+    <% end %>
+  <% end %>
+<% end %>
+
+
+<% content_for :footer do %>
+  <%= page_footer(__FILE__) %>
+<% end %>
