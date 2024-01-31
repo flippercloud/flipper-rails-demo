@@ -29,7 +29,7 @@ class Flipper::Middleware::Session
         token: token,
         local_adapter: adapter,
         sync_secret: "disable polling"
-      ).tap(&:sync)
+      )
     else
       Flipper.new(adapter)
     end
