@@ -1,8 +1,9 @@
 # Helper to get an encrypted token from Cloud and securely store it in the session
 class EncryptedToken
   MESSAGE_ENCRYPTER = ActiveSupport::MessageEncryptor.new(
-    Rails.application.key_generator(ENV["DEMO_SHARED_KEY"] || "demo").
-      generate_key("cloud-token", ActiveSupport::MessageEncryptor.key_len),
+    ActiveSupport::KeyGenerator.new(ENV["DEMO_SHARED_KEY"] || "demo").generate_key(
+      "encrypted-token", ActiveSupport::MessageEncryptor.key_len
+    ),
     url_safe: true
   )
 
