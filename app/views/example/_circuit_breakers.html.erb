@@ -1,0 +1,133 @@
+<ul class="list-group list-group-flush mt-0 mb-4">
+  <li class="list-group-item d-flex align-items-top align-content-center justify-content-start gap-2 px-0 py-2">
+    <div><%= icon 'stopwatch', 'bi-medium text-success flex-shrink-1' %></div>
+    <p class="flex-fill"><strong>Respond quickly to degraded performance or downtime</strong> by being able to instantly enable or disable a feature without needing to re-deploy.</p>
+  </li>
+  <li class="list-group-item d-flex align-items-top align-content-center justify-content-start gap-2 px-0 py-2">
+    <div><%= icon 'person-raised-hand', 'bi-medium text-success flex-shrink-1' %></div>
+    <p><strong>Reduce support requests</strong> by proactively informing customers about issues the team is already investigating by disabling only features with degraded performance.</p>
+  </li>
+  <li class="list-group-item d-flex align-items-top align-content-center justify-content-start gap-2 px-0 py-2">
+    <div><%= icon 'emoji-heart-eyes', 'bi-medium text-success flex-shrink-1' %></div>
+    <p><strong>Provide a better user experience</strong> using detailed explanations or well-designed interface adjustments instead of generic error pages.</p>
+  </li>
+</ul>
+
+
+<div class="card border-5 border-dark rounded-4">
+  <div class="card-header p-3 pb-2 border-bottom">
+    <div class="d-flex align-items-center align-content-center justify-content-between">
+      <strong class="d-block">Example Status</strong>
+      <% if Flipper.enabled?(@example.flag) %>
+        <span class="badge d-flex px-0 align-items-center text-success rounded-pill">
+          <%= icon 'check-circle-fill', 'bi-small' %>
+          <span class="px-1">Fully Enabled</span>
+        </span>
+      <% elsif Flipper.enabled?(@example.flag, current_user) %>
+        <span class="badge d-flex px-0 align-items-center text-secondary rounded-pill">
+          <%= icon 'circle-half', 'bi-small' %>
+          <span class="px-1">Conditionally Enabled</span>
+        </span>
+      <% else %>
+        <span class="badge d-flex px-0 align-items-center text-danger rounded-pill">
+          <%= icon 'exclamation-triangle-fill', 'bi-small' %>
+          <span class="px-1">Disabled</span>
+        </span>
+      <% end %>
+    </div>
+    <ul class="list-group list-group-flush pt-0 border-top mt-2">
+      <li class="list-group-item d-flex px-0 flex-wrap justify-content-between align-items-start bg-transparent">
+        <div class="me-auto">
+          <small class="text-secondary">Everyone</small>
+        </div>
+        <% if Flipper.enabled?(@example.flag) %>
+          <span class="badge d-flex px-0 align-items-center text-success rounded-pill">
+            <%= icon 'check-circle-fill', 'bi-small' %>
+            <span class="px-1">Enabled</span>
+          </span>
+        <% else %>
+          <span class="badge d-flex px-0 align-items-center text-danger rounded-pill">
+            <%= icon 'exclamation-triangle-fill', 'bi-small' %>
+            <span class="px-1">Disabled</span>
+          </span>
+        <% end %>
+      </li>
+      <li class="list-group-item d-flex px-0 flex-wrap justify-content-between align-items-start bg-transparent">
+        <div class="me-auto">
+          <small class="text-secondary">Current User</small>
+        </div>
+        <% if Flipper.enabled?(@example.flag, current_user) %>
+          <span class="badge d-flex px-0 align-items-center text-success rounded-pill">
+            <%= icon 'check-circle-fill', 'bi-small' %>
+            <span class="px-1">Enabled</span>
+          </span>
+        <% else %>
+          <span class="badge d-flex px-0 align-items-center text-danger rounded-pill">
+            <%= icon 'exclamation-triangle-fill', 'bi-small' %>
+            <span class="px-1">Disabled</span>
+          </span>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body p-5">
+    <% if Flipper.enabled?(@example.flag, current_user) %>
+      <form class="d-flex gap-2 m-2">
+        <input type="search" placeholder="Search" class="form-control">
+        <input type="submit" value="Search" class="btn btn-primary">
+      </form>
+    <% else %>
+      <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Search is temporarily disabled while the team investigates performance issues.">
+        <form class="d-flex gap-2 m-2">
+          <input type="search" placeholder="Search" class="form-control" disabled>
+          <input type="submit" value="Search" class="btn btn-primary" disabled>
+        </form>
+      </div>
+    <% end %>
+  </div>
+  <div class="card-footer bg-dark border-0 p-0 position-relative">
+    <%= icon 'caret-up-fill', 'bi-large text-dark position-absolute top-0 start-50 translate-middle' %>
+
+    <div class="w-100">
+      <% if Flipper.enabled?(@example.flag) %>
+        <%= toggle(
+          label: 'Disable for Everyone',
+          form_target: disable_path(feature: @example.flag, user: false),
+          form_method: :delete,
+          code: "Flipper.disable(:#{@example.flag})"
+          ) %>
+      <% else %>
+        <%= toggle(
+          label: 'Enable for Everyone',
+          form_target: enable_path(feature: @example.flag, user: false),
+          form_method: :post,
+          code: "Flipper.enable(:#{@example.flag})"
+          ) %>
+      <% end %>
+    </div>
+
+    <div class="w-100 border-top border-secondary border-opacity-50">
+      <% if Flipper.enabled?(@example.flag, current_user) %>
+        <%= toggle(
+          label: 'Disable for Just You',
+          form_target: disable_path(feature: @example.flag, user: true),
+          form_method: :delete,
+          code: "Flipper.disable(:#{@example.flag}, current_user)"
+          ) %>
+      <% else %>
+        <%= toggle(
+          label: 'Enable for Just You',
+          form_target: enable_path(feature: @example.flag, user: true),
+          form_method: :post,
+          code: "Flipper.enable(:#{@example.flag}, current_user)"
+          ) %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+<% content_for :aside do %>
+  <!-- <div class="text-center"><%= icon 'arrow-up-circle-fill', 'bi-large mb-4 mt-0 text-secondary-subtle' %></div> -->
+<% end %>

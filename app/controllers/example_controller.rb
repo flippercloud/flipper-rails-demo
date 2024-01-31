@@ -3,5 +3,6 @@ class ExampleController < ApplicationController
   end
 
   def show
+    @example = Example.list.select { |ex| ex.slug == params[:slug] }.first
   end
 end

@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
   # The example pages
   get 'example/index', as: :examples
-  get 'example/show', as: :example
+  get 'example/:slug', to: "example#show", as: :example
 
 
   # The Flipper UI gem interface.
