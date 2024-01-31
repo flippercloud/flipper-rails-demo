@@ -18,13 +18,13 @@
           <header class="bg-body-tertiary rounded-3 border p-3 mt-3 mb-4 rounded-4">
             <nav>
               <ul class="nav m-0 p-0 d-flex align-items-center align-content-center justify-content-between">
-                <li>
+                <li class="flex-grow-1">
                   <%= link_to root_path, class: 'icon-link text-decoration-none flex-grow-2' do %>
                     <%= icon 'droplet' %> Flipper Playground
                   <% end %>
                 </li>
-                <li><a href="<%= demo_start_path %>" class="nav-link py-0 px-2 m-0">Demo</a></li>
-                <!-- Coming soon! <li><a href="/examples" class="nav-link py-0 px-2 m-0">Examples</a></li> -->
+                <li class="flex-shrink-0"><a href="<%= demo_start_path %>" class="nav-link py-0 px-2 m-0">Demo</a></li>
+                <li class="flex-shrink-0"><a href="<%= examples_path %>" class="nav-link py-0 px-2 m-0">Examples</a></li>
               </ul>
             </nav>
 

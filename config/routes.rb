@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   get 'demo/group'
   get 'demo/percentage'
 
+  # The example pages
+  get 'example/index', as: :examples
+  get 'example/show', as: :example
+
 
   # The Flipper UI gem interface.
   #
