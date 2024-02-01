@@ -1,5 +1,73 @@
-Managing External Tools
+<%= uses([
+  ["bar-chart-fill", "<strong>Disable analytics in development</strong> while making it easy for developers to enable when necessary so development and testing work don't skew the analytics."],
+  ["search", "<strong>Selectively enable/disable troubleshooting tools</strong> so developers can turn the tools on and off in production without change code or re-deploying."],
+  ["chat-heart-fill", "<strong>Suppress customer-centric widgets</strong> for internal team members that don't need them so everything runs faster."],
+]) %>
+
+<p>Let's considerer a tool like <a href="https://github.com/MiniProfiler/rack-mini-profiler"><code>rack-mini-profiler</code></a>. Would you ever want it on in production all of the time for each and every user? Probably not. You might however want to enable it in production for individual team members to troubleshoot a performance issue hasn't been reproducible in development.</p>
+
+<p>Alternatively, would you want it on for everyone by default in development? That may be less of an issue, but for some teammates, the widget may get in the way of doing design or other front-end work.</p>
+
+<p>Much of this can be handled with checks like <code>Rails.env.production?</code> or <code>Rails.env.local?</code>, but that can only easily consider the environment. And changing that logic would require re-deploying and the waiting that goes along with it.</p>
+
+<p>With Feature Flags, everyone on the team can have more granualar control over which tools and widgets they want to see in which environment, and they can turn them on or off any time they want without any changes to the code itself—let alone waiting to deploy new code.</p>
+
+<pre class="d-block border rounded-3 p-4"><code class="">class ApplicationController < ActionController::Base
+  before_action :setup_rack_mini_profiler
+
+  private
+
+  def setup_rack_mini_profiler
+    if Flipper.enabled?(:profiler, current_user)
+      Rack::MiniProfiler.authorize_request
+    end
+  end
+end</code></pre>
 
 <% content_for :aside do %>
-Managing External Tools Aside
+  <div class="card border-5 border-dark rounded-4">
+    <div class="card-header p-3 pb-2 border-bottom">
+      <%= flag_status(@example.flag) %>
+      <ul class="list-group list-group-flush pt-0 border-top mt-2">
+        <% [
+          ['Fully enabled for everyone?', Flipper.enabled?(@example.flag), "Flipper.enabled?(:#{@example.flag})"],
+          ['Enabled for the current user?', Flipper.enabled?(@example.flag, current_user), "Flipper.enabled?(:#{@example.flag}, current_user)"],
+        ].each do |scenario| %>
+          <%= status_item(*scenario) %>
+        <% end %>
+      </ul>
+    </div>
+    <div class="card-body p-5">
+      <div class="d-flex align-items-center align-content-center justify-content-start gap-2">
+        <% if Flipper.enabled?(@example.flag, current_user) %>
+          <%= icon 'check-circle-fill', 'bi-medium text-success' %>
+          <span>Profiling was <ins>enabled</ins> for this request, but only for the current user.</span>
+        <% else %>
+          <%= icon 'x-circle-fill', 'bi-medium text-danger' %>
+          Profiling was <del>disabled</del> for this request.
+        <% end %>
+      </div>
+    </div>
+    <%= controls "Update Search" do %>
+      <div class="w-100">
+        <% if Flipper.enabled?(@example.flag, current_user) %>
+          <%= toggle(
+            label: 'Disable Profiler for Just You',
+            form_target: disable_path(feature: @example.flag, user: true),
+            form_method: :delete,
+            ruby: "Flipper.disable(:#{@example.flag}, current_user)",
+            cli: "flipper disable #{@example.flag} --actor #{current_user.flipper_id}"
+            ) %>
+        <% else %>
+          <%= toggle(
+            label: 'Enable Profiler for Just You',
+            form_target: enable_path(feature: @example.flag, user: true),
+            form_method: :post,
+            ruby: "Flipper.enable(:#{@example.flag}, current_user)",
+            cli: "flipper enable #{@example.flag} --actor #{current_user.flipper_id}"
+            ) %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 <% end %>

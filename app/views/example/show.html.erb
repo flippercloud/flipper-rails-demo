@@ -6,11 +6,9 @@
 </ol>
 <% end %>
 
-<div class="d-flex align-items-center align-content-center justify-content-between">
-  <h1><%= @example.title %></h1>
-</div>
 
-<p><%= @example.desc %></p>
+<h1><%= @example.title %></h1>
+<p class="lead border-bottom pb-3 mb-3"><%= @example.desc %></p>
 
 
 <%= render @example %>
