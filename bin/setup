@@ -35,9 +35,6 @@ FileUtils.chdir APP_ROOT do
   system! "gem install bundler --conservative"
   system("bundle check") || system!("bundle install")
 
-  puts "\n== Creating demo feature flags =="
-  system! "bin/rails flipper:initialize"
-
   puts "\n== Preparing database =="
   system! "bin/rails db:prepare"
 
