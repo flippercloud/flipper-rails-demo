@@ -1,7 +1,7 @@
 # Helper to get an encrypted token from Cloud and securely store it in the session
 class EncryptedToken
   MESSAGE_ENCRYPTER = ActiveSupport::MessageEncryptor.new(
-    ActiveSupport::KeyGenerator.new(ENV["DEMO_SHARED_KEY"] || "demo").generate_key(
+    ActiveSupport::KeyGenerator.new(ENV["PLAYGROUND_SHARED_KEY"] || "demo").generate_key(
       "encrypted-token", ActiveSupport::MessageEncryptor.key_len
     ),
     url_safe: true
