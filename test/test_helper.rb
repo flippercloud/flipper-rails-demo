@@ -1,5 +1,6 @@
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require 'webmock/minitest'
 
 # Override Flipper Cloud configuration for tests
 # Read more about testing with Flipper Cloud:
