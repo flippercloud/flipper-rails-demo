@@ -11,8 +11,8 @@
       <%= flag_status(@example.flag) %>
       <ul class="list-group list-group-flush pt-0 border-top mt-2">
         <% [
-          ['Everyone', Flipper.enabled?(@example.flag)],
-          ['Current User', Flipper.enabled?(@example.flag, current_user)],
+          ['Fully enabled for everyone?', Flipper.enabled?(@example.flag), "Flipper.enabled?(:#{@example.flag})"],
+          ['Enabled for the current user?', Flipper.enabled?(@example.flag, current_user), "Flipper.enabled?(:#{@example.flag}, current_user)"],
         ].each do |scenario| %>
           <%= status_item(*scenario) %>
         <% end %>
@@ -40,7 +40,7 @@
             label: 'Disable for Everyone',
             form_target: disable_path(feature: @example.flag, user: false),
             form_method: :delete,
-            code: "Flipper.disable(:#{@example.flag})",
+            ruby: "Flipper.disable(:#{@example.flag})",
             cli: "flipper disable #{@example.flag}"
             ) %>
         <% else %>
@@ -48,18 +48,19 @@
             label: 'Enable for Everyone',
             form_target: enable_path(feature: @example.flag, user: false),
             form_method: :post,
-            code: "Flipper.enable(:#{@example.flag})",
+            ruby: "Flipper.enable(:#{@example.flag})",
             cli: "flipper enable #{@example.flag}"
             ) %>
         <% end %>
       </div>
+      <% if !Flipper.enabled?(@example.flag) %>
       <div class="w-100 border-top border-secondary border-opacity-50">
         <% if Flipper.enabled?(@example.flag, current_user) %>
           <%= toggle(
             label: 'Disable for Just You',
             form_target: disable_path(feature: @example.flag, user: true),
             form_method: :delete,
-            code: "Flipper.disable(:#{@example.flag}, current_user)",
+            ruby: "Flipper.disable(:#{@example.flag}, current_user)",
             cli: "flipper disable #{@example.flag} --actor #{current_user.flipper_id}"
             ) %>
         <% else %>
@@ -67,11 +68,12 @@
             label: 'Enable for Just You',
             form_target: enable_path(feature: @example.flag, user: true),
             form_method: :post,
-            code: "Flipper.enable(:#{@example.flag}, current_user)",
+            ruby: "Flipper.enable(:#{@example.flag}, current_user)",
             cli: "flipper enable #{@example.flag} --actor #{current_user.flipper_id}"
             ) %>
         <% end %>
       </div>
+      <% end %>
     <% end %>
   </div>
 <% end %>

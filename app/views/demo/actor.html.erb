@@ -25,47 +25,76 @@
 <% end %>
 
 <% content_for :aside do %>
-  <%= controls('Control Flags for Individual Actors') do %>
-    <% if Flipper.enabled?(:demo_actor) %>
-      <p>The <code>demo_actor</code> feature is <ins>enabled</ins> for everyone.</p>
-    <% else %>
-      <p>The <code>demo_actor</code> feature is <del>disabled</del> for anyone that doesn't have special authorization.</p>
-    <% end %>
+  <div class="card border-5 border-dark rounded-4">
+    <div class="card-header p-3 pb-2 border-bottom">
+      <%= flag_status(:demo_actor) %>
+      <ul class="list-group list-group-flush pt-0 border-top mt-2">
+        <% [
+          ['Fully enabled for everyone?', Flipper.enabled?(:demo_actor), 'Flipper.enabled?(:demo_actor)'],
+          ['Enabled for the current user?', Flipper.enabled?(:demo_actor, current_user), "Flipper.enabled?(:demo_actor, current_user)"],
+        ].each do |scenario| %>
+          <%= status_item(*scenario) %>
+        <% end %>
+      </ul>
+    </div>
+    <div class="card-body p-5">
+      <% if Flipper.enabled?(:demo_actor) %>
+        <p class="m-0">The <code>demo_actor</code> feature is <ins>enabled</ins> for everyone.</p>
+      <% else %>
+        <p class="m-0">The <code>demo_actor</code> feature is <del>disabled</del> for anyone that doesn't have special authorization.</p>
+      <% end %>
 
-    <% if current_user && Flipper.enabled?(:demo_actor) %>
-      <p>The <code>demo_actor</code> feature is <em>implicitly</em> <ins>enabled</ins> for you since it's enabled for everyone.</p>
-    <% elsif current_user && Flipper.enabled?(:demo_actor, current_user) %>
-      <p>The <code>demo_actor</code> feature is <em>explicitly</em> <ins>enabled</ins> for you.</p>
-    <% elsif current_user && !Flipper.enabled?(:demo_actor, current_user) %>
-      <p>The <code>demo_actor</code> feature is <em>implicitly</em> <del>disabled</del> for you as well.</p>
+      <% if Flipper.enabled?(:demo_actor) %>
+        <p class="m-0">The <code>demo_actor</code> feature is <em>implicitly</em> <ins>enabled</ins> for you since it's enabled for everyone.</p>
+      <% elsif Flipper.enabled?(:demo_actor, current_user) %>
+        <p class="m-0">The <code>demo_actor</code> feature is <em>explicitly</em> <ins>enabled</ins> for you.</p>
+      <% elsif !Flipper.enabled?(:demo_actor, current_user) %>
+        <p class="m-0">The <code>demo_actor</code> feature is <em>implicitly</em> <del>disabled</del> for you as well.</p>
+      <% end %>
+    </div>
+    <%= controls('Toggling an Flag for an Actor') do %>
+      <div class="w-100">
+        <% if Flipper.enabled?(:demo_actor) %>
+          <%= toggle(
+            label: 'Disable for Everyone',
+            form_target: disable_path(feature: :demo_actor, user: false),
+            form_method: :delete,
+            ruby: "Flipper.disable(:#{:demo_actor})",
+            cli: "flipper disable #{:demo_actor}"
+            ) %>
+        <% else %>
+          <%= toggle(
+            label: 'Enable for Everyone',
+            form_target: enable_path(feature: :demo_actor, user: false),
+            form_method: :post,
+            ruby: "Flipper.enable(:#{:demo_actor})",
+            cli: "flipper enable #{:demo_actor}"
+            ) %>
+        <% end %>
+      </div>
+      <% if !Flipper.enabled?(:demo_actor) %>
+      <div class="w-100 border-top border-secondary border-opacity-50">
+        <% if Flipper.enabled?(:demo_actor, current_user) %>
+          <%= toggle(
+            label: 'Disable for Just You',
+            form_target: disable_path(feature: :demo_actor, user: true),
+            form_method: :delete,
+            ruby: "Flipper.disable(:#{:demo_actor}, current_user)",
+            cli: "flipper disable #{:demo_actor} --actor #{current_user.flipper_id}"
+            ) %>
+        <% else %>
+          <%= toggle(
+            label: 'Enable for Just You',
+            form_target: enable_path(feature: :demo_actor, user: true),
+            form_method: :post,
+            ruby: "Flipper.enable(:#{:demo_actor}, current_user)",
+            cli: "flipper enable #{:demo_actor} --actor #{current_user.flipper_id}"
+            ) %>
+        <% end %>
+      </div>
+      <% end %>
     <% end %>
-
-    <% if current_user && Flipper.enabled?(:demo_actor) %>
-      <%= toggle(
-        label: 'Disable for Everyone',
-        form_target: disable_path(feature: :demo_actor, user: false),
-        form_method: :delete,
-        code: 'Flipper.disable(:demo_actor)',
-        cli: 'flipper disable demo_actor'
-        ) %>
-    <% elsif current_user && Flipper.enabled?(:demo_actor, current_user) %>
-      <%= toggle(
-        label: 'Enable for Everyone',
-        form_target: enable_path(feature: :demo_actor, user: false),
-        form_method: :post,
-        code: 'Flipper.enable(:demo_actor)',
-        cli: 'flipper enable demo_actor'
-        ) %>
-    <% elsif current_user %>
-      <%= toggle(
-        label: 'Enable for Just You',
-        form_target: enable_path(feature: :demo_actor, user: true),
-        form_method: :post,
-        code: 'Flipper.enable(:demo_actor, current_user)',
-        cli: "flipper enable demo_actor --actor #{current_user.flipper_id}"
-        ) %>
-    <% end %>
-  <% end %>
+  </div>
 <% end %>
 
 <% content_for :footer do %>

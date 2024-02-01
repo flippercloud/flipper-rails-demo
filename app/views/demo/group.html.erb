@@ -14,7 +14,7 @@
 
   <%= form_with model: current_user, method: :patch, url: profile_path do |f| %>
     <%= f.text_field :beverage, value: 'coffee', hidden: true %>
-    <%= f.submit "I Prefer Coffee!", class: 'btn btn-primary w-100 rounded rounded-pill' %>
+    <%= f.submit "I Prefer Coffee!", class: 'btn btn-lg btn-primary w-100 rounded rounded-pill' %>
   <% end %>
 <% elsif Flipper.enabled?(:demo_group, current_user) %>
   <h1>Welcome to the coffee drinker group!</h1>
@@ -37,52 +37,68 @@
 
 
 <% content_for :aside do %>
-  <%= controls('Control Flags for a Group of Actors') do %>
-    <% if Flipper.enabled?(:demo_group) %>
-      <p>The <code>demo_group</code> feature is <ins>enabled</ins> for everyone.</p>
-    <% else %>
-      <p>The <code>demo_group</code> feature is <del>disabled</del> for anyone that doesn't have special authorization.</p>
+  <div class="card border-5 border-dark rounded-4">
+    <div class="card-header p-3 pb-2 border-bottom">
+      <%= flag_status(:demo_group) %>
+      <ul class="list-group list-group-flush pt-0 border-top mt-2">
+        <% [
+          ['Fully enabled for everyone?', Flipper.enabled?(:demo_group), 'Flipper.enabled?(:demo_group)'],
+          ['Enabled for the current user?', Flipper.enabled?(:demo_group, current_user), "Flipper.enabled?(:demo_group, current_user)"],
+        ].each do |scenario| %>
+          <%= status_item(*scenario) %>
+        <% end %>
+      </ul>
+    </div>
+    <div class="card-body p-5">
+      <% if Flipper.enabled?(:demo_group) %>
+        <p class="m-0">The <code>demo_group</code> feature is <ins>enabled</ins> for everyone.</p>
+      <% else %>
+        <p class="m-0">The <code>demo_group</code> feature is <del>disabled</del> for anyone that doesn't have special authorization.</p>
+      <% end %>
+
+      <hr>
+
+      <% if Flipper.enabled?(:demo_group, @water_drinker) %>
+        <p class="m-0">The <code>demo_group</code> feature is <ins>enabled</ins> for water drinkers.</p>
+      <% else %>
+        <p class="m-0">The <code>demo_group</code> feature is <del>disabled</del> for water drinkers.</p>
+      <% end %>
+
+
+      <% if Flipper.enabled?(:demo_group, @tea_drinker) %>
+        <p class="m-0">The <code>demo_group</code> feature is <ins>enabled</ins> for tea drinkers.</p>
+      <% else %>
+        <p class="m-0">The <code>demo_group</code> feature is <del>disabled</del> for tea drinkers.</p>
+      <% end %>
+
+      <% if Flipper.enabled?(:demo_group, @coffee_drinker) %>
+        <p class="m-0">The <code>demo_group</code> feature is <ins>enabled</ins> for coffee drinkers.</p>
+      <% else %>
+        <p class="m-0">The <code>demo_group</code> feature is <del>disabled</del> for coffee drinkers.</p>
+      <% end %>
+    </div>
+    <%= controls('Toggling an Flag for an Actor') do %>
+      <div class="w-100">
+        <% if Flipper.enabled?(:demo_group, @coffee_drinker) %>
+          <%= toggle(
+            label: 'Disable for Coffee Drinkers',
+            form_target: disable_path(feature: :demo_group, group: :coffee_drinkers),
+            form_method: :delete,
+            ruby: 'Flipper.disable_group(:demo_group, :coffee_drinkers)',
+            cli: 'flipper disable demo_group --group=coffee_drinkers'
+            ) %>
+        <% else %>
+          <%= toggle(
+            label: 'Enable for Coffee Drinkers',
+            form_target: enable_path(feature: :demo_group, group: :coffee_drinkers),
+            form_method: :post,
+            ruby: 'Flipper.enable_group(:demo_group, :coffee_drinkers)',
+            cli: 'flipper enable demo_group --group=coffee_drinkers'
+            ) %>
+        <% end %>
+      </div>
     <% end %>
-
-    <hr>
-
-    <% if Flipper.enabled?(:demo_group, @water_drinker) %>
-      <p>The <code>demo_group</code> feature is <ins>enabled</ins> for water drinkers.</p>
-    <% else %>
-      <p>The <code>demo_group</code> feature is <del>disabled</del> for water drinkers.</p>
-    <% end %>
-
-
-    <% if Flipper.enabled?(:demo_group, @tea_drinker) %>
-      <p>The <code>demo_group</code> feature is <ins>enabled</ins> for tea drinkers.</p>
-    <% else %>
-      <p>The <code>demo_group</code> feature is <del>disabled</del> for tea drinkers.</p>
-    <% end %>
-
-    <% if Flipper.enabled?(:demo_group, @coffee_drinker) %>
-      <p>The <code>demo_group</code> feature is <ins>enabled</ins> for coffee drinkers.</p>
-    <% else %>
-      <p>The <code>demo_group</code> feature is <del>disabled</del> for coffee drinkers.</p>
-    <% end %>
-
-    <% if Flipper.enabled?(:demo_group, @coffee_drinker) %>
-      <%= toggle(
-        label: 'Disable for Coffee Drinkers',
-        form_target: disable_path(feature: :demo_group, group: :coffee_drinkers),
-        form_method: :delete,
-        code: 'Flipper.disable_group(:demo_group, :coffee_drinkers)',
-        cli: 'flipper disable demo_group --group=coffee_drinkers'
-        ) %>
-    <% else %>
-      <%= toggle(
-        label: 'Enable for Coffee Drinkers',
-        form_target: enable_path(feature: :demo_group, group: :coffee_drinkers),
-        form_method: :post,
-        code: 'Flipper.enable_group(:demo_group, :coffee_drinkers)',
-        cli: 'flipper enable demo_group --group=coffee_drinkers'
-        ) %>
-    <% end %>
-  <% end %>
+  </div>
 <% end %>
 
 <% content_for :footer do %>

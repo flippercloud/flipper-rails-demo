@@ -49,59 +49,77 @@
 <% end %>
 
 <% content_for :aside do %>
-  <%= controls('Control Flags for a Percentage of Actors') do %>
+  <div class="card border-5 border-dark rounded-4">
+    <div class="card-header p-3 pb-2 border-bottom">
+      <%= flag_status(:slow_roll) %>
+      <ul class="list-group list-group-flush pt-0 border-top mt-2">
+        <% [
+          ['Fully enabled for everyone?', Flipper.enabled?(:slow_roll), 'Flipper.enabled?(:slow_roll)'],
+          ['Enabled for the current user?', Flipper.enabled?(:slow_roll, current_user), "Flipper.enabled?(:slow_roll, current_user)"],
+        ].each do |scenario| %>
+          <%= status_item(*scenario) %>
+        <% end %>
+      </ul>
+    </div>
+    <div class="card-body p-5">
 
-    <% if Flipper.enabled?(:slow_roll) %>
-      <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for everyone.</p>
-    <% else %>
-      <p>The <code>slow_roll</code> feature is <del>disabled</del> for those without special permission.</p>
-    <% end %>
+      <% if Flipper.enabled?(:slow_roll) %>
+        <p class="m-0">The <code>:slow_roll</code> feature is <ins>enabled</ins> for everyone.</p>
+      <% else %>
+        <p class="m-0">The <code>:slow_roll</code> feature is <del>disabled</del> for those without special permission.</p>
+      <% end %>
 
-    <% if Flipper.enabled?(:slow_roll, current_user) %>
-      <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for you.</p>
-    <% else %>
-      <p>The <code>slow_roll</code> feature is <del>disabled</del> for you.</p>
-    <% end %>
+      <% if Flipper.enabled?(:slow_roll, current_user) %>
+        <p class="m-0">The <code>:slow_roll</code> feature is <ins>enabled</ins> for you.</p>
+      <% else %>
+        <p class="m-0">The <code>:slow_roll</code> feature is <del>disabled</del> for you.</p>
+      <% end %>
 
-    <% if @current_percentage > 0 %>
       <hr>
 
-      <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
+      <p class="m-0">The <code>:slow_roll</code> feature is <ins>enabled</ins> for
         <%= pluralize(enabled_water_drinkers, 'water drinker') %>
         <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_water_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
 
-      <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
+      <p class="m-0">The <code>:slow_roll</code> feature is <ins>enabled</ins> for
         <%= pluralize(enabled_tea_drinkers, 'tea drinker') %>
         <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_tea_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
 
-      <p>The <code>slow_roll</code> feature is <ins>enabled</ins> for
+      <p class="m-0">The <code>:slow_roll</code> feature is <ins>enabled</ins> for
         <%= pluralize(enabled_coffee_drinkers, 'coffee drinker') %>
         <small class="badge text-bg-light border rounded-pill">~<%= number_to_percentage((enabled_coffee_drinkers * 100) / (User.water.any? ? User.water.count : 0), precision: 0) %></small></p>
+
+    </div>
+    <%= controls('Toggling an Flag for an Actor') do %>
+        <% if @current_percentage < 100 %>
+          <div class="w-100">
+            <%= toggle(
+              label: 'Increase by 25%',
+              form_target: enable_path(feature: :slow_roll, percentage: @current_percentage + 25),
+              form_method: :post,
+              ruby: "Flipper.enable_percentage_of_actors(:slow_roll, #{ @current_percentage + 25 })",
+              cli: "flipper enable slow_roll --percentage-of-actors=#{ @current_percentage + 25 }"
+              ) %>
+          </div>
+        <% end %>
+
+        <% if @current_percentage > 0 %>
+          <% if @current_percentage < 100 %>
+            <div class="w-100 border-top border-secondary border-opacity-50">
+          <% else %>
+            <div class="w-100">
+          <% end %>
+            <%= toggle(
+              label: 'Disable (Back to 0%)',
+              form_target: disable_path(feature: :slow_roll, percentage: 0),
+              form_method: :delete,
+              ruby: 'Flipper.disable_percentage_of_actors(:slow_roll)',
+              cli: 'flipper disable slow_roll --percentage-of-actors=0'
+              ) %>
+          </div>
+        <% end %>
     <% end %>
-
-
-    <% if @current_percentage < 100 %>
-      <%= toggle(
-        label: 'Increase by 25%',
-        form_target: enable_path(feature: :slow_roll, percentage: @current_percentage + 25),
-        form_method: :post,
-        code: "Flipper.enable_percentage_of_actors(:slow_roll, #{ @current_percentage + 25 })",
-        cli: "flipper enable slow_roll --percentage-of-actors=#{ @current_percentage + 25 }"
-        ) %>
-    <% end %>
-
-    <% if @current_percentage > 0 %>
-      <% if @current_percentage < 100 %><hr><% end %>
-      <%= toggle(
-        label: 'Disable (Back to 0%)',
-        form_target: disable_path(feature: :slow_roll, percentage: 0),
-        form_method: :delete,
-        code: 'Flipper.disable_percentage_of_actors(:slow_roll)',
-        cli: 'flipper disable slow_roll --percentage-of-actors=0'
-        ) %>
-    <% end %>
-
-  <% end %>
+  </div>
 <% end %>
 
 <% content_for :footer do %>

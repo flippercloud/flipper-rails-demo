@@ -1,17 +1,18 @@
-<li class="list-group-item d-flex px-0 flex-wrap justify-content-between align-items-start bg-transparent">
+<li class="list-group-item d-flex align-items-center align-content-center justify-content-between gap-2 px-0 bg-transparent">
   <div class="me-auto">
-    <small class="text-secondary"><%= label %></small>
+    <small class="d-block fst-italic text-body-tertiary"><%= label %></small>
+    <small><code class="fw-bold text-body-secondary"><%= code %></code></small>
   </div>
 
   <% if condition %>
-    <span class="badge d-flex px-0 align-items-center text-success rounded-pill">
+    <span class="d-flex px-0 align-items-center align-content-center justify-content-end gap-1 text-success">
       <%= icon 'check-circle-fill', 'bi-small' %>
-      <span class="px-1">Enabled</span>
+      <small class="fw-bold">True</small>
     </span>
   <% else %>
-    <span class="badge d-flex px-0 align-items-center text-danger rounded-pill">
+    <span class="d-flex px-0 align-items-center align-content-center justify-content-end gap-1 text-danger">
       <%= icon 'exclamation-triangle-fill', 'bi-small' %>
-      <span class="px-1">Disabled</span>
+      <small class="fw-bold">False</small>
     </span>
   <% end %>
 </li>

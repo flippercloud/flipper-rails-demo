@@ -20,7 +20,17 @@
 
 <% content_for :aside do %>
   <div class="card border-5 border-dark rounded-4">
-    <div class="card-header p-3 border-bottom">
+    <div class="card-header p-3 pb-2 border-bottom">
+      <%= flag_status(:demo) %>
+      <ul class="list-group list-group-flush pt-0 border-top mt-2">
+        <% [
+          ['Fully enabled for everyone?', Flipper.enabled?(:demo), 'Flipper.enabled?(:demo)'],
+        ].each do |scenario| %>
+          <%= status_item(*scenario) %>
+        <% end %>
+      </ul>
+    </div>
+    <div class="card-body p-5">
       <% if Flipper.enabled?(:demo) %>
         The <code>:demo</code> flag is <ins>enabled</ins>! You can toggle it off and back on again if you want&hellip;
       <% else %>
@@ -33,7 +43,7 @@
           label: 'Disable the Demo Feature Flag',
           form_target: disable_path(feature: :demo),
           form_method: :delete,
-          code: 'Flipper.disable(:demo)',
+          ruby: 'Flipper.disable(:demo)',
           cli: 'flipper disable demo'
           ) %>
       <% else %>
@@ -41,12 +51,11 @@
           label: 'Enable the Demo Feature Flag',
           form_target: enable_path(feature: :demo),
           form_method: :post,
-          code: 'Flipper.enable(:demo)',
+          ruby: 'Flipper.enable(:demo)',
           cli: 'flipper enable demo'
         ) %>
       <% end %>
     <% end %>
-
   </div>
 <% end %>
 
