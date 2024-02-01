@@ -1,8 +1,6 @@
 class DemoController < ApplicationController
   def reset
-    Flipper.features.each(&:disable)
-    Flipper.disable_percentage_of_actors(:slow_roll)
-    Flipper.disable_percentage_of_time(:slow_roll)
+    Flipper.features.each(&:clear)
     reset_session
 
     flash[:notice] = "The demo is reset and ready to go through again."

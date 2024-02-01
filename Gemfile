@@ -16,6 +16,7 @@ group :development, :test do
   gem 'capybara'
   gem 'dotenv-rails'
   gem 'selenium-webdriver'
+  gem 'webmock'
 end
 
 group :development do

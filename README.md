@@ -1,7 +1,6 @@
-# Flipper Rails Demo
+# Flipper Rails Playground
 
-This is an example Rails application that serves as a working demo to walk you through the basics of using Flipper. You can run the demo and interact with the
-feature toggles, or you can browser the source code to see the commands for toggling features.
+This is an example Rails application that serves as a playground and working demo to walk you through the basics of using Flipper. You can run the playground and interact with the feature toggles, or you can browse the source code to see the commands for toggling features.
 
 ## Automated Setup (Fast and Easy)
 
@@ -11,7 +10,7 @@ Once you've pulled down the repo, you should be able to run `bin/setup`, and the
 $ bin/setup
 ```
 
-This demo already has the pre-requisites setup and ready to go. You only need to add the `FLIPPER_CLOUD_TOKEN`.
+This app already has the pre-requisites setup and ready to go.
 
 ## Manual Setup (See how it all works!)
 
@@ -21,7 +20,7 @@ This demo already has the pre-requisites setup and ready to go. You only need to
 $ cp .env.example .env
 ```
 
-2. Get your `FLIPPER_CLOUD_TOKEN` by going to your project's "Tokens" page. (Create a test project for the demo if you'd_prefer.) You can use the existing token or create a new one and then copy the value into your `.env` file.
+1. Get your `FLIPPER_CLOUD_TOKEN` by going to your project's "Tokens" page in [Flipper Cloud](https://www.flippercloud.io/dashboard). (Create a test project if you'd_prefer.) You can use the existing token or create a new one and then copy the value into your `.env` file.
 
 Once your `.env` is set up with the `FLIPPER_CLOUD_TOKEN` from your account, you can start up the application:
 
@@ -31,26 +30,23 @@ bin/rails db:prepare
 bin/rails server
 ```
 
-Then, once the server is running, you can toggle the feature via command-line with the instructions shown on the home page.
+Then, visit http://localhost:3000 in your browser.
 
 * * *
 
 # Adding Flipper to an Existing Rails App
 
-Step by step instructions for using [Flipper](https://flippercloud.io) with Rails.
+Step by step instructions for using [Flipper](https://www.flippercloud.io) with Rails.
 
 ## Step 1
 
-Add `flipper-cloud` to the `Gemfile`.
+Add `flipper` to the `Gemfile`.
 
-```ruby
-flipper_version = '~> 0.25.0'
-gem 'flipper-cloud', flipper_version
-gem 'flipper-active_record', flipper_version
+```console
+$ bundle add flipper-active_record
 ```
 
-* Run `bundle` to install.
-* Run `bin/rails g flipper:active_record` to generate migration for ActiveRecord adapter.
+* Run `bin/rails g flipper:setup` to generate migration for ActiveRecord adapter.
 * Run `bin/rails db:migrate` to run migration for ActiveRecord adapter.
 
 ## Step 2
@@ -62,11 +58,7 @@ Create an account on [flippercloud.io](https://flippercloud.io) and get the toke
 ### Configure cloud using ENV vars (preferred):
 
 ```
-# required
 FLIPPER_CLOUD_TOKEN=<your environment token here>
-
-# optional (for production environment so you never poll cloud)
-FLIPPER_CLOUD_SYNC_SECRET=<webhook sync secret>
 ```
 
 ## Step 4

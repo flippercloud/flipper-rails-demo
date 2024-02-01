@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get 'example/:slug', to: "example#show", as: :example
 
 
+  get 'connect/:token', to: "cloud#connect", as: :cloud_connect
+
   # The Flipper UI gem interface.
   #
   # IMPORTANT: In production, you'd want to limit access to this, or anybody would be able to
