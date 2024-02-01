@@ -85,7 +85,8 @@
         label: 'Increase by 25%',
         form_target: enable_path(feature: :slow_roll, percentage: @current_percentage + 25),
         form_method: :post,
-        code: "Flipper.enable_percentage_of_actors(:slow_roll, #{ @current_percentage + 25 })"
+        code: "Flipper.enable_percentage_of_actors(:slow_roll, #{ @current_percentage + 25 })",
+        cli: "flipper enable slow_roll --percentage-of-actors=#{ @current_percentage + 25 }"
         ) %>
     <% end %>
 
@@ -95,7 +96,8 @@
         label: 'Disable (Back to 0%)',
         form_target: disable_path(feature: :slow_roll, percentage: 0),
         form_method: :delete,
-        code: 'Flipper.disable_percentage_of_actors(:slow_roll)'
+        code: 'Flipper.disable_percentage_of_actors(:slow_roll)',
+        cli: 'flipper disable slow_roll --percentage-of-actors=0'
         ) %>
     <% end %>
 

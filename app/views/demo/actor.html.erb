@@ -45,21 +45,24 @@
         label: 'Disable for Everyone',
         form_target: disable_path(feature: :demo_actor, user: false),
         form_method: :delete,
-        code: 'Flipper.disable(:demo_actor)'
+        code: 'Flipper.disable(:demo_actor)',
+        cli: 'flipper disable demo_actor'
         ) %>
     <% elsif current_user && Flipper.enabled?(:demo_actor, current_user) %>
       <%= toggle(
         label: 'Enable for Everyone',
         form_target: enable_path(feature: :demo_actor, user: false),
         form_method: :post,
-        code: 'Flipper.enable(:demo_actor)'
+        code: 'Flipper.enable(:demo_actor)',
+        cli: 'flipper enable demo_actor'
         ) %>
     <% elsif current_user %>
       <%= toggle(
         label: 'Enable for Just You',
         form_target: enable_path(feature: :demo_actor, user: true),
         form_method: :post,
-        code: 'Flipper.enable(:demo_actor, current_user)'
+        code: 'Flipper.enable(:demo_actor, current_user)',
+        cli: "flipper enable demo_actor --actor #{current_user.flipper_id}"
         ) %>
     <% end %>
   <% end %>

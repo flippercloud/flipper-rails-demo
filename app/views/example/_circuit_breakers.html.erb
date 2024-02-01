@@ -87,6 +87,7 @@
   </div>
   <div class="card-footer bg-dark border-0 p-0 position-relative">
     <%= icon 'caret-up-fill', 'bi-large text-dark position-absolute top-0 start-50 translate-middle' %>
+    <%= render "shared/toggle_tabs" %>
 
     <div class="w-100">
       <% if Flipper.enabled?(@example.flag) %>
@@ -94,14 +95,16 @@
           label: 'Disable for Everyone',
           form_target: disable_path(feature: @example.flag, user: false),
           form_method: :delete,
-          code: "Flipper.disable(:#{@example.flag})"
+          code: "Flipper.disable(:#{@example.flag})",
+          cli: "flipper disable #{@example.flag}"
           ) %>
       <% else %>
         <%= toggle(
           label: 'Enable for Everyone',
           form_target: enable_path(feature: @example.flag, user: false),
           form_method: :post,
-          code: "Flipper.enable(:#{@example.flag})"
+          code: "Flipper.enable(:#{@example.flag})",
+          cli: "flipper enable #{@example.flag}"
           ) %>
       <% end %>
     </div>
@@ -112,14 +115,16 @@
           label: 'Disable for Just You',
           form_target: disable_path(feature: @example.flag, user: true),
           form_method: :delete,
-          code: "Flipper.disable(:#{@example.flag}, current_user)"
+          code: "Flipper.disable(:#{@example.flag}, current_user)",
+          cli: "flipper disable #{@example.flag} --actor #{current_user.flipper_id}"
           ) %>
       <% else %>
         <%= toggle(
           label: 'Enable for Just You',
           form_target: enable_path(feature: @example.flag, user: true),
           form_method: :post,
-          code: "Flipper.enable(:#{@example.flag}, current_user)"
+          code: "Flipper.enable(:#{@example.flag}, current_user)",
+          cli: "flipper enable #{@example.flag} --actor #{current_user.flipper_id}"
           ) %>
       <% end %>
     </div>

@@ -26,7 +26,8 @@
         label: 'Disable the Demo Feature Flag',
         form_target: disable_path(feature: :demo),
         form_method: :delete,
-        code: 'Flipper.disable(:demo)'
+        code: 'Flipper.disable(:demo)',
+        cli: 'flipper disable demo'
         ) %>
     <% else %>
       <p>The <code>:demo</code> flag is <del>disabled</del>. <span class="text-secondary">(Flipper features are disabled by default.)</span></p>
@@ -34,8 +35,9 @@
         label: 'Enable the Demo Feature Flag',
         form_target: enable_path(feature: :demo),
         form_method: :post,
-        code: 'Flipper.enable(:demo)'
-        ) %>
+        code: 'Flipper.enable(:demo)',
+        cli: 'flipper enable demo'
+      ) %>
     <% end %>
   <% end %>
 <% end %>

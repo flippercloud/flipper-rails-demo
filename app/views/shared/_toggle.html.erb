@@ -2,7 +2,10 @@
   <div class="bg-dark ps-3 pe-2 py-3 d-flex align-items-center align-content-center justify-content-between">
     <small class="d-flex flex-column">
       <code class="text-white-50"># <%= label %></code>
-      <code class="text-white"><%= code %></code>
+      <div class="tab-content">
+        <code class="tab-pane fade show active toggle-console" role="tabpanel">❯ <span class="text-white"><%= code %></span></code>
+        <code class="tab-pane fade toggle-cli" role="tabpanel">$ <span class="text-white"><%= cli %></span></code>
+      </div>
     </small>
     <%= button_to('Run', form_target, method: form_method, class: "px-3 me-2 btn btn-sm btn-#{style} bg-#{style} border-#{style} rounded rounded-pill fw-normal border-opacity-50") %>
   </div>

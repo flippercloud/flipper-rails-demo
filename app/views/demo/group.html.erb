@@ -70,14 +70,16 @@
         label: 'Disable for Coffee Drinkers',
         form_target: disable_path(feature: :demo_group, group: :coffee_drinkers),
         form_method: :delete,
-        code: 'Flipper.disable_group(:demo_group, :coffee_drinkers)'
+        code: 'Flipper.disable_group(:demo_group, :coffee_drinkers)',
+        cli: 'flipper disable demo_group --group=coffee_drinkers'
         ) %>
     <% else %>
       <%= toggle(
         label: 'Enable for Coffee Drinkers',
         form_target: enable_path(feature: :demo_group, group: :coffee_drinkers),
         form_method: :post,
-        code: 'Flipper.enable_group(:demo_group, :coffee_drinkers)'
+        code: 'Flipper.enable_group(:demo_group, :coffee_drinkers)',
+        cli: 'flipper enable demo_group --group=coffee_drinkers'
         ) %>
     <% end %>
   <% end %>
