@@ -33,9 +33,6 @@
                 <%= yield :breadcrumbs %>
               </nav>
             <% end %>
-
-            <%= flash %>
-
           </header>
         </div>
       </div>
@@ -44,6 +41,8 @@
 
       <div class="row mb-4">
         <main class="col col-12 col-lg-7 mx-auto">
+          <%= flash %>
+
           <%= yield %>
         </main>
       </div>
