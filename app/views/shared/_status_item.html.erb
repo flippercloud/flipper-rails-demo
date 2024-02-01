@@ -1,0 +1,17 @@
+<li class="list-group-item d-flex px-0 flex-wrap justify-content-between align-items-start bg-transparent">
+  <div class="me-auto">
+    <small class="text-secondary"><%= label %></small>
+  </div>
+
+  <% if condition %>
+    <span class="badge d-flex px-0 align-items-center text-success rounded-pill">
+      <%= icon 'check-circle-fill', 'bi-small' %>
+      <span class="px-1">Enabled</span>
+    </span>
+  <% else %>
+    <span class="badge d-flex px-0 align-items-center text-danger rounded-pill">
+      <%= icon 'exclamation-triangle-fill', 'bi-small' %>
+      <span class="px-1">Disabled</span>
+    </span>
+  <% end %>
+</li>

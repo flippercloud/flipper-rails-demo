@@ -1,0 +1,19 @@
+<div class="d-flex align-items-center align-content-center justify-content-between">
+  <strong class="d-block">Example Status</strong>
+  <% if Flipper.enabled?(flag) %>
+    <span class="badge d-flex px-0 align-items-center text-success rounded-pill">
+      <%= icon 'check-circle-fill', 'bi-small' %>
+      <span class="px-1">Fully Enabled</span>
+    </span>
+  <% elsif Flipper.enabled?(flag, current_user) %>
+    <span class="badge d-flex px-0 align-items-center text-secondary rounded-pill">
+      <%= icon 'circle-half', 'bi-small' %>
+      <span class="px-1">Conditionally Enabled</span>
+    </span>
+  <% else %>
+    <span class="badge d-flex px-0 align-items-center text-danger rounded-pill">
+      <%= icon 'exclamation-triangle-fill', 'bi-small' %>
+      <span class="px-1">Disabled</span>
+    </span>
+  <% end %>
+</div>
