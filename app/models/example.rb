@@ -49,7 +49,7 @@ class Example
   end
 
   def exists?
-    File.exist?(to_partial_path)
+    File.exist?(example_file)
   end
 
   def partial
@@ -58,5 +58,11 @@ class Example
 
   def to_partial_path
     "example/#{partial}"
+  end
+
+  private
+
+  def example_file
+    Rails.root.join("app/views/example/_#{partial}.html.erb")
   end
 end

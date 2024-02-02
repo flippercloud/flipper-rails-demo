@@ -8,31 +8,65 @@
 <% end %>
 
 
-<% if Flipper.enabled?(:demo_group, @coffee_drinker) && !Flipper.enabled?(:demo_group, current_user) %>
-  <h1>One More Step</h1>
-  <p>The <code>demo_group</code> feature is <del>disabled</del> for you since you don't prefer coffee. Let's update your beverage preference so you'll be included in the coffee drinkers group and get access&hellip;</p>
+<% if Flipper.enabled?(:demo_group, @coffee_drinker) %>
+
+  <% if Flipper.enabled?(:demo_group, current_user) %>
+    <h1>Welcome to the club!</h1>
+    <p>The <code>demo_group</code> feature is <ins>enabled</ins> for you since you prefer coffee. Nice work! Next we'll look at how you can enable features for a percentage of users.</p>
+    <%= next_button "Learn How Percentage Flags Work", demo_percentage_path %>
+  <% else %>
+    <h1>Your Beverage Preference</h1>
+    <p>The <code>demo_group</code> feature is <del>disabled</del> for you since you don't prefer coffee. Let's update your beverage preference so you'll be included in the coffee drinkers group and get access.</p>
+  <% end %>
+
+  <hr class="my-5">
+
+  <p><strong><mark>Important:</mark></strong> Even if coffee's not your thing, the rest of the demo is only for coffee drinkers, and there's no penalty for lying.</p>
 
   <%= form_with model: current_user, method: :patch, url: profile_path do |f| %>
-    <%= f.text_field :beverage, value: 'coffee', hidden: true %>
-    <%= f.submit "I Prefer Coffee!", class: 'btn btn-lg btn-primary w-100 rounded rounded-pill' %>
+    <div class="list-group rounded-4 mb-2">
+      <% %w[water tea coffee].each do |bev| %>
+        <label class="list-group-item d-flex align-items-top align-content-center justify-content-between gap-2 p-3">
+          <%= f.radio_button("beverage", bev, class: 'form-check-input flex-shrink-0', checked: current_user.beverage.to_s == bev) %>
+          <div class="d-block w-100">
+            <strong><%= bev.capitalize %></strong>
+            <small class="d-block text-body-secondary">
+              <%=
+                if bev == 'coffee'
+                  "You'll be included in the beta testing for coffee-related features!"
+                else
+                  "A great drink, but you won't be in the Coffee group and won't get early access to our new coffee-related features."
+                end
+              %>
+            </small>
+          </div>
+          <div class="ms-4">
+            <% if bev == 'water' %>
+              <%= icon 'cup-straw', 'bi-large text-primary' %>
+            <% elsif bev == 'tea' %>
+              <%= icon 'cup', 'bi-large text-warning-emphasis' %>
+            <% else %>
+              <%= icon 'cup-hot', 'bi-large text-body-emphasis' %>
+            <% end %>
+          </div>
+        </label>
+      <% end %>
+    </div>
+    <%= f.submit "Save my Drink Preference", class: 'btn btn-primary w-100 rounded rounded-pill' %>
   <% end %>
-<% elsif Flipper.enabled?(:demo_group, current_user) %>
-  <h1>Welcome to the coffee drinker group!</h1>
-  <p>The <code>demo_group</code> feature is <ins>enabled</ins> for you since you prefer coffee. Nice work! Next we'll look at how you can enable features for a percentage of users.</p>
-  <%= next_button "Learn How to Toggle Features for a Percentage of Users", demo_percentage_path %>
 <% else %>
   <h1>Group-based Feature Flipping</h1>
   <p>Let's see how  to <a href="https://www.flippercloud.io/docs/features#enablement-group">enable access for a group of users</a>. For that, we need to register the group and specify the conditions that determine whether a given actor is included in the group. Since our new feature would only be relevant for coffee drinkers, we'll only enable it for them.</p>
 
   <p>We've named this feature flag <code>demo_group</code>. We still pass <code>current_user</code> as the actor, but instead of having enabled the user directly, we'll enable the group and the current user would be enabled implicitly if they're a member of the coffee group.</p>
 
-  <p>Behind the scenes, we've registered and defined the coffee drinker group in <code>config/initializers/flipper.rb</code>:
+  <hr class="my-5">
 
-  <pre class="border rounded rounded-3"><code>
-    Flipper.register(:coffee_drinkers) do |actor, context|
-      actor.respond_to?(:coffee?) && actor.coffee?
-    end
-  </code></pre>
+  <p><strong><mark>Important:</mark></strong> Behind the scenes, we've already registered and defined the coffee drinker group in <code>config/initializers/flipper.rb</code>:</p>
+
+  <pre class="border rounded rounded-4 p-3 bg-body-tertiary"><code><strong class="text-success">Flipper.register(:coffee_drinkers)</strong> do |actor, context|
+  actor.respond_to?(:coffee?) && actor.coffee?
+end</code></pre>
 <% end %>
 
 
