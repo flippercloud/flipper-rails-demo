@@ -5,8 +5,9 @@ module DemoHelper
     end
   end
 
-  def flag_status(flag)
-    render 'shared/flag_status', flag: do
+  def flag_status(feature)
+    feature = Flipper.feature(feature) if feature.is_a?(Symbol)
+    render 'shared/flag_status', feature: do
       yield
     end
   end

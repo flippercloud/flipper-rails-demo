@@ -1,6 +1,6 @@
 # Use a fixed seed to get deterministic results
 Faker::Config.random = Random.new(42)
-BEVERAGES = %w[water tea coffee]
+BEVERAGES = %w[unspecified water tea coffee]
 
 (1..300).each do |id|
 	User.find_or_create_by(

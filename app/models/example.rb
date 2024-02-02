@@ -10,12 +10,13 @@ class Example
         custom_flag: :search,
         tags: [[:permanent, :success], [:internal, :secondary]]
       ),
-      # new(
-      #   title: "Backup Providers",
-      #   desc: "A quick way to instantly toggle all connected systems from one provider to another in the case of downtime or degraded performance from a primary provider.",
-      #   icon: "arrow-left-right",
-      #   tags: [[:permanent, :success], [:internal, :secondary]]
-      # ),
+      new(
+        title: "Backup Providers",
+        desc: "A quick way to instantly toggle all connected systems from one provider to another in the case of downtime or degraded performance from a primary provider.",
+        icon: "arrow-left-right",
+        custom_flag: :email_backup,
+        tags: [[:permanent, :success], [:internal, :secondary]]
+      ),
       new(
         title: "Managing External Tools",
         desc: "Provide toggles to developers so they can enable or disable functionality like development tools, support system widgets, or other tools that aren't always needed in every environment.",

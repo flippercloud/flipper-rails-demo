@@ -3,7 +3,11 @@ class FeaturesController < ApplicationController
   before_action :verify_public_feature
 
   def create
-    if percentage.present? && percentage > 0
+    if time.present? && time > 0
+      Flipper.enable_percentage_of_time(feature, time)
+      session[:time] = time
+      audience = "about #{time}% of the time"
+    elsif percentage.present? && percentage > 0
       Flipper.enable_percentage_of_actors(feature, percentage)
       session[:percentage] = percentage
       audience = "about #{percentage}% of users"
@@ -22,7 +26,12 @@ class FeaturesController < ApplicationController
   end
 
   def destroy
-    if percentage.present?
+    if time.present?
+      # When disabling percentages of actors, there's no need to pass a percent
+      # value because it's assumed to be 0.
+      Flipper.disable_percentage_of_time(feature)
+      session[:time] = 0
+    elsif percentage.present?
       # When disabling percentages of actors, there's no need to pass a percent
       # value because it's assumed to be 0.
       Flipper.disable_percentage_of_actors(feature)
@@ -64,6 +73,10 @@ class FeaturesController < ApplicationController
 
   def percentage
     params[:percentage]&.to_i
+  end
+
+  def time
+    params[:time]&.to_i
   end
 
   def feature
