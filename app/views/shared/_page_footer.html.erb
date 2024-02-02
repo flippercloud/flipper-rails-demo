@@ -1,7 +1,16 @@
-<footer class="d-flex justify-content-center border-top gap-3 my-5 py-4">
-  <span class="fw-bold">View Source</span>
-  <a target="_blank" rel="noreferrer" class="link-offset-2 link-underline link-underline-opacity-25 icon-link" href="https://github.com/flippercloud/flipper-rails-demo/tree/main/app/views<%= locals[:file].gsub(Rails.root.to_s, '') %>">
-    <%= icon 'github' %>
-    <code><%= locals[:file].gsub(Rails.root.to_s, '') %></code>
-  </a>
+<footer class="d-flex justify-content-between border-top gap-3 my-5 py-4">
+  <div class="d-flex justify-content-center gap-2">
+    <span class="fw-bold"></span>
+    <a target="_blank" rel="noreferrer" class="link-offset-2 link-underline link-underline-opacity-25 icon-link" href="/flipper">
+      <%= icon 'toggles' %>
+      Flipper UI
+    </a>
+  </div>
+  <div class="d-flex justify-content-center gap-2">
+    <span class="fw-bold">View Source</span>
+    <a target="_blank" rel="noreferrer" class="link-offset-2 link-underline link-underline-opacity-25 icon-link" href="https://github.com/flippercloud/flipper-rails-demo/tree/main/app/views<%= locals[:file].gsub(Rails.root.to_s, '') %>">
+      <%= icon 'github' %>
+      <code><%= locals[:file].gsub(Rails.root.to_s, '') %></code>
+    </a>
+  </div>
 </footer>
