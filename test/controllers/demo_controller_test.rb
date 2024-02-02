@@ -26,8 +26,8 @@ class DemoControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  # test "get percentage demo page" do
-  #   get demo_percentage_url
-  #   assert_response :success
-  # end
+  test "get percentage demo page" do
+    get demo_percentage_url
+    assert_response :success
+  end
 end
