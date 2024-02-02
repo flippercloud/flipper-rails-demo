@@ -1,8 +1,8 @@
 <ul class="list-group list-group-flush mt-0 mb-3">
   <% examples.each do |example| %>
   <% icon_name, content = example %>
-  <li class="list-group-item d-flex align-items-top align-content-center justify-content-start gap-2 px-0 py-3">
-    <div><%= icon icon_name, 'bi-medium text-success flex-shrink-1' %></div>
+  <li class="list-group-item d-flex align-items-top align-content-center justify-content-start gap-3 px-0 py-3">
+    <div><%= icon icon_name, 'bi-large text-success flex-shrink-1' %></div>
     <span class="flex-fill"><%= content.html_safe %></span>
   </li>
   <% end %>
