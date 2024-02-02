@@ -1,5 +1,243 @@
-Backup Providers
+<%= uses([
+  [
+    "cloud-slash-fill",
+    "<strong>Reduce the impact of provider downtime</strong> by being able to instantly switch backend providers from one to the other and back again without re-deploying."
+  ],
+  [
+    "cloud-lightning-rain-fill",
+    "<strong>Instantly balance traffic to multiple providers if one is experiencing degraded performance</strong> to balance your reliance on any single provider."
+  ],
+  [
+    "pie-chart-fill",
+    "<strong>Split traffic between multiple providers</strong> to mitigate the potential impact of one provider going offline and ensuring you aren't entirely reliant on your primary provider."
+  ],
+  [
+    "person-raised-hand",
+    "<strong>Reduce support requests</strong> by insulating your customers from downtime caused by a single external vendor."
+  ],
+]) %>
+
+<%
+  total_users = User.count
+
+  # Only paying customers can make beverage selections, so that's a good proxy
+  #   for paid/VIPs
+  paid = User.where(beverage: %i[water tea coffee]).count
+%>
 
 <% content_for :aside do %>
-Backup Providers Aside
+  <div class="card border-5 border-dark rounded-4">
+    <div class="card-header p-3 pb-2 border-bottom">
+      <%= flag_status(@example.flag) %>
+    </div>
+    <div class="card-body p-5">
+      <% if binary?(@feature) && @feature.enabled? %>
+        <%# 100% to backup %>
+        <div class="container text-center">
+          <div class="row align-items-end">
+            <div class="col flex-column align-items-center align-content-end justify-content-end">
+              <div class="text-bg-danger rounded-pill d-inline-flex align-items-center align-content-center justify-content-center gap-2 px-4 py-3">
+                <%= icon 'hdd-rack', 'bi-medium' %>
+                <small>Primary</small>
+                <span class="badge bg-light rounded-pill text-danger">Offline</span>
+              </div>
+            </div>
+            <div class="col flex-column align-items-center">
+              <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                <%= icon 'people-fill', 'bi-medium' %>
+                <small>All</small>
+                <span class="badge bg-light rounded-pill text-dark"><%= total_users %></span>
+              </div>
+              <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
+              <div class="bg-success rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-2 px-4 py-3">
+                <%= icon 'hdd-rack-fill', 'bi-medium' %>
+                <small>Backup</small>
+                <span class="badge bg-light rounded-pill text-success">No Issues</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% elsif group_constrained?(@feature) %>
+        <%# Route paid to backup provider %>
+        <div class="container text-center">
+          <div class="row align-items-end">
+            <div class="col flex-column align-items-center align-content-end justify-content-end">
+              <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                <%= icon 'person-fill', 'bi-medium' %>
+                <small>Free</small>
+                <span class="badge bg-light rounded-pill text-dark"><%= total_users - paid %></span>
+              </div>
+              <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
+              <div class="text-bg-warning rounded-pill d-inline-flex align-items-center align-content-center justify-content-center gap-2 px-4 py-3">
+                <%= icon 'hdd-rack', 'bi-medium' %>
+                <small>Primary</small>
+                <span class="badge bg-light rounded-pill text-dark">Degraded</span>
+              </div>
+            </div>
+            <div class="col flex-column align-items-center">
+              <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                <%= icon 'person-fill-check', 'bi-medium' %>
+                <small>Paid</small>
+                <span class="badge bg-light rounded-pill text-dark"><%= paid %></span>
+              </div>
+              <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
+              <div class="bg-success rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-2 px-4 py-3">
+                <%= icon 'hdd-rack-fill', 'bi-medium' %>
+                <small>Backup</small>
+                <span class="badge bg-light rounded-pill text-success">No Issues</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% elsif percentage_of_time?(@feature) %>
+        <%# Split traffic evenly between providers %>
+        <div class="container text-center">
+          <div class="row align-items-end">
+            <div class="col flex-column align-items-center align-content-end justify-content-end">
+              <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                <%= icon 'people-fill', 'bi-medium' %>
+                <small>All</small>
+                <span class="badge bg-light rounded-pill text-dark"><%= total_users %></span>
+              </div>
+              <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col d-flex align-items-center align-content-center justify-content-around gap-1 bg-success-subtle p-4 rounded-pill">
+              <div class="bg-success rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-2 px-4 py-3">
+                <%= icon 'hdd-rack-fill', 'bi-medium' %>
+                <small>Primary</small>
+                <span class="badge bg-light rounded-pill text-success">50%</span>
+              </div>
+              <div class="bg-success rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-2 px-4 py-3">
+                <%= icon 'hdd-rack', 'bi-medium' %>
+                <small>Backup</small>
+                <span class="badge bg-light rounded-pill text-success">50%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% elsif binary?(@feature) && !@feature.enabled? %>
+        <div class="container text-center">
+          <div class="row align-items-end">
+            <div class="col flex-column align-items-center align-content-end justify-content-end">
+              <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                <%= icon 'people-fill', 'bi-medium' %>
+                <small>All</small>
+                <span class="badge bg-light rounded-pill text-dark"><%= total_users %></span>
+              </div>
+
+              <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
+
+              <div class="bg-success rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-2 px-4 py-3">
+                <%= icon 'hdd-rack-fill', 'bi-medium' %>
+                <small>Primary</small>
+                <span class="badge bg-light rounded-pill text-success">No Issues</span>
+              </div>
+            </div>
+            <div class="col flex-column align-items-center">
+              <div class="bg-secondary-subtle rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-secondary gap-2 px-4 py-3">
+                <%= icon 'hdd-rack', 'bi-medium' %>
+                <small>Backup</small>
+                <span class="badge bg-light rounded-pill text-body-tertiary">Standby</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <ul>
+          <li>binary? <%= binary?(@feature) %></li>
+          <li>actor_constrained? <%= actor_constrained?(@feature) %></li>
+          <li>group_constrained? <%= group_constrained?(@feature) %></li>
+          <li>percentage_of_time? <%= percentage_of_time?(@feature) %></li>
+          <li>percentage_of_actors? <%= percentage_of_actors?(@feature) %></li>
+        </ul>
+      <% end %>
+    </div>
+    <div class="card-body bg-light p-0">
+      <details class="m-0 p-0">
+        <summary class="text-secondary text-center border-top p-2"><small>Inspect Flag State & Code Samples</small></summary>
+        <ul class="list-group list-group-flush pt-0 border-top mx-3 px-0">
+          <% [
+            [
+              "100% to primary provider?",
+              binary?(@feature) && !@feature.enabled?,
+              "!@feature.conditional? && !@feature.enabled?"
+            ],
+            [
+              "100% to backup provider?",
+              binary?(@feature) && @feature.enabled? ,
+              "!@feature.conditional? && @feature.enabled?"
+            ],
+            [
+              "Balance traffic across providers?",
+              percentage_of_time?(@feature),
+              "@feature.conditional? && @feature.percentage_of_time_value.positive?"
+            ],
+            [
+              "Route paying customers to backup provider?",
+              group_constrained?(@feature),
+              "@feature.conditional? && @feature.groups_value.any?"
+            ],
+          ].each do |scenario| %>
+            <%= status_item(*scenario) %>
+          <% end %>
+        </ul>
+      </details>
+    </div>
+    <%= controls "Manage Backup Provider" do %>
+      <% if (binary?(@feature) && @feature.enabled?) || @feature.conditional? %>
+        <%= toggle(
+          label: 'Switch Entirely to Primary Provider',
+          form_target: disable_path(feature: @example.flag),
+          form_method: :delete,
+          ruby: "Flipper.disable(:#{@example.flag})",
+          cli: "flipper disable #{@example.flag}"
+          ) %>
+      <% end %>
+      <% if (binary?(@feature) && !@feature.enabled?) || @feature.conditional? %>
+        <%= toggle(
+          label: 'Switch Entirely to Backup Provider',
+          form_target: enable_path(feature: @example.flag),
+          form_method: :post,
+          ruby: "Flipper.enable(:#{@example.flag})",
+          cli: "flipper enable #{@example.flag}"
+          ) %>
+      <% end %>
+      <% if group_constrained?(@feature) %>
+        <%= toggle(
+          label: "Switch VIP's to Primary Provider",
+          form_target: disable_path(feature: @example.flag, group: :paid),
+          form_method: :delete,
+          ruby: "Flipper.disable_group(:#{@example.flag}, :paid)",
+          cli: "flipper disable #{@example.flag} --group vips"
+          ) %>
+      <% elsif binary?(@feature) && !@feature.enabled? %>
+        <%= toggle(
+          label: "Switch VIP's to Backup Provider",
+          form_target: enable_path(feature: @example.flag, group: :paid),
+          form_method: :post,
+          ruby: "Flipper.enable_group(:#{@example.flag}, :paid)",
+          cli: "flipper enable #{@example.flag} --group vips"
+          ) %>
+      <% end %>
+      <% if binary?(@feature) %>
+        <%= toggle(
+          label: "Balance Providers",
+          form_target: enable_path(feature: @example.flag, time: 50),
+          form_method: :post,
+          ruby: "Flipper.enable_percentage_of_time(:#{@example.flag}, 50)",
+          cli: "flipper enable #{@example.flag} --percentage-of-time 50"
+          ) %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <hr class="my-5">
+
+  <p><strong><mark>Important:</mark></strong> Behind the scenes, we've already registered and defined the coffee drinker group in <code>config/initializers/flipper.rb</code>:</p>
+
+  <pre class="border rounded rounded-4 p-3 bg-body-tertiary"><code><strong class="text-success">Flipper.register(:paid)</strong> do |actor, context|
+  actor.respond_to?(:paid?) && actor.paid?
+end</code></pre>
 <% end %>

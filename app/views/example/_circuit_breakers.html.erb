@@ -38,7 +38,7 @@
         <% if Flipper.enabled?(@example.flag) %>
           <%= toggle(
             label: 'Disable for Everyone',
-            form_target: disable_path(feature: @example.flag, user: false),
+            form_target: disable_path(feature: @example.flag),
             form_method: :delete,
             ruby: "Flipper.disable(:#{@example.flag})",
             cli: "flipper disable #{@example.flag}"
@@ -46,7 +46,7 @@
         <% else %>
           <%= toggle(
             label: 'Enable for Everyone',
-            form_target: enable_path(feature: @example.flag, user: false),
+            form_target: enable_path(feature: @example.flag),
             form_method: :post,
             ruby: "Flipper.enable(:#{@example.flag})",
             cli: "flipper enable #{@example.flag}"

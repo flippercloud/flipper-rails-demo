@@ -1,22 +1,22 @@
-<div class="d-flex align-items-center align-content-center justify-content-between gap-2 mb-3">
+<div class="d-flex align-items-center align-content-center justify-content-between gap-2 mb-2">
   <div class="me-auto">
-    <code class="text-dark fw-bold fs-6">:<%= flag %></code>
+    <code class="text-dark fw-bold fs-6">:<%= feature.key %></code>
   </div>
 
-  <% if Flipper.enabled?(flag) %>
+  <% if binary?(feature) && feature.enabled? %>
     <span class="d-flex px-0 align-items-center align-content-center justify-content-end gap-1 text-success">
       <%= icon 'check-circle-fill', 'bi-small' %>
       <span class="fw-bold">Fully Enabled</span>
     </span>
-  <% elsif Flipper.enabled?(flag, current_user) %>
-    <span class="d-flex px-0 align-items-center align-content-center justify-content-end gap-1 text-secondary">
-      <%= icon 'circle-half', 'bi-small' %>
-      <span class="fw-bold">Conditionally Enabled</span>
-    </span>
-  <% else %>
+  <% elsif binary?(feature) && !feature.enabled? %>
     <span class="d-flex px-0 align-items-center align-content-center justify-content-end gap-1 text-danger">
       <%= icon 'exclamation-triangle-fill', 'bi-small' %>
       <span class="fw-bold">Disabled</span>
+    </span>
+  <% elsif !binary?(feature) %>
+    <span class="d-flex px-0 align-items-center align-content-center justify-content-end gap-1 text-secondary">
+      <%= icon 'circle-half', 'bi-small' %>
+      <span class="fw-bold">Conditionally Enabled</span>
     </span>
   <% end %>
 </div>

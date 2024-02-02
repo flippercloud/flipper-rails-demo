@@ -23,3 +23,7 @@ ins {
 .bi-large {
   width: 2rem;
 }
+
+.toggle-example + .toggle-example {
+  border-top: 1px solid #444;
+}
