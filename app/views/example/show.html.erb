@@ -1,0 +1,19 @@
+<% content_for :breadcrumbs do %>
+<ol class="breadcrumb breadcrumb-chevron mb-0">
+  <li class="breadcrumb-item"><strong class="badge bg-primary bg-opacity-75 rounded rounded-pill m-0 fs-6">Examples</strong></li>
+  <li class="breadcrumb-item"><a href="<%= examples_path %>">All</a></li>
+  <li class="breadcrumb-item active" aria-current="page"><%= @example.title %></li>
+</ol>
+<% end %>
+
+
+<h1><%= @example.title %></h1>
+<p class="lead border-bottom pb-3 mb-3"><%= @example.desc %></p>
+
+
+<%= render @example %>
+
+
+<% content_for :footer do %>
+  <%= page_footer(__FILE__) %>
+<% end %>

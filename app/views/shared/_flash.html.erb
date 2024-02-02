@@ -1,5 +1,6 @@
 <% if notice || alert -%>
 <div class="d-block col-12 m-0 p-0 mt-3" role="alert">
-  <div class="p-2 border border-success border-success-subtle bg-success-subtle d-block rounded bg-white text-<%= notice.present? ? 'success' : 'danger' %>"><%= (notice || alert).html_safe %></div>
+  <% style = notice.present? ? 'success' : 'danger' %>
+  <div class="d-block rounded rounded-4 p-3 mb-4 text-<%= style %> bg-<%= style %>-subtle text-center"><%= (notice || alert).html_safe %></div>
 </div>
 <% end -%>

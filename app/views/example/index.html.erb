@@ -1,0 +1,39 @@
+<% content_for :breadcrumbs do %>
+<ol class="breadcrumb breadcrumb-chevron mb-0">
+  <li class="breadcrumb-item"><strong class="badge bg-secondary rounded rounded-pill m-0 fs-6">Examples</strong></li>
+  <li class="breadcrumb-item active" aria-current="page">All</li>
+</ol>
+<% end %>
+
+<h1>Feature Flag Examples</h1>
+<p>Feature flags are capable of so much more than simply enabling or disabling features. They can help turn off analytics in development or enable troubleshooting tools in production for a single developer or group of developers. They can help temporarily disable features that have issues or provide a way to instantly switch to a backup provider if a primary goes offline.</p>
+
+<p>We've created examples of some of our favorite use cases here so you can try them out and see how to apply them to your own application.</p>
+
+
+<% content_for :aside do %>
+  <div class="list-group rounded-4">
+    <% Example.list.each do |example| %>
+      <a href="<%= example_path(slug: example.slug) %>" class="list-group-item list-group-item-action d-flex gap-3 py-3 align-items-start" aria-current="true">
+        <%= icon example.icon, "bi-large text-info" %>
+        <div class="d-flex gap-2 w-100 justify-content-between">
+          <div>
+            <h6 class="mb-0 fw-bold"><%= example.title %></h6>
+            <p class="mb-0 opacity-75"><%= example.desc %></p>
+          </div>
+          <div class="text-wrap text-end">
+            <% example.tags.each do |tag| %>
+              <% label, style = tag %>
+              <small class="badge fw-light rounded-pill text-bg-<%= style %>"><%= label %></small>
+            <% end %>
+          </div>
+        </div>
+      </a>
+    <% end %>
+  </div>
+<% end %>
+
+
+<% content_for :footer do %>
+  <%= page_footer(__FILE__) %>
+<% end %>

@@ -19,25 +19,44 @@
 
 
 <% content_for :aside do %>
-  <%= controls('Toggling an Individual Flag for Everyone') do %>
-    <% if current_user && Flipper.enabled?(:demo) %>
-      <p>The <code>:demo</code> flag is <ins>enabled</ins>! You can toggle it off and back on again if you want&hellip;</p>
-      <%= toggle(
-        label: 'Disable the Demo Feature Flag',
-        form_target: disable_path(feature: :demo),
-        form_method: :delete,
-        code: 'Flipper.disable(:demo)'
+  <div class="card border-5 border-dark rounded-4">
+    <div class="card-header p-3 pb-2 border-bottom">
+      <%= flag_status(:demo) %>
+      <ul class="list-group list-group-flush pt-0 border-top mt-2">
+        <% [
+          ['Fully enabled for everyone?', Flipper.enabled?(:demo), 'Flipper.enabled?(:demo)'],
+        ].each do |scenario| %>
+          <%= status_item(*scenario) %>
+        <% end %>
+      </ul>
+    </div>
+    <div class="card-body p-5">
+      <% if Flipper.enabled?(:demo) %>
+        The <code>:demo</code> flag is <ins>enabled</ins>! You can toggle it off and back on again if you want&hellip;
+      <% else %>
+        The <code>:demo</code> flag is <del>disabled</del>. <span class="text-secondary">(Flipper features are disabled by default.)</span>
+      <% end %>
+    </div>
+    <%= controls('Toggling an Individual Flag for Everyone') do %>
+      <% if Flipper.enabled?(:demo) %>
+        <%= toggle(
+          label: 'Disable the Demo Feature Flag',
+          form_target: disable_path(feature: :demo),
+          form_method: :delete,
+          ruby: 'Flipper.disable(:demo)',
+          cli: 'flipper disable demo'
+          ) %>
+      <% else %>
+        <%= toggle(
+          label: 'Enable the Demo Feature Flag',
+          form_target: enable_path(feature: :demo),
+          form_method: :post,
+          ruby: 'Flipper.enable(:demo)',
+          cli: 'flipper enable demo'
         ) %>
-    <% else %>
-      <p>The <code>:demo</code> flag is <del>disabled</del>. <span class="text-secondary">(Flipper features are disabled by default.)</span></p>
-      <%= toggle(
-        label: 'Enable the Demo Feature Flag',
-        form_target: enable_path(feature: :demo),
-        form_method: :post,
-        code: 'Flipper.enable(:demo)'
-        ) %>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
 <% end %>
 
 

@@ -1,0 +1,79 @@
+<%= uses([
+  ["stopwatch", "<strong>Respond quickly to degraded performance or downtime</strong> by being able to instantly enable or disable a feature without needing to re-deploy."],
+  ["person-raised-hand", "<strong>Reduce support requests</strong> by proactively informing customers about issues the team is already investigating by disabling only features with degraded performance."],
+  ["emoji-heart-eyes", "<strong>Provide a better user experience</strong> using detailed explanations or well-designed interface adjustments instead of generic error pages."],
+]) %>
+
+
+<% content_for :aside do %>
+  <div class="card border-5 border-dark rounded-4">
+    <div class="card-header p-3 pb-2 border-bottom">
+      <%= flag_status(@example.flag) %>
+      <ul class="list-group list-group-flush pt-0 border-top mt-2">
+        <% [
+          ['Fully enabled for everyone?', Flipper.enabled?(@example.flag), "Flipper.enabled?(:#{@example.flag})"],
+          ['Enabled for the current user?', Flipper.enabled?(@example.flag, current_user), "Flipper.enabled?(:#{@example.flag}, current_user)"],
+        ].each do |scenario| %>
+          <%= status_item(*scenario) %>
+        <% end %>
+      </ul>
+    </div>
+    <div class="card-body p-5">
+      <% if Flipper.enabled?(@example.flag, current_user) %>
+        <form class="d-flex gap-2 m-2">
+          <input type="search" placeholder="Search" class="form-control">
+          <input type="submit" value="Search" class="btn btn-primary">
+        </form>
+      <% else %>
+        <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Search is temporarily disabled while the team investigates performance issues.">
+          <form class="d-flex gap-2 m-2">
+            <input type="search" placeholder="Search" class="form-control" disabled>
+            <input type="submit" value="Search" class="btn btn-primary" disabled>
+          </form>
+        </div>
+      <% end %>
+    </div>
+    <%= controls "Update Search" do %>
+      <div class="w-100">
+        <% if Flipper.enabled?(@example.flag) %>
+          <%= toggle(
+            label: 'Disable for Everyone',
+            form_target: disable_path(feature: @example.flag, user: false),
+            form_method: :delete,
+            ruby: "Flipper.disable(:#{@example.flag})",
+            cli: "flipper disable #{@example.flag}"
+            ) %>
+        <% else %>
+          <%= toggle(
+            label: 'Enable for Everyone',
+            form_target: enable_path(feature: @example.flag, user: false),
+            form_method: :post,
+            ruby: "Flipper.enable(:#{@example.flag})",
+            cli: "flipper enable #{@example.flag}"
+            ) %>
+        <% end %>
+      </div>
+      <% if !Flipper.enabled?(@example.flag) %>
+      <div class="w-100 border-top border-secondary border-opacity-50">
+        <% if Flipper.enabled?(@example.flag, current_user) %>
+          <%= toggle(
+            label: 'Disable for Just You',
+            form_target: disable_path(feature: @example.flag, user: true),
+            form_method: :delete,
+            ruby: "Flipper.disable(:#{@example.flag}, current_user)",
+            cli: "flipper disable #{@example.flag} --actor #{current_user.flipper_id}"
+            ) %>
+        <% else %>
+          <%= toggle(
+            label: 'Enable for Just You',
+            form_target: enable_path(feature: @example.flag, user: true),
+            form_method: :post,
+            ruby: "Flipper.enable(:#{@example.flag}, current_user)",
+            cli: "flipper enable #{@example.flag} --actor #{current_user.flipper_id}"
+            ) %>
+        <% end %>
+      </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

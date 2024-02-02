@@ -71,7 +71,7 @@ class FeaturesController < ApplicationController
   end
 
   def verify_public_feature
-    return if PUBLIC_FEATURES.include?(feature)
+    return if PUBLIC_FEATURES.include?(feature) || Example.list.map(&:flag).include?(feature.to_sym)
 
     flash.alert = "Sorry, but that's not a valid public feature."
     redirect_to root_path and return
