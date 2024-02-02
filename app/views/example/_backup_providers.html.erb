@@ -1,8 +1,20 @@
 <%= uses([
-  ["cloud-slash-fill", "<strong>Reduce the impact of provider downtime</strong> by being able to instantly switch backend providers from one to the other and back again without re-deploying."],
-  ["cloud-lightning-rain-fill", "<strong>Instantly balance traffic to multiple providers if one is experiencing degraded performance</strong> to balance your reliance on any single provider."],
-  ["pie-chart-fill", "<strong>Split traffic between multiple providers</strong> to mitigate the potential impact of one provider going offline and ensuring you aren't entirely reliant on your primary provider."],
-  ["person-raised-hand", "<strong>Reduce support requests</strong> by insulating your customers from downtime caused by a single external vendor."],
+  [
+    "cloud-slash-fill",
+    "<strong>Reduce the impact of provider downtime</strong> by being able to instantly switch backend providers from one to the other and back again without re-deploying."
+  ],
+  [
+    "cloud-lightning-rain-fill",
+    "<strong>Instantly balance traffic to multiple providers if one is experiencing degraded performance</strong> to balance your reliance on any single provider."
+  ],
+  [
+    "pie-chart-fill",
+    "<strong>Split traffic between multiple providers</strong> to mitigate the potential impact of one provider going offline and ensuring you aren't entirely reliant on your primary provider."
+  ],
+  [
+    "person-raised-hand",
+    "<strong>Reduce support requests</strong> by insulating your customers from downtime caused by a single external vendor."
+  ],
 ]) %>
 
 <%
@@ -17,61 +29,10 @@
   <div class="card border-5 border-dark rounded-4">
     <div class="card-header p-3 pb-2 border-bottom">
       <%= flag_status(@example.flag) %>
-      <ul class="list-group list-group-flush pt-0 border-top mt-2">
-        <% [
-          [
-            "100% to primary provider?",
-            !@feature.enabled? && !@feature.conditional?,
-            "!@feature.enabled? && !@feature.conditional?"
-          ],
-          [
-            "100% to backup provider?",
-            @feature.enabled? && !@feature.conditional?,
-            "@feature.enabled? && !@feature.conditional?"
-          ],
-          [
-            "Balance traffic across providers?",
-            @feature.conditional? && @feature.percentage_of_time_value.positive?,
-            "@feature.conditional? && @feature.percentage_of_time_value.positive?"
-          ],
-          [
-            "Route paying customers to backup provider?",
-            @feature.conditional? && @feature.percentage_of_time_value.zero?,
-            "@feature.conditional? && @feature.percentage_of_time_value.zero?"
-          ],
-        ].each do |scenario| %>
-          <%= status_item(*scenario) %>
-        <% end %>
-      </ul>
     </div>
     <div class="card-body p-5">
-
-
-
-      <!--
-      <div class="providers d-flex align-items-center align-content-center justify-content-center gap-4 mb-4">
-        <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
-          <%= icon 'people-fill', 'bi-medium' %>
-          <small>All</small>
-          <span class="badge bg-light rounded-pill text-dark"><%= total_users %></span>
-        </div>
-
-        <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
-          <%= icon 'person-fill', 'bi-medium' %>
-          <small>Free</small>
-          <span class="badge bg-light rounded-pill text-dark"><%= total_users - paid %></span>
-        </div>
-
-        <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
-          <%= icon 'person-fill-check', 'bi-medium' %>
-          <small>Paid</small>
-          <span class="badge bg-light rounded-pill text-dark"><%= paid %></span>
-        </div>
-      </div>
-    -->
-
-      <% if !@feature.conditional? && @feature.enabled? %>
-
+      <% if binary?(@feature) && @feature.enabled? %>
+        <%# 100% to backup %>
         <div class="container text-center">
           <div class="row align-items-end">
             <div class="col flex-column align-items-center align-content-end justify-content-end">
@@ -82,15 +43,12 @@
               </div>
             </div>
             <div class="col flex-column align-items-center">
-
               <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
                 <%= icon 'people-fill', 'bi-medium' %>
                 <small>All</small>
                 <span class="badge bg-light rounded-pill text-dark"><%= total_users %></span>
               </div>
-
               <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
-
               <div class="bg-success rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-2 px-4 py-3">
                 <%= icon 'hdd-rack-fill', 'bi-medium' %>
                 <small>Backup</small>
@@ -99,8 +57,8 @@
             </div>
           </div>
         </div>
-      <% elsif @feature.conditional? && @feature.percentage_of_time_value.zero? %>
-
+      <% elsif group_constrained?(@feature) %>
+        <%# Route paid to backup provider %>
         <div class="container text-center">
           <div class="row align-items-end">
             <div class="col flex-column align-items-center align-content-end justify-content-end">
@@ -109,9 +67,7 @@
                 <small>Free</small>
                 <span class="badge bg-light rounded-pill text-dark"><%= total_users - paid %></span>
               </div>
-
               <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
-
               <div class="text-bg-warning rounded-pill d-inline-flex align-items-center align-content-center justify-content-center gap-2 px-4 py-3">
                 <%= icon 'hdd-rack', 'bi-medium' %>
                 <small>Primary</small>
@@ -119,15 +75,12 @@
               </div>
             </div>
             <div class="col flex-column align-items-center">
-
               <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
                 <%= icon 'person-fill-check', 'bi-medium' %>
                 <small>Paid</small>
                 <span class="badge bg-light rounded-pill text-dark"><%= paid %></span>
               </div>
-
               <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
-
               <div class="bg-success rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-2 px-4 py-3">
                 <%= icon 'hdd-rack-fill', 'bi-medium' %>
                 <small>Backup</small>
@@ -136,9 +89,8 @@
             </div>
           </div>
         </div>
-
-      <% elsif @feature.conditional? && @feature.percentage_of_time_value.positive? %>
-
+      <% elsif percentage_of_time?(@feature) %>
+        <%# Split traffic evenly between providers %>
         <div class="container text-center">
           <div class="row align-items-end">
             <div class="col flex-column align-items-center align-content-end justify-content-end">
@@ -147,7 +99,6 @@
                 <small>All</small>
                 <span class="badge bg-light rounded-pill text-dark"><%= total_users %></span>
               </div>
-
               <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
             </div>
           </div>
@@ -166,9 +117,7 @@
             </div>
           </div>
         </div>
-
-      <% else %>
-
+      <% elsif binary?(@feature) && !@feature.enabled? %>
         <div class="container text-center">
           <div class="row align-items-end">
             <div class="col flex-column align-items-center align-content-end justify-content-end">
@@ -195,57 +144,92 @@
             </div>
           </div>
         </div>
-
+      <% else %>
+        <ul>
+          <li>binary? <%= binary?(@feature) %></li>
+          <li>actor_constrained? <%= actor_constrained?(@feature) %></li>
+          <li>group_constrained? <%= group_constrained?(@feature) %></li>
+          <li>percentage_of_time? <%= percentage_of_time?(@feature) %></li>
+          <li>percentage_of_actors? <%= percentage_of_actors?(@feature) %></li>
+        </ul>
       <% end %>
     </div>
-    <%= controls "Update Search" do %>
-        <div class="w-100">
-          <% if @feature.enabled? %>
-            <%= toggle(
-              label: 'Switch Entirely to Primary Provider',
-              form_target: disable_path(feature: @example.flag, user: false),
-              form_method: :delete,
-              ruby: "Flipper.disable(:#{@example.flag})",
-              cli: "flipper disable #{@example.flag}"
-              ) %>
-          <% else %>
-            <%= toggle(
-              label: 'Switch Entirely to Backup Provider',
-              form_target: enable_path(feature: @example.flag, user: false),
-              form_method: :post,
-              ruby: "Flipper.enable(:#{@example.flag})",
-              cli: "flipper enable #{@example.flag}"
-              ) %>
+    <div class="card-body bg-light p-0">
+      <details class="m-0 p-0">
+        <summary class="text-secondary text-center border-top p-2"><small>Inspect Flag State & Code Samples</small></summary>
+        <ul class="list-group list-group-flush pt-0 border-top mx-3 px-0">
+          <% [
+            [
+              "100% to primary provider?",
+              binary?(@feature) && !@feature.enabled?,
+              "!@feature.conditional? && !@feature.enabled?"
+            ],
+            [
+              "100% to backup provider?",
+              binary?(@feature) && @feature.enabled? ,
+              "!@feature.conditional? && @feature.enabled?"
+            ],
+            [
+              "Balance traffic across providers?",
+              percentage_of_time?(@feature),
+              "@feature.conditional? && @feature.percentage_of_time_value.positive?"
+            ],
+            [
+              "Route paying customers to backup provider?",
+              group_constrained?(@feature),
+              "@feature.conditional? && @feature.groups_value.any?"
+            ],
+          ].each do |scenario| %>
+            <%= status_item(*scenario) %>
           <% end %>
-        </div>
-        <div class="w-100 border-top border-secondary border-opacity-50">
-          <% if Flipper.enabled?(@example.flag, current_user) %>
-            <%= toggle(
-              label: "Switch VIP's to Primary Provider",
-              form_target: disable_path(feature: @example.flag, user: true),
-              form_method: :delete,
-              ruby: "Flipper.disable_group(:#{@example.flag}, :paid)",
-              cli: "flipper disable #{@example.flag} --group vips"
-              ) %>
-          <% else %>
-            <%= toggle(
-              label: "Switch VIP's to Backup Provider",
-              form_target: enable_path(feature: @example.flag, user: true),
-              form_method: :post,
-              ruby: "Flipper.enable_group(:#{@example.flag}, :paid)",
-              cli: "flipper enable #{@example.flag} --group vips"
-              ) %>
-          <% end %>
-        </div>
-        <div class="w-100 border-top border-secondary border-opacity-50">
-          <%= toggle(
-            label: "Balance Providers",
-            form_target: enable_path(feature: @example.flag, time: 50),
-            form_method: :post,
-            ruby: "Flipper.enable_percentage_of_time(:#{@example.flag}, 50)",
-            cli: "flipper enable #{@example.flag} --percentage-of-time 50"
-            ) %>
-        </div>
+        </ul>
+      </details>
+    </div>
+    <%= controls "Manage Backup Provider" do %>
+      <% if (binary?(@feature) && @feature.enabled?) || @feature.conditional? %>
+        <%= toggle(
+          label: 'Switch Entirely to Primary Provider',
+          form_target: disable_path(feature: @example.flag),
+          form_method: :delete,
+          ruby: "Flipper.disable(:#{@example.flag})",
+          cli: "flipper disable #{@example.flag}"
+          ) %>
+      <% end %>
+      <% if (binary?(@feature) && !@feature.enabled?) || @feature.conditional? %>
+        <%= toggle(
+          label: 'Switch Entirely to Backup Provider',
+          form_target: enable_path(feature: @example.flag),
+          form_method: :post,
+          ruby: "Flipper.enable(:#{@example.flag})",
+          cli: "flipper enable #{@example.flag}"
+          ) %>
+      <% end %>
+      <% if group_constrained?(@feature) %>
+        <%= toggle(
+          label: "Switch VIP's to Primary Provider",
+          form_target: disable_path(feature: @example.flag, group: :paid),
+          form_method: :delete,
+          ruby: "Flipper.disable_group(:#{@example.flag}, :paid)",
+          cli: "flipper disable #{@example.flag} --group vips"
+          ) %>
+      <% elsif binary?(@feature) && !@feature.enabled? %>
+        <%= toggle(
+          label: "Switch VIP's to Backup Provider",
+          form_target: enable_path(feature: @example.flag, group: :paid),
+          form_method: :post,
+          ruby: "Flipper.enable_group(:#{@example.flag}, :paid)",
+          cli: "flipper enable #{@example.flag} --group vips"
+          ) %>
+      <% end %>
+      <% if binary?(@feature) %>
+        <%= toggle(
+          label: "Balance Providers",
+          form_target: enable_path(feature: @example.flag, time: 50),
+          form_method: :post,
+          ruby: "Flipper.enable_percentage_of_time(:#{@example.flag}, 50)",
+          cli: "flipper enable #{@example.flag} --percentage-of-time 50"
+          ) %>
+      <% end %>
     <% end %>
   </div>
 
