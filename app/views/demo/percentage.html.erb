@@ -30,7 +30,7 @@
   <h1>Percentage-based Feature Flipping</h1>
   <p>Let's explore toggling by using percentages where we can enable a feature for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-actors">percentage of actors</a> or for a <a href="https://www.flippercloud.io/docs/features#enablement-percentage-of-time">percentage of time</a>. As we're increasingly confident there aren't any surprise bugs or performance issues, we can gradually increase the percentage.</p>
 
-  <p>We've named this feature flag <code>slow_roll</code> since we'll slowly roll it out to more users. We'll increase our percentage gradually in increments of 25% and see how it four different user accounts, including yours, are affected.</p>
+  <p>We've named this feature flag <code>:slow_roll</code> since we'll slowly roll it out to more users. We'll increase our percentage gradually in increments of 25% and see how it four different user accounts, including yours, are affected.</p>
 
   <p>This is great for refactoring a significant portion of code so you can keep the legacy portion in place in parallel with the new code that's set to replace it, and you can slowly send more traffic down the new code path until you're confident it's generating the same results as the original.</p>
 

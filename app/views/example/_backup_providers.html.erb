@@ -233,7 +233,7 @@
 
   <hr class="my-5">
 
-  <p><strong><mark>Important:</mark></strong> Behind the scenes, we've already registered and defined the coffee drinker group in <code>config/initializers/flipper.rb</code>:</p>
+  <p><strong><mark>Important:</mark></strong> Behind the scenes, we've already registered and defined the <code>:paid</code> group in <code>config/initializers/flipper.rb</code>:</p>
 
   <pre class="border rounded rounded-4 p-3 bg-body-tertiary"><code><strong class="text-success">Flipper.register(:paid)</strong> do |actor, context|
   actor.respond_to?(:paid?) && actor.paid?

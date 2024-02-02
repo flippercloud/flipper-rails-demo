@@ -12,11 +12,11 @@
 
   <% if Flipper.enabled?(:demo_group, current_user) %>
     <h1>Welcome to the club!</h1>
-    <p>The <code>demo_group</code> feature is <ins>enabled</ins> for you since you prefer coffee. Nice work! Next we'll look at how you can enable features for a percentage of users.</p>
+    <p>The <code>:demo_group</code> feature is <ins>enabled</ins> for you since you prefer coffee. Nice work! Next we'll look at how you can enable features for a percentage of users.</p>
     <%= next_button "Learn How Percentage Flags Work", demo_percentage_path %>
   <% else %>
     <h1>Your Beverage Preference</h1>
-    <p>The <code>demo_group</code> feature is <del>disabled</del> for you since you don't prefer coffee. Let's update your beverage preference so you'll be included in the coffee drinkers group and get access.</p>
+    <p>The <code>:demo_group</code> feature is <del>disabled</del> for you since you don't prefer coffee. Let's update your beverage preference so you'll be included in the coffee drinkers group and get access.</p>
   <% end %>
 
   <hr class="my-5">
@@ -85,30 +85,30 @@ end</code></pre>
     </div>
     <div class="card-body p-5">
       <% if Flipper.enabled?(:demo_group) %>
-        <p class="m-0">The <code>demo_group</code> feature is <ins>enabled</ins> for everyone.</p>
+        <p class="m-0">The <code>:demo_group</code> feature is <ins>enabled</ins> for everyone.</p>
       <% else %>
-        <p class="m-0">The <code>demo_group</code> feature is <del>disabled</del> for anyone that doesn't have special authorization.</p>
+        <p class="m-0">The <code>:demo_group</code> feature is <del>disabled</del> for anyone that doesn't have special authorization.</p>
       <% end %>
 
       <hr>
 
       <% if Flipper.enabled?(:demo_group, @water_drinker) %>
-        <p class="m-0">The <code>demo_group</code> feature is <ins>enabled</ins> for water drinkers.</p>
+        <p class="m-0">The <code>:demo_group</code> feature is <ins>enabled</ins> for water drinkers.</p>
       <% else %>
-        <p class="m-0">The <code>demo_group</code> feature is <del>disabled</del> for water drinkers.</p>
+        <p class="m-0">The <code>:demo_group</code> feature is <del>disabled</del> for water drinkers.</p>
       <% end %>
 
 
       <% if Flipper.enabled?(:demo_group, @tea_drinker) %>
-        <p class="m-0">The <code>demo_group</code> feature is <ins>enabled</ins> for tea drinkers.</p>
+        <p class="m-0">The <code>:demo_group</code> feature is <ins>enabled</ins> for tea drinkers.</p>
       <% else %>
-        <p class="m-0">The <code>demo_group</code> feature is <del>disabled</del> for tea drinkers.</p>
+        <p class="m-0">The <code>:demo_group</code> feature is <del>disabled</del> for tea drinkers.</p>
       <% end %>
 
       <% if Flipper.enabled?(:demo_group, @coffee_drinker) %>
-        <p class="m-0">The <code>demo_group</code> feature is <ins>enabled</ins> for coffee drinkers.</p>
+        <p class="m-0">The <code>:demo_group</code> feature is <ins>enabled</ins> for coffee drinkers.</p>
       <% else %>
-        <p class="m-0">The <code>demo_group</code> feature is <del>disabled</del> for coffee drinkers.</p>
+        <p class="m-0">The <code>:demo_group</code> feature is <del>disabled</del> for coffee drinkers.</p>
       <% end %>
     </div>
     <%= controls('Toggling an Flag for an Actor') do %>

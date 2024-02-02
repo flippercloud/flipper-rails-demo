@@ -9,14 +9,6 @@
   <div class="card border-5 border-dark rounded-4">
     <div class="card-header p-3 pb-2 border-bottom">
       <%= flag_status(@example.flag) %>
-      <ul class="list-group list-group-flush pt-0 border-top mt-2">
-        <% [
-          ['Fully enabled for everyone?', Flipper.enabled?(@example.flag), "Flipper.enabled?(:#{@example.flag})"],
-          ['Enabled for the current user?', Flipper.enabled?(@example.flag, current_user), "Flipper.enabled?(:#{@example.flag}, current_user)"],
-        ].each do |scenario| %>
-          <%= status_item(*scenario) %>
-        <% end %>
-      </ul>
     </div>
     <div class="card-body p-5">
       <% if Flipper.enabled?(@example.flag, current_user) %>
@@ -32,6 +24,19 @@
           </form>
         </div>
       <% end %>
+    </div>
+    <div class="card-body bg-light p-0">
+      <details class="m-0 p-0">
+        <summary class="text-secondary text-center border-top p-2"><small>Inspect Flag State & Code Samples</small></summary>
+        <ul class="list-group list-group-flush pt-0 border-top mx-3 px-0">
+          <% [
+            ['Fully enabled for everyone?', Flipper.enabled?(@example.flag), "Flipper.enabled?(:#{@example.flag})"],
+            ['Enabled for the current user?', Flipper.enabled?(@example.flag, current_user), "Flipper.enabled?(:#{@example.flag}, current_user)"],
+          ].each do |scenario| %>
+            <%= status_item(*scenario) %>
+          <% end %>
+        </ul>
+      </details>
     </div>
     <%= controls "Update Search" do %>
       <div class="w-100">

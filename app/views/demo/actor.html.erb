@@ -12,7 +12,7 @@
 
   <p>Previously, we enabled the demo for all users. While that's the simplest case and very handy when a feature is completely ready, you'll occasionally want to enable a feature for a single individual like yourself or a teammate. So let's see how that works.</p>
 
-  <p>We've named this feature flag <code>demo_actor</code> because it only enables the feature for a single user. In this case, we'll use <code>current_user</code>, but in practice, you could use any instance of a User, Organization, Team, or any "actor" from your system as long as the instance responds to <code>flipper_id</code>.</p>
+  <p>We've named this feature flag <code>:demo_actor</code> because it only enables the feature for a single user. In this case, we'll use <code>current_user</code>, but in practice, you could use any instance of a User, Organization, Team, or any "actor" from your system as long as the instance responds to <code>flipper_id</code>.</p>
 
   <p><strong><mark>Important:</mark></strong> In order to <a href="https://www.flippercloud.io/docs/features#enablement-actor">enable access for individual users, accounts, or any other actor</a> the model must respond to a <code>flipper_id</code> method that returns a unique identifier.</p>
 <% end %>
@@ -39,19 +39,19 @@
     </div>
     <div class="card-body p-5">
       <% if Flipper.enabled?(:demo_actor) %>
-        <p class="m-0">The <code>demo_actor</code> feature is <ins>enabled</ins> for everyone.</p>
+        <p class="m-0">The <code>:demo_actor</code> feature is <ins>enabled</ins> for everyone.</p>
       <% else %>
-        <p class="m-0">The <code>demo_actor</code> feature is <del>disabled</del> for anyone that doesn't have special authorization.</p>
+        <p class="m-0">The <code>:demo_actor</code> feature is <del>disabled</del> for anyone that doesn't have special authorization.</p>
       <% end %>
 
       <hr>
 
       <% if Flipper.enabled?(:demo_actor) %>
-        <p class="m-0">The <code>demo_actor</code> feature is <em>implicitly</em> <ins>enabled</ins> for you since it's enabled for everyone.</p>
+        <p class="m-0">The <code>:demo_actor</code> feature is <em>implicitly</em> <ins>enabled</ins> for you since it's enabled for everyone.</p>
       <% elsif Flipper.enabled?(:demo_actor, current_user) %>
-        <p class="m-0">The <code>demo_actor</code> feature is <em>explicitly</em> <ins>enabled</ins> for you.</p>
+        <p class="m-0">The <code>:demo_actor</code> feature is <em>explicitly</em> <ins>enabled</ins> for you.</p>
       <% elsif !Flipper.enabled?(:demo_actor, current_user) %>
-        <p class="m-0">The <code>demo_actor</code> feature is <em>implicitly</em> <del>disabled</del> for you as well.</p>
+        <p class="m-0">The <code>:demo_actor</code> feature is <em>implicitly</em> <del>disabled</del> for you as well.</p>
       <% end %>
     </div>
     <%= controls('Toggling an Flag for an Actor') do %>
