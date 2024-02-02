@@ -220,8 +220,6 @@
           ruby: "Flipper.enable_group(:#{@example.flag}, :paid)",
           cli: "flipper enable #{@example.flag} --group vips"
           ) %>
-      <% end %>
-      <% if binary?(@feature) %>
         <%= toggle(
           label: "Balance Providers",
           form_target: enable_path(feature: @example.flag, time: 50),
