@@ -6,19 +6,18 @@
 
 <p>If there's something you like, <mark>the footer of every page provides a link to the source code so you can take a look at how we did it</mark> and even use it in your own Rails app! If there's something you don't like, you can tinker with it and change it to figure out how it works or how you could use it.</p>
 
-<% if current_user.present? %>
-  <div class="d-flex gap-3 my-2">
-    <%= next_button "Start the Demo", demo_start_path %>
-    <%#= link_to "Browse Examples", '#', class: "btn btn-lg btn-primary" %>
-  </div>
-<% end %>
-
 <% content_for :aside do %>
   <div class="card rounded-4">
     <div class="card-body">
       <p class="my-0">Once you walk through the demo or browse the examples, this area will display information and controls for some Flipper controls. Normally, you'd use Flipper Cloud to control feature flags, but for demonstration purposes, we've brought those controls right here.</p>
     </div>
   </div>
+
+  <div class="d-flex gap-3 my-4">
+    <%= next_button "Start the Demo", demo_start_path %>
+    <%= next_button "Browse Examples", examples_path %>
+  </div>
+
 
 <% end %>
 
