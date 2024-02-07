@@ -1,5 +1,5 @@
 class FeaturesController < ApplicationController
-  PUBLIC_FEATURES = %w[demo demo_actor demo_group slow_roll].freeze
+  PUBLIC_FEATURES = %w[demo demo_actor coffee_beta slow_roll].freeze
   before_action :verify_public_feature
 
   def create

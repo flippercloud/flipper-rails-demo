@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   post 'demo/reset'
   get 'demo/start'
   get 'demo/actor'
-  get 'demo/group'
+  get 'demo/group', as: :coffee_beta
   get 'demo/percentage'
 
   # The example pages

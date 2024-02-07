@@ -22,7 +22,7 @@ class DemoControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "get group demo page" do
-    get demo_group_url
+    get coffee_beta_url
     assert_response :success
   end
 
