@@ -1,5 +1,5 @@
-<label for="prompt" class="d-block text-bg-secondary p-2 font-monospace overflow-auto" style="height: 75vh;">
-  <pre id="history"></pre>
+<label for="prompt" class="d-block text-bg-dark p-4 font-monospace overflow-auto rounded-4" style="height: 75vh;">
+  <pre id="history" class="fs-6"></pre>
 
   <%= form_tag do %>
     <div class="d-flex align-items-center">
@@ -8,7 +8,7 @@
         flipper
       </div>
       <div class="ps-2">
-        <input type="text" name="prompt" id="prompt" value="--help" class="form-control-plaintext text-bg-secondary">
+        <input type="text" name="prompt" id="prompt" value="--help" class="form-control-plaintext text-bg-dark">
       </div>
     </div>
   <% end %>
