@@ -42,13 +42,15 @@
 
 
       <div class="row mb-3">
-        <main class="col col-12 col-xl-6 ps-xl-4 pe-xl-5 mx-auto">
+        <main class="col col-12<% if content_for?(:aside) %>col-xl-6 ps-xl-4 pe-xl-5 mx-auto<% end %>">
           <%= yield %>
         </main>
 
-        <aside class="col col-12 col-xl-6 mx-auto">
-          <%= yield :aside %>
-        </aside>
+        <% if content_for?(:aside) %>
+          <aside class="col col-12 col-xl-6 mx-auto">
+            <%= yield :aside %>
+          </aside>
+        <% end %>
       </div>
     </div>
 

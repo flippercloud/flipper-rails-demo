@@ -10,6 +10,7 @@ flipper_version = '~> 1.2.2'
 gem 'flipper-cloud', flipper_version
 gem 'flipper-ui', flipper_version
 gem 'flipper-active_record', flipper_version
+gem 'ansi-to-html'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

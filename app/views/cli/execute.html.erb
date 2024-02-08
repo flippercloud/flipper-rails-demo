@@ -1,0 +1,2 @@
+<span class="text-white-50">$</span> flipper <%= params[:prompt] %>
+<%=raw Ansi::To::Html.new(h(@output)).to_html(:xterm) %>

@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   get 'example/index', as: :examples
   get 'example/:slug', to: "example#show", as: :example
 
+  get "cli", to: "cli#show", as: :cli
+  post "cli", to: "cli#execute"
 
   get 'connect/:token', to: "cloud#connect", as: :cloud_connect
 

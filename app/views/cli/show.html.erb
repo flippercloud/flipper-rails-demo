@@ -1,0 +1,45 @@
+<label for="prompt" class="d-block text-bg-secondary p-2 font-monospace overflow-auto" style="height: 75vh;">
+  <pre id="history"></pre>
+
+  <%= form_tag do %>
+    <div class="d-flex align-items-center">
+      <div>
+        <%= tag.span "$", class: @status && @status > 0 ? 'text-danger' : 'text-white-50' %>
+        flipper
+      </div>
+      <div class="ps-2">
+        <input type="text" name="prompt" id="prompt" value="--help" class="form-control-plaintext text-bg-secondary">
+      </div>
+    </div>
+  <% end %>
+</label>
+
+<script>
+const history = document.getElementById('history');
+const prompt = document.getElementById('prompt');
+const form = document.querySelector('form')
+
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const { action, method } = event.target;
+  const body = new FormData(event.target);
+
+  fetch(action, { method, body }).then(response => {
+    if(!response.ok) {
+      throw new Error(response);
+    }
+
+    response.text().then(html => {
+      history.innerHTML += html;
+      prompt.scrollIntoView();
+    });
+  });
+
+  // Reset prompt
+  prompt.value = '';
+});
+
+// Submit the default prompt on load
+// form.submit();
+</script>
