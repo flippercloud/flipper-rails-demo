@@ -1,4 +1,4 @@
-<label for="prompt" class="d-block text-bg-dark p-4 font-monospace overflow-auto rounded-4" style="height: 75vh;">
+<label for="prompt" class="d-block text-bg-dark p-4 font-monospace overflow-auto rounded-4" style="height: 60vh;">
   <pre id="history" class="fs-6"></pre>
 
   <%= form_tag do %>
@@ -41,5 +41,6 @@ form.addEventListener('submit', function(event) {
 });
 
 // Submit the default prompt on load
-// form.submit();
+form.requestSubmit();
+prompt.focus();
 </script>
