@@ -14,6 +14,10 @@
   <% end %>
 </label>
 
+<% content_for :footer do %>
+  <%= page_footer(__FILE__) %>
+<% end %>
+
 <script>
 const history = document.getElementById('history');
 const prompt = document.getElementById('prompt');
