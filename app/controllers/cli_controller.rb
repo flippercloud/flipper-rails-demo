@@ -1,7 +1,6 @@
 class CliController < ApplicationController
   def execute
-    args = Shellwords.split(params[:prompt].to_s)
-    @status, @output = WebCli.run(args)
+    @status, @output = WebCli.run(params[:prompt])
     render layout: false ## FIXME: render full page if not xhr
   end
 end

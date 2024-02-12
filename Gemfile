@@ -6,7 +6,7 @@ gem 'puma'
 gem 'bcrypt'
 gem 'faker'
 
-flipper_version = '~> 1.2.2'
+flipper_version = { git: "https://github.com/flippercloud/flipper", ref: "ef9a631858c582b53b6d0ab7bcc557e0c477a685" }
 gem 'flipper-cloud', flipper_version
 gem 'flipper-ui', flipper_version
 gem 'flipper-active_record', flipper_version

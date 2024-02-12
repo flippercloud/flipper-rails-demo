@@ -1,33 +1,28 @@
 require 'flipper/cli'
 
 class WebCli < Flipper::CLI
-  def load_environment!
-    # already loaded, so no need
-  end
-
-  def run(...)
-    original_stdout = $stdout
-    original_stderr = $stderr
-
+  def self.run(input)
+    args = Shellwords.split(input.to_s)
+    status = 0
     output = StringIO.new
+
     # Prentend this a TTY so we get colorization
     def output.tty?
       true
     end
 
-    $stdout = output
-    $stderr = output
-    status = 0
+    cli = new(stdout: output, stderr: output)
 
     begin
-      super(...)
+      cli.run(args)
     rescue SystemExit => e
       status = e.status
     end
 
     [status, output.string]
-  ensure
-    $stdout = original_stdout
-    $stderr = original_stderr
+  end
+
+  def load_environment!
+    # already loaded, so no need
   end
 end
