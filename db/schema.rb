@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_30_151251) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_26_200944) do
   create_table "flipper_features", force: :cascade do |t|
     t.string "key", null: false
     t.datetime "created_at", precision: nil, null: false
@@ -32,6 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_151251) do
     t.datetime "updated_at", null: false
     t.integer "beverage", default: 0
     t.string "name"
+    t.integer "category", default: 0
   end
 
 end
