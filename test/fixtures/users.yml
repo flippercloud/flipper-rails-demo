@@ -11,3 +11,9 @@ water:
 coffee:
   name: <%= Faker::Name.name %>
   beverage: 3
+beta:
+  name: <%= Faker::Name.name %>
+  category: 1
+internal:
+  name: <%= Faker::Name.name %>
+  category: 2

@@ -5,7 +5,18 @@
 #   end
 
 Flipper.register(:coffee_drinkers) do |actor, context|
-  # Since anything can be passed as the actor, make sure it responds to the
-  #   relevant method we'll check against
   actor.respond_to?(:coffee?) && actor.coffee?
 end
+
+Flipper.register(:paid) do |actor, context|
+  actor.respond_to?(:paid?) && actor.paid?
+end
+
+Flipper.register(:internal) do |actor, context|
+  actor.respond_to?(:internal?) && actor.internal?
+end
+
+Flipper.register(:beta) do |actor, context|
+  actor.respond_to?(:beta?) && actor.beta?
+end
+

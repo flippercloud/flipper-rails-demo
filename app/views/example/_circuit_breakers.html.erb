@@ -11,7 +11,7 @@
       <%= flag_status(@example.flag) %>
     </div>
     <div class="card-body p-5">
-      <% if Flipper.enabled?(@example.flag, current_user) %>
+      <% if @feature.enabled?(current_user) %>
         <form class="d-flex gap-2 m-2">
           <input type="search" placeholder="Search" class="form-control">
           <input type="submit" value="Search" class="btn btn-primary">
@@ -40,7 +40,7 @@
     </div>
     <%= controls "Update Search" do %>
       <div class="w-100">
-        <% if Flipper.enabled?(@example.flag) %>
+        <% if @feature.on? %>
           <%= toggle(
             label: 'Disable for Everyone',
             form_target: disable_path(feature: @example.flag),
@@ -58,9 +58,8 @@
             ) %>
         <% end %>
       </div>
-      <% if !Flipper.enabled?(@example.flag) %>
       <div class="w-100 border-top border-secondary border-opacity-50">
-        <% if Flipper.enabled?(@example.flag, current_user) %>
+        <% if @feature.enabled?(current_user) %>
           <%= toggle(
             label: 'Disable for Just You',
             form_target: disable_path(feature: @example.flag, user: true),
@@ -78,7 +77,6 @@
             ) %>
         <% end %>
       </div>
-      <% end %>
     <% end %>
   </div>
 <% end %>

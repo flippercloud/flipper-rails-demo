@@ -1,6 +1,6 @@
 module FlagStateHelper
   def binary?(feature)
-    !feature.conditional?
+    feature.enabled_gate_names == %i[boolean]
   end
 
   def actor_constrained?(feature)
@@ -12,7 +12,8 @@ module FlagStateHelper
   end
 
   def percentage_of_time?(feature)
-    feature.enabled_gate_names.include?(:percentage_of_time)
+    feature.enabled_gate_names.include?(:percentage_of_time) &&
+      feature.percentage_of_time_value < 100
   end
 
   def percentage_of_actors?(feature)

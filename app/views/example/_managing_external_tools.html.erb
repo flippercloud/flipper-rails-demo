@@ -21,7 +21,7 @@
     </div>
     <div class="card-body p-5">
       <div class="d-flex align-items-center align-content-center justify-content-start gap-2">
-        <% if Flipper.enabled?(@example.flag, current_user) %>
+        <% if @feature.enabled?(current_user) %>
           <%= icon 'check-circle-fill', 'bi-medium text-success' %>
           <span>Profiling was <ins>enabled</ins> for this request, but only for the current user.</span>
         <% else %>
@@ -35,8 +35,8 @@
         <summary class="text-secondary text-center border-top p-2"><small>Inspect Flag State & Code Samples</small></summary>
         <ul class="list-group list-group-flush pt-0 border-top mx-3 px-0">
           <% [
-              ['Fully enabled for everyone?', Flipper.enabled?(@example.flag), "Flipper.enabled?(:#{@example.flag})"],
-              ['Enabled for the current user?', Flipper.enabled?(@example.flag, current_user), "Flipper.enabled?(:#{@example.flag}, current_user)"],
+              ['Fully enabled for everyone?', @feature.on?, "Flipper.enabled?(:#{@example.flag})"],
+              ['Enabled for the current user?', @feature.enabled?(current_user), "Flipper.enabled?(:#{@example.flag}, current_user)"],
             ].each do |scenario| %>
             <%= status_item(*scenario) %>
           <% end %>

@@ -24,12 +24,13 @@ class Example
         custom_flag: :profiler,
         tags: [[:permanent, :success], [:internal, :secondary]]
       ),
-      # new(
-      #   title: "Managing Analytics/Telemetry",
-      #   desc: "A way to disable analytics and telemetry tools in development and test environments while being able to quickly enable them when necessary to re-configure or make adjustments in development.",
-      #   icon: "clipboard-data",
-      #   tags: [[:permanent, :success], [:internal, :secondary]]
-      # )
+      new(
+        title: "Incremental Feature Releases",
+        desc: "An example of gradually expanding the audience for a given feature in order to find problems before releasing it to more people.",
+        icon: "circle-half",
+        custom_flag: :reporting,
+        tags: [[:temporary, :info], [:external, :warning]]
+      )
     ]
   end
 

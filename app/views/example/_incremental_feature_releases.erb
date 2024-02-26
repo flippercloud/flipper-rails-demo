@@ -1,0 +1,250 @@
+<%= uses([
+  [
+    "person-badge-fill",
+    "<strong>Limit access to internal users initially</strong> so teams can ensure everything works well under real-world day-to-day conditions before sharing with customers."
+  ],
+  [
+    "percent",
+    "<strong>Slowly expand new features</strong> by granting access to percentage of users and increasing the percentage over time as confidence increases."
+  ],
+  [
+    "patch-check-fill",
+    "<strong>Provide early access to key customers</strong> based on how active and helpful they are about providing feedback."
+  ],
+]) %>
+
+<% basic_user = User.basic.first %>
+<% beta_user = User.beta.first %>
+<% internal_user = User.internal.first %>
+
+<% content_for :aside do %>
+  <div class="card border-5 border-dark rounded-4">
+    <div class="card-header p-3 pb-2 border-bottom">
+      <%= flag_status(@example.flag) %>
+    </div>
+    <div class="card-body p-5">
+      <div class="container text-center">
+        <div class="row align-items-end">
+          <div class="col flex-column align-items-center align-content-end justify-content-end">
+            <% if @feature.off? %>
+              <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                <%= icon 'people-fill', 'bi-medium' %>
+                <small class="d-block pe-2">Everyone</small/>
+              </div>
+              <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
+            <% else %>
+              <% if percentage_of_time?(@feature) %>
+                <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                  <%= icon 'people-fill', 'bi-medium' %>
+                  <small class="d-block pe-2"><%= 100 - @feature.percentage_of_time_value %>% of Basic Users</small/>
+                </div>
+              <% elsif !@feature.enabled? %>
+                <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                  <%= icon 'people-fill', 'bi-medium' %>
+                  <small class="d-block pe-2">Basic Users</small/>
+                </div>
+              <% end %>
+
+              <% if !@feature.groups_value.include?('internal') %>
+                <div class="bg-info rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                  <%= icon 'person-badge-fill', 'bi-medium' %>
+                  <small class="d-block pe-2">Internal Team Members</small/>
+                </div>
+              <% end %>
+
+              <% if !@feature.groups_value.include?('beta') %>
+                <div class="bg-info rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                  <%= icon 'patch-check-fill', 'bi-medium' %>
+                  <small class="d-block pe-2">Beta Users</small/>
+                </div>
+              <% end %>
+
+              <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
+            <% end %>
+            <div class="text-bg-secondary rounded-pill d-inline-flex align-items-center align-content-center justify-content-center gap-2 px-4 py-3">
+              <%= icon 'x-circle', 'bi-medium' %>
+              <small>Reporting Hidden</small>
+            </div>
+          </div>
+
+
+          <div class="col flex-column align-items-center">
+            <% if @feature.on? %>
+              <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                <%= icon 'people-fill', 'bi-medium' %>
+                <small class="d-block pe-2">Everyone</small/>
+              </div>
+              <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
+            <% elsif !@feature.off? %>
+              <% if percentage_of_time?(@feature) %>
+                <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                  <%= icon 'people-fill', 'bi-medium' %>
+                  <small class="d-block pe-2"><%= @feature.percentage_of_time_value %>% of Basic Users</small/>
+                </div>
+              <% elsif @feature.enabled? %>
+                <div class="bg-dark rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                  <%= icon 'people-fill', 'bi-medium' %>
+                  <small class="d-block pe-2">Basic Users</small/>
+                </div>
+              <% end %>
+
+              <% if @feature.groups_value.include?('internal') %>
+                <div class="bg-info rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                  <%= icon 'person-badge-fill', 'bi-medium' %>
+                  <small class="d-block pe-2">Internal Team Members</small/>
+                </div>
+              <% end %>
+              <% if @feature.groups_value.include?('beta') %>
+                <div class="bg-info rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-1 ps-2 pe-1 py-1">
+                  <%= icon 'patch-check-fill', 'bi-medium' %>
+                  <small class="d-block pe-2">Beta Users</small/>
+                </div>
+              <% end %>
+              <div class="w-100"><%= icon 'arrow-down-circle-fill', 'bi-medium text-secondary my-3' %></div>
+            <% end %>
+            <div class="bg-success rounded-pill d-inline-flex align-items-center align-content-center justify-content-center text-white gap-2 px-4 py-3">
+              <%= icon 'bar-chart-line-fill', 'bi-medium' %>
+              <small>Reporting Enabled</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body bg-light p-0">
+      <details class="m-0 p-0">
+        <summary class="text-secondary text-center border-top p-2"><small>Inspect Flag State & Code Samples</small></summary>
+        <ul class="list-group list-group-flush pt-0 border-top mx-3 px-0">
+          <% [
+            [
+              "Fully disabled?",
+              @feature.off?,
+              "@feature.off?"
+            ],
+            [
+              "Enabled for internal users?",
+              @feature.enabled?(internal_user),
+              "Flipper.enabled?(@feature, internal_user)"
+            ],
+            [
+              "Enabled for beta testers?",
+              @feature.enabled?(beta_user),
+              "Flipper.enabled?(@feature, beta_user)"
+            ],
+            [
+              "Enabled for percentage of basic users?",
+              @feature.percentage_of_time_value.positive? && @feature.percentage_of_time_value < 100,
+              "@feature.percentage_of_time_value.positive? && @feature.percentage_of_time_value < 100"
+            ],
+            [
+              "Fully enabled",
+              @feature.on?,
+              "@feature.on?"
+            ],
+          ].each do |scenario| %>
+            <%= status_item(*scenario) %>
+          <% end %>
+        </ul>
+      </details>
+    </div>
+    <%= controls "Manage Release" do %>
+        <% if group_constrained?(@feature) && @feature.enabled?(internal_user) %>
+          <%= toggle(
+            label: 'Disable for Internal Users',
+            form_target: disable_path(feature: @example.flag, group: :internal),
+            form_method: :delete,
+            ruby: "Flipper.disable_group(:#{@example.flag}, :internal)",
+            cli: "flipper disable #{@example.flag} --group internal"
+            ) %>
+        <% elsif !@feature.enabled?(internal_user) %>
+          <%= toggle(
+            label: 'Enable for Internal Users',
+            form_target: enable_path(feature: @example.flag, group: :internal),
+            form_method: :post,
+            ruby: "Flipper.enable_group(:#{@example.flag}, :internal)",
+            cli: "flipper enable #{@example.flag} --group internal"
+            ) %>
+        <% end %>
+
+        <% if (group_constrained?(@feature) && @feature.enabled?(beta_user)) %>
+          <%= toggle(
+            label: 'Disable for Beta Users',
+            form_target: disable_path(feature: @example.flag, group: :beta),
+            form_method: :delete,
+            ruby: "Flipper.disable_group(:#{@example.flag}, :beta)",
+            cli: "flipper disable #{@example.flag} --group beta"
+            ) %>
+        <% elsif (!@feature.enabled?(beta_user)) %>
+          <%= toggle(
+            label: 'Enable for Beta Users',
+            form_target: enable_path(feature: @example.flag, group: :beta),
+            form_method: :post,
+            ruby: "Flipper.enable_group(:#{@example.flag}, :beta)",
+            cli: "flipper enable #{@example.flag} --group beta"
+            ) %>
+        <% end %>
+
+      <% if !@feature.enabled?(basic_user) && !percentage_of_time?(@feature) %>
+        <%= toggle(
+          label: 'Enable for 25% of Basic Users',
+          form_target: enable_path(feature: @example.flag, time: 25),
+          form_method: :post,
+          ruby: "Flipper.enable_percentage_of_time(:#{@example.flag}, 25)",
+          cli: "flipper enable #{@example.flag} --percentage-of-time 25"
+        ) %>
+      <% end %>
+
+      <% if percentage_of_time?(@feature) && @feature.percentage_of_time_value == 25%>
+        <%= toggle(
+          label: 'Enable for 50% of Basic Users',
+          form_target: enable_path(feature: @example.flag, time: 50),
+          form_method: :post,
+          ruby: "Flipper.enable_percentage_of_time(:#{@example.flag}, 50)",
+          cli: "flipper enable #{@example.flag} --percentage-of-time 50"
+        ) %>
+      <% end %>
+
+      <% if percentage_of_time?(@feature) %>
+        <%= toggle(
+          label: 'Emergency! Roll back to 0% of Basic Users',
+          form_target: disable_path(feature: @example.flag, time: 0),
+          form_method: :delete,
+          ruby: "Flipper.disable_percentage_of_time(:#{@example.flag})",
+          cli: "flipper disable #{@example.flag} --percentage-of-time"
+        ) %>
+      <% end %>
+
+      <% if @feature.enabled?(basic_user) && !percentage_of_time?(@feature) %>
+        <%= toggle(
+          label: 'Fully Disable for Everyone',
+          form_target: disable_path(feature: @example.flag),
+          form_method: :delete,
+          ruby: "Flipper.disable(:#{@example.flag})",
+          cli: "flipper disable #{@example.flag}"
+          ) %>
+      <% else %>
+        <%= toggle(
+          label: 'Fully Enable for Everyone',
+          form_target: enable_path(feature: @example.flag),
+          form_method: :post,
+          ruby: "Flipper.enable(:#{@example.flag})",
+          cli: "flipper enable #{@example.flag}"
+          ) %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <p class="mt-4"><strong><mark>Important:</mark></strong> Behind the scenes, we've already registered and defined the <code>:internal</code> and <code>:beta</code> groups in <code>config/initializers/flipper.rb</code>:</p>
+
+  <pre class="border rounded rounded-4 p-3 bg-body-tertiary"><code><strong class="text-success">Flipper.register(:internal)</strong> do |actor, context|
+  actor.respond_to?(:internal?) && actor.internal?
+end</code></pre>
+
+  <pre class="border rounded rounded-4 p-3 bg-body-tertiary"><code><strong class="text-success">Flipper.register(:beta)</strong> do |actor, context|
+  actor.respond_to?(:beta?) && actor.beta?
+end</code></pre>
+
+<% end %>
+
+<% content_for :footer do %>
+  <%= page_footer(__FILE__) %>
+<% end %>

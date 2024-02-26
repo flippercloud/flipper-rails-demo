@@ -31,7 +31,7 @@
       <%= flag_status(@example.flag) %>
     </div>
     <div class="card-body p-5">
-      <% if binary?(@feature) && @feature.enabled? %>
+      <% if @feature.on? %>
         <%# 100% to backup %>
         <div class="container text-center">
           <div class="row align-items-end">
@@ -117,7 +117,7 @@
             </div>
           </div>
         </div>
-      <% elsif binary?(@feature) && !@feature.enabled? %>
+      <% elsif @feature.off? %>
         <div class="container text-center">
           <div class="row align-items-end">
             <div class="col flex-column align-items-center align-content-end justify-content-end">
@@ -146,6 +146,11 @@
         </div>
       <% else %>
         <ul>
+          <li>group names: <%= @feature.groups_value %></li>
+          <li>feature gates: <%= @feature.enabled_gate_names %></li>
+          <li>off? <%= @feature.off? %></li>
+          <li>conditional? <%= @feature.conditional? %></li>
+          <li>on? <%= @feature.on? %></li>
           <li>binary? <%= binary?(@feature) %></li>
           <li>actor_constrained? <%= actor_constrained?(@feature) %></li>
           <li>group_constrained? <%= group_constrained?(@feature) %></li>
@@ -162,22 +167,22 @@
             [
               "100% to primary provider?",
               binary?(@feature) && !@feature.enabled?,
-              "!@feature.conditional? && !@feature.enabled?"
+              "@feature.off?"
             ],
             [
               "100% to backup provider?",
               binary?(@feature) && @feature.enabled? ,
-              "!@feature.conditional? && @feature.enabled?"
+              "@feature.on?"
             ],
             [
               "Balance traffic across providers?",
               percentage_of_time?(@feature),
-              "@feature.conditional? && @feature.percentage_of_time_value.positive?"
+              "@feature.percentage_of_time_value.positive? && @feature.percentage_of_time_value < 100"
             ],
             [
               "Route paying customers to backup provider?",
               group_constrained?(@feature),
-              "@feature.conditional? && @feature.groups_value.any?"
+              "@feature.groups_value.include?('paid')"
             ],
           ].each do |scenario| %>
             <%= status_item(*scenario) %>
@@ -186,7 +191,7 @@
       </details>
     </div>
     <%= controls "Manage Backup Provider" do %>
-      <% if (binary?(@feature) && @feature.enabled?) || @feature.conditional? %>
+      <% if @feature.on? || @feature.conditional? %>
         <%= toggle(
           label: 'Switch Entirely to Primary Provider',
           form_target: disable_path(feature: @example.flag),
@@ -195,7 +200,7 @@
           cli: "flipper disable #{@example.flag}"
           ) %>
       <% end %>
-      <% if (binary?(@feature) && !@feature.enabled?) || @feature.conditional? %>
+      <% if @feature.off? || @feature.conditional? %>
         <%= toggle(
           label: 'Switch Entirely to Backup Provider',
           form_target: enable_path(feature: @example.flag),
@@ -204,21 +209,21 @@
           cli: "flipper enable #{@example.flag}"
           ) %>
       <% end %>
-      <% if group_constrained?(@feature) %>
+      <% if @feature.groups_value.include?('paid') %>
         <%= toggle(
           label: "Switch VIP's to Primary Provider",
           form_target: disable_path(feature: @example.flag, group: :paid),
           form_method: :delete,
           ruby: "Flipper.disable_group(:#{@example.flag}, :paid)",
-          cli: "flipper disable #{@example.flag} --group vips"
+          cli: "flipper disable #{@example.flag} --group paid"
           ) %>
-      <% elsif binary?(@feature) && !@feature.enabled? %>
+      <% elsif @feature.off? %>
         <%= toggle(
           label: "Switch VIP's to Backup Provider",
           form_target: enable_path(feature: @example.flag, group: :paid),
           form_method: :post,
           ruby: "Flipper.enable_group(:#{@example.flag}, :paid)",
-          cli: "flipper enable #{@example.flag} --group vips"
+          cli: "flipper enable #{@example.flag} --group paid"
           ) %>
         <%= toggle(
           label: "Balance Providers",
@@ -231,9 +236,7 @@
     <% end %>
   </div>
 
-  <hr class="my-5">
-
-  <p><strong><mark>Important:</mark></strong> Behind the scenes, we've already registered and defined the <code>:paid</code> group in <code>config/initializers/flipper.rb</code>:</p>
+  <p class="mt-4"><strong><mark>Important:</mark></strong> Behind the scenes, we've already registered and defined the <code>:paid</code> group in <code>config/initializers/flipper.rb</code>:</p>
 
   <pre class="border rounded rounded-4 p-3 bg-body-tertiary"><code><strong class="text-success">Flipper.register(:paid)</strong> do |actor, context|
   actor.respond_to?(:paid?) && actor.paid?
