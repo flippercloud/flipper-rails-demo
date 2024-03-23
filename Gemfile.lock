@@ -1,3 +1,23 @@
+GIT
+  remote: https://github.com/flippercloud/flipper
+  revision: ef9a631858c582b53b6d0ab7bcc557e0c477a685
+  ref: ef9a631858c582b53b6d0ab7bcc557e0c477a685
+  specs:
+    flipper (1.2.2)
+      concurrent-ruby (< 2)
+    flipper-active_record (1.2.2)
+      activerecord (>= 4.2, < 8)
+      flipper (~> 1.2.2)
+    flipper-cloud (1.2.2)
+      flipper (~> 1.2.2)
+    flipper-ui (1.2.2)
+      erubi (>= 1.0.0, < 2.0.0)
+      flipper (~> 1.2.2)
+      rack (>= 1.4, < 4)
+      rack-protection (>= 1.5.3, < 5.0.0)
+      rack-session (>= 1.0.2, < 3.0.0)
+      sanitize (< 7)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -77,6 +97,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
+    ansi-to-html (0.0.3)
     base64 (0.2.0)
     bcrypt (3.1.20)
     bigdecimal (3.1.6)
@@ -109,19 +130,6 @@ GEM
     faker (3.2.3)
       i18n (>= 1.8.11, < 2)
     ffi (1.16.3)
-    flipper (1.2.2)
-      concurrent-ruby (< 2)
-    flipper-active_record (1.2.2)
-      activerecord (>= 4.2, < 8)
-      flipper (~> 1.2.2)
-    flipper-cloud (1.2.2)
-      flipper (~> 1.2.2)
-    flipper-ui (1.2.2)
-      erubi (>= 1.0.0, < 2.0.0)
-      flipper (~> 1.2.2)
-      rack (>= 1.4, < 4)
-      rack-protection (>= 1.5.3, <= 4.0.0)
-      sanitize (< 7)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashdiff (1.1.0)
@@ -265,14 +273,15 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  ansi-to-html
   bcrypt
   byebug
   capybara
   dotenv-rails
   faker
-  flipper-active_record (~> 1.2.2)
-  flipper-cloud (~> 1.2.2)
-  flipper-ui (~> 1.2.2)
+  flipper-active_record!
+  flipper-cloud!
+  flipper-ui!
   listen
   puma
   rails
